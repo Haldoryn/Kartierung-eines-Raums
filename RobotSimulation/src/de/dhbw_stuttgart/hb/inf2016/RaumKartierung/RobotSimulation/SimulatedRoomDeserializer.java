@@ -17,7 +17,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**Class for deserializing simulated room XML documents.
+/**
+ * Class for deserializing simulated room XML documents.
+ * 
  * @author Julian Vogel
  */
 public class SimulatedRoomDeserializer {
@@ -34,12 +36,16 @@ public class SimulatedRoomDeserializer {
 	/**
 	 * Loads and parses a simulated room template file. Returns a
 	 * {@link SimulatedRoom}
-	 * @param xmlFile The {@link File} the file that should be parsed.
+	 * 
+	 * @param xmlFile
+	 *            The {@link File} the file that should be parsed.
 	 * @return The parsed {@link SimulatedRoom} object.
 	 * @throws SAXException
 	 * @throws IOException
 	 * @throws ParserConfigurationException
-	 * @throws XMLParseExceptionIs thrown if the file can not be parsed because of invalid or missing data.
+	 * @throws XMLParseExceptionIs
+	 *             thrown if the file can not be parsed because of invalid or
+	 *             missing data.
 	 */
 	public static SimulatedRoom deserialize(File xmlFile)
 			throws SAXException, IOException, ParserConfigurationException, XMLParseException {
@@ -53,6 +59,7 @@ public class SimulatedRoomDeserializer {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
 		Document document = docBuilder.parse(xmlFile);
+		document.normalize();
 
 		// Check if there is a simulatedRoom XML node, otherwise the document is
 		// invalid.
@@ -62,12 +69,13 @@ public class SimulatedRoomDeserializer {
 		}
 
 		// Find the outlines and obstacles node.
-		NodeList children = simulatedRoomNode.getChildNodes();
+		NodeList children = cleanNodeList(simulatedRoomNode.getChildNodes());
 		Outline outline = null;
 		List<Obstacle> obstacles = null;
 
 		for (int index = 0; index < children.getLength(); index++) {
 			Node node = children.item(index);
+
 			if (node.getNodeName().equals(outlineName)) {
 				outline = parseOutline(node);
 			} else if (node.getNodeName().equals(obstaclesName)) {
@@ -93,8 +101,46 @@ public class SimulatedRoomDeserializer {
 	}
 
 	/**
+	 * Removes all non element nodes from a {@link NodeList} and returns the
+	 * cleaned {@link NodeList}. Removes the #text nodes that are created
+	 * because of whitespace characters in the input file.
+	 * 
+	 * @param nodeList
+	 *            The {@link NodeList} that should be cleaned.
+	 * @return The cleaned {@link NodeList}.
+	 */
+	private static NodeList cleanNodeList(NodeList nodeList) {
+		if (nodeList.getLength() <= 0) {
+			return nodeList;
+		}
+		Node parent = nodeList.item(0).getParentNode();
+		List<Node> removeList = new ArrayList<Node>();
+
+		// Remove all non element nodes. This filters out #text nodes which are
+		// created because of whitespace characters in the input file.
+		
+		//Add to remove list first because nodes cannot be removed on the fly.
+		for (int index = 0; index < nodeList.getLength(); index++) {
+			Node child = nodeList.item(index);
+			if (child.getNodeType() != Node.ELEMENT_NODE) {
+				removeList.add(child);
+			}
+		}
+		
+		
+		for(Node nodeForRemove: removeList)
+		{
+			parent.removeChild(nodeForRemove);
+		}
+
+		return parent.getChildNodes();
+	}
+
+	/**
 	 * Parses a outline XML node and returns a {@link Outline} object.
-	 * @param outlineNode The outline node from the input XML document.
+	 * 
+	 * @param outlineNode
+	 *            The outline node from the input XML document.
 	 * @return The parsed {@link Outline}
 	 * @throws XMLParseException
 	 */
@@ -102,14 +148,19 @@ public class SimulatedRoomDeserializer {
 		return new Outline(parsePointNodeList(outlineNode));
 	}
 
-	/**Parses a list point XML nodes and returns a list of {@link Point2D} objects.
-	 * @param pointsListNode The XML node that has the point nodes as its children.
+	/**
+	 * Parses a list point XML nodes and returns a list of {@link Point2D}
+	 * objects.
+	 * 
+	 * @param pointsListNode
+	 *            The XML node that has the point nodes as its children.
 	 * @return List of {@link Point2D} objects
-	 * @throws XMLParseException Is throw if invalid data is detected.
+	 * @throws XMLParseException
+	 *             Is throw if invalid data is detected.
 	 */
 	private static ArrayList<Point2D> parsePointNodeList(Node pointsListNode) throws XMLParseException {
 		ArrayList<Point2D> points = new ArrayList<>();
-		NodeList children = pointsListNode.getChildNodes();
+		NodeList children = cleanNodeList(pointsListNode.getChildNodes());
 		for (int index = 0; index < children.getLength(); index++) {
 			Node node = children.item(index);
 			if (node.getNodeName().equals(pointName)) {
@@ -124,15 +175,18 @@ public class SimulatedRoomDeserializer {
 	}
 
 	/**
-	 * Parses a obstacles XML node and returns a List of {@link Obstacle} objects.
-	 * @param obstaclesNode The obstacles node from the input XML document.
+	 * Parses a obstacles XML node and returns a List of {@link Obstacle}
+	 * objects.
+	 * 
+	 * @param obstaclesNode
+	 *            The obstacles node from the input XML document.
 	 * @return List of parsed {@link Obstacle} objects.
 	 * @throws XMLParseException
 	 */
 	private static List<Obstacle> parseObstacles(Node obstaclesNode) throws XMLParseException {
 		List<Obstacle> obstacles = new ArrayList<Obstacle>();
 
-		NodeList children = obstaclesNode.getChildNodes();
+		NodeList children = cleanNodeList(obstaclesNode.getChildNodes());
 		for (int index = 0; index < children.getLength(); index++) {
 			Node node = children.item(index);
 			if (node.getNodeName().equals(obstacleName)) {
@@ -150,10 +204,14 @@ public class SimulatedRoomDeserializer {
 		return obstacles;
 	}
 
-	/**Parses a point XML node and returns a {@link Point2D} object.
-	 * @param pointNode The point node from the input XML document.
+	/**
+	 * Parses a point XML node and returns a {@link Point2D} object.
+	 * 
+	 * @param pointNode
+	 *            The point node from the input XML document.
 	 * @return the parsed {@link Point2D} object.
-	 * @throws XMLParseException Is thrown if the node contains invalid or missing data.
+	 * @throws XMLParseException
+	 *             Is thrown if the node contains invalid or missing data.
 	 */
 	private static Point2D parsePoint(Node pointNode) throws XMLParseException {
 		String xValue = pointNode.getAttributes().getNamedItem(xAttributeName).getNodeValue();
@@ -166,8 +224,8 @@ public class SimulatedRoomDeserializer {
 			throw new XMLParseException("Missing xml node attribute '" + yAttributeName + "'");
 		}
 
-		//Parse the x and y value. 
-		//Maybe add better exception handling here.
+		// Parse the x and y value.
+		// Maybe add better exception handling here.
 		double x = Double.parseDouble(xValue);
 		double y = Double.parseDouble(yValue);
 
