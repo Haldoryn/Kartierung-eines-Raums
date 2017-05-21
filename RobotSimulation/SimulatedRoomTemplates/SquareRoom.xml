@@ -2,17 +2,17 @@
 <simulatedRoom>
     <outline>
         <!-- The wall of the simulated room -->
-        <vertex x="0" y="0" />
-        <vertex x="5000" y="0" />
-        <vertex x="5000" y="5000" />
-        <vertex x="0" y="5000" />
+        <point x="0" y="0" />
+        <point x="5000" y="0" />
+        <point x="5000" y="5000" />
+        <point x="0" y="5000" />
     </outline>
     <obstacles>
         <obstacle name="box">
-            <vertex x="1000" y="1000" />
-            <vertex x="1500" y="1000" />
-            <vertex x="1500" y="1500" />
-            <vertex x="1000" y="1500" />
+            <point x="1000" y="1000" />
+            <point x="1500" y="1000" />
+            <point x="1500" y="1500" />
+            <point x="1000" y="1500" />
         </obstacle>
     </obstacles>
 </simulatedRoom>
