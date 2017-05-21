@@ -17,7 +17,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class SimulatedRoomSerializer {
+/**Class for deserializing simulated room XML documents.
+ * @author Julian Vogel
+ */
+public class SimulatedRoomDeserializer {
 
 	private final static String simulatedRoomNodeName = "simulatedRoom";
 	private final static String outlineName = "outline";
