@@ -15,6 +15,7 @@ public class Main {
 		
 		File input = new File("E:/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
+		Simulation simulation = new Simulation(room);
 		
 		if(args.length >0 )
 		{
@@ -26,6 +27,8 @@ public class Main {
 		else
 		{
 			//Launch in ui mode.
+			SimulationUI window = new SimulationUI();
+		
 		}
 	}
 
