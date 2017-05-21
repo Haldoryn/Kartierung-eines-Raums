@@ -27,7 +27,7 @@ public class Main {
 		else
 		{
 			//Launch in ui mode.
-			SimulationUI window = new SimulationUI();
+			SimulationUI window = new SimulationUI(simulation);
 		
 		}
 	}
