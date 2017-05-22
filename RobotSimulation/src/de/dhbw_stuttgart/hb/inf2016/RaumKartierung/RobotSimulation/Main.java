@@ -1,5 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
 
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Robot;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulatedRoom;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Serialization.SimulatedRoomDeserializer;
@@ -20,7 +22,7 @@ public class Main {
 		
 		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
-		Simulation simulation = new Simulation(room);
+		Simulation simulation = new Simulation(room,new Robot(0, new Point2D.Double(500,500)));
 		
 		if(args.length >0 )
 		{
