@@ -28,6 +28,7 @@ public class SimulationUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("Robot Simulation UI");
 		frame.setBounds(100, 100, 560, 387);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	
 			frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
