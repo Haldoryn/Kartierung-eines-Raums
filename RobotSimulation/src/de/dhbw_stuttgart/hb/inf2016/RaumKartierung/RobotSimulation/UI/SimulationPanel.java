@@ -11,6 +11,8 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -20,6 +22,11 @@ import javax.swing.JPanel;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Main;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Obstacle;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.LineShapeRenderer;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.ObstacleRenderer;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.OutlineRenderer;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.RobotRenderer;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.SimulationRenderer;
 
 /**
  * A extension of {@link JPanel} that renders the simulation.
@@ -31,9 +38,8 @@ public class SimulationPanel extends JPanel {
 
 	private final int imageSize = 1000;
 	private Simulation simulation;
-	private RenderScale scale = new RenderScale(imageSize);
-	private RenderYAxisInverter inverter = new RenderYAxisInverter();
-	private Image robotImage;
+
+	private final ArrayList<SimulationRenderer> renderers = new ArrayList<>();
 
 	// Override the paint method of the JPanel to render the simulation.
 	@Override
@@ -45,66 +51,13 @@ public class SimulationPanel extends JPanel {
 		BufferedImage img = new BufferedImage(imageSize + 1, imageSize + 1, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphic = img.createGraphics();
 		graphic.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		paintOutline(simulation, graphic);
-		paintObstacles(simulation, graphic);
-		paintRobot(simulation, graphic);
 
+		// Invoke the renderers.
+		for (SimulationRenderer renderer : renderers) {
+			renderer.render(simulation, graphic);
+		}
 		// Scale the rendered image to match the size of the Panel.
 		g.drawImage(img.getScaledInstance(getWidth() - 20, getHeight() - 20, Image.SCALE_SMOOTH), 10, 10, null);
-	}
-
-	public void paintRobot(Simulation sim, Graphics2D graphic) {
-		// Draw the lines of the room outline.
-		Point2D position = inverter.invertY(scale.scalePoint(sim.getRobot().getPosition()));
-		
-		BufferedImage buffImage =ImageConverter.toBufferedImage(robotImage);
-		buffImage= ImageRotater.RotateImage(buffImage, sim.getRobot().getRotation());
-		
-		graphic.drawImage(buffImage,(int)(position.getX()+robotImage.getWidth(null)/2d) , (int)(position.getY()+robotImage.getHeight(null)/2d), null);
-	}
-	
-
-
-	public void paintOutline(Simulation sim, Graphics2D graphic) {
-		// Draw the lines of the room outline.
-		graphic.setColor(Color.red);
-		drawLinesBetweenPoints(graphic, sim.getRoom().getOutline().getDefiningPoints());
-	}
-
-	// Draws the obstacles of the simulation
-	public void paintObstacles(Simulation sim, Graphics2D g) {
-
-		for (Obstacle obstacle : sim.getRoom().getObstacles()) {
-
-			List<Point2D> obstaclePoints = obstacle.getDefiningPoints();
-
-			// Draw the lines of the obstacles
-			g.setColor(Color.blue);
-			drawLinesBetweenPoints(g, obstacle.getDefiningPoints());
-
-			// Draw the name text of the obstacle.
-			g.setColor(Color.green);
-			g.setFont(new Font("Arial", Font.PLAIN, 20));
-			Point2D current = inverter.invertY(scale.scalePoint(obstaclePoints.get(0)));
-			g.drawString(obstacle.getName(), (int) current.getX(), (int) current.getY());
-		}
-	}
-
-	// Draws lines between the points in the list.
-	private void drawLinesBetweenPoints(Graphics2D g, List<Point2D> outlinePoints) {
-		Point2D last = null;
-		Point2D current = null;
-
-		for (int i = 1; i < outlinePoints.size(); i++) {
-			last = inverter.invertY(scale.scalePoint(outlinePoints.get(i - 1)));
-			current = inverter.invertY(scale.scalePoint(outlinePoints.get(i)));
-			g.drawLine((int) last.getX(), (int) last.getY(), (int) current.getX(), (int) current.getY());
-		}
-
-		// Draw line between first an last point.
-		last = current;
-		current = inverter.invertY(scale.scalePoint(outlinePoints.get(0)));
-		g.drawLine((int) last.getX(), (int) last.getY(), (int) current.getX(), (int) current.getY());
 	}
 
 	/**
@@ -116,14 +69,23 @@ public class SimulationPanel extends JPanel {
 	 */
 	public SimulationPanel(Simulation simulation) throws IOException {
 		super();
+
+		if (simulation == null) {
+			throw new InvalidParameterException("Parameter 'simulation' must not be null.");
+		}
+
 		this.simulation = simulation;
+
+		// Initialize the calculation classes.
+		RenderScale scale = new RenderScale(imageSize);
+		RenderYAxisInverter inverter = new RenderYAxisInverter();
 		scale.calculateScale(simulation);
 		inverter.calculateYAxis(simulation, scale);
-		
-		int robotSize = scale.scale(simulation.getRobot().getSize());
 
-		// Load robot image.
-		URL resURL = Main.class.getResource("/SimRobot.png");
-		robotImage = ImageIO.read(resURL).getScaledInstance(robotSize,robotSize, Image.SCALE_SMOOTH);
+		// Initialize the renderers
+		LineShapeRenderer lineRenderer = new LineShapeRenderer(inverter, scale);
+		renderers.add(new ObstacleRenderer(inverter, scale, lineRenderer));
+		renderers.add(new RobotRenderer(inverter, scale, simulation));
+		renderers.add(new OutlineRenderer(inverter, scale, lineRenderer));
 	};
 }
