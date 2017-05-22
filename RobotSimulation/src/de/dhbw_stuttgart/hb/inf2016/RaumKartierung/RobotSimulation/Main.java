@@ -9,6 +9,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulatedRoom;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Serialization.SimulatedRoomDeserializer;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.SimulationUI;
+
 public class Main {
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, XMLParseException {

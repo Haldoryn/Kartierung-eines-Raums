@@ -1,10 +1,13 @@
-package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI;
 
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.BorderLayout;
 import javax.swing.JSplitPane;
+
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+
 import javax.swing.JPanel;
 import javax.swing.JList;
 import javax.swing.BoxLayout;

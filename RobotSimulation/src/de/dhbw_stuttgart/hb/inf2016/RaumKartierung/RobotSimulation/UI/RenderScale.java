@@ -1,7 +1,9 @@
-package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI;
 
 import java.awt.geom.Point2D;
 import java.security.InvalidParameterException;
+
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
 
 public class RenderScale {
 	private double currentFactor=1;
@@ -45,8 +47,8 @@ public class RenderScale {
 		}	
 	}
 	
-	public int scale(double value)
+	public Point2D scale(Point2D value)
 	{
-		return (int)Math.round(value*currentFactor);
+		return new Point2D.Double(value.getX()*currentFactor,value.getY()*currentFactor);
 	}
 }

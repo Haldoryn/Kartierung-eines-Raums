@@ -1,4 +1,4 @@
-package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Serialization;
 
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -16,6 +16,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Obstacle;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Outline;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulatedRoom;
 
 /**
  * Class for deserializing simulated room XML documents.

@@ -1,4 +1,4 @@
-package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
