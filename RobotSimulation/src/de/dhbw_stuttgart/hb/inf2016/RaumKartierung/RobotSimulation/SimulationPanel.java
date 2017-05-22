@@ -16,6 +16,7 @@ public class SimulationPanel extends JPanel {
 	private final int imageSize = 1000;
 	private Simulation simulation;
 	private RenderScale scale = new RenderScale(imageSize);
+	private RenderYAxisInverter inverter = new RenderYAxisInverter();
 
 	@Override
 	public void paint(java.awt.Graphics g) {
@@ -41,14 +42,14 @@ public class SimulationPanel extends JPanel {
 			Point2D last = outlinePoints.get(i - 1);
 			Point2D current = outlinePoints.get(i);
 
-			g.drawLine(scale.scale(last.getX()), scale.scale(last.getY()), scale.scale(current.getX()),
-					scale.scale(current.getY()));
+			g.drawLine(scale.scale(last.getX()), inverter.invertY(scale.scale(last.getY())),
+					scale.scale(current.getX()), inverter.invertY(scale.scale(current.getY())));
 		}
 		Point2D last = outlinePoints.get(outlinePoints.size() - 1);
 		Point2D current = outlinePoints.get(0);
 
-		g.drawLine(scale.scale(last.getX()), scale.scale(last.getY()), scale.scale(current.getX()),
-				scale.scale(current.getY()));
+		g.drawLine(scale.scale(last.getX()), inverter.invertY(scale.scale(last.getY())), scale.scale(current.getX()),
+				inverter.invertY(scale.scale(current.getY())));
 
 		return img;
 	}
@@ -62,25 +63,25 @@ public class SimulationPanel extends JPanel {
 
 		for (Obstacle obstacle : sim.getRoom().getObstacles()) {
 			g.setColor(Color.blue);
-			
+
 			List<Point2D> outlinePoints = obstacle.getDefiningPoints();
 
 			for (int i = 1; i < outlinePoints.size(); i++) {
 				Point2D last = outlinePoints.get(i - 1);
 				Point2D current = outlinePoints.get(i);
 
-				g.drawLine(scale.scale(last.getX()), scale.scale(last.getY()), scale.scale(current.getX()),
-						scale.scale(current.getY()));
+				g.drawLine(scale.scale(last.getX()), inverter.invertY(scale.scale(last.getY())), scale.scale(current.getX()),
+						inverter.invertY(scale.scale(current.getY())));
 			}
 			Point2D last = outlinePoints.get(outlinePoints.size() - 1);
 			Point2D current = outlinePoints.get(0);
 
-			g.drawLine(scale.scale(last.getX()), scale.scale(last.getY()), scale.scale(current.getX()),
-					scale.scale(current.getY()));
-			
+			g.drawLine(scale.scale(last.getX()), inverter.invertY(scale.scale(last.getY())), scale.scale(current.getX()),
+					inverter.invertY(scale.scale(current.getY())));
+
 			g.setColor(Color.green);
-			g.setFont(new Font("Arial",Font.PLAIN,20));
-			g.drawString(obstacle.getName(), scale.scale(last.getX()), scale.scale(last.getY()));
+			g.setFont(new Font("Arial", Font.PLAIN, 20));
+			g.drawString(obstacle.getName(), scale.scale(last.getX()), inverter.invertY(scale.scale(last.getY())));
 		}
 
 		return img;
@@ -90,5 +91,6 @@ public class SimulationPanel extends JPanel {
 		super();
 		this.simulation = simulation;
 		scale.calculateScale(simulation);
+		inverter.calculateYAxis(simulation,scale);
 	};
 }
