@@ -25,7 +25,7 @@ public class Main {
 		
 		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
-		Simulation simulation = new Simulation(room,new Robot(0, new Point2D.Double(500,500),100));
+		Simulation simulation = new Simulation(room,new Robot(34, new Point2D.Double(500,500),100));
 		
 		if(args.length >0 )
 		{

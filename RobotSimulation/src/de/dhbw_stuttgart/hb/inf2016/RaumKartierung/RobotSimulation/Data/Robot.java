@@ -3,7 +3,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data;
 import java.awt.geom.Point2D;
 
 public class Robot {
-	private double rotation = 0;
+	private double rotation;
 	private Point2D position;
 	private int size=100;
 
