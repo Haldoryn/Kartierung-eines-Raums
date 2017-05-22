@@ -13,7 +13,7 @@ public class Main {
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, XMLParseException {
 		
-		File input = new File("E:/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
+		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
 		Simulation simulation = new Simulation(room);
 		

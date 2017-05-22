@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 public class SimulationPanel extends JPanel {
 
 	private Simulation simulation;
+	private RenderScale scale = new RenderScale();
 	
 	@Override
 	public void paint(java.awt.Graphics g) {
@@ -20,18 +21,18 @@ public class SimulationPanel extends JPanel {
 			return;
 		
 		
-		g.drawImage(paintOutline(simulation).getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), 10, 10,null);
+		g.drawImage(paintOutline(simulation).getScaledInstance(getWidth()-20, getHeight()-20, Image.SCALE_SMOOTH), 10, 10,null);
 	}
 	
 	
-	public static Image paintOutline(Simulation sim)
+	public Image paintOutline(Simulation sim)
 	{ 
-		BufferedImage img = new BufferedImage(500, 500, 
+		BufferedImage img = new BufferedImage(1001, 1001, 
             BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g = img.createGraphics();
 		g.setBackground(Color.white);
-		g.clearRect(0, 0, 500, 500);
+		g.clearRect(0, 0, 1000, 1000);
 		g.setColor(Color.red);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -42,12 +43,12 @@ public class SimulationPanel extends JPanel {
 			Point2D last = outlinePoints.get(i-1);
 			Point2D current = outlinePoints.get(i);
 			
-			g.drawLine((int)last.getX(), (int)last.getY(),(int)current.getX(), (int)current.getY());
+			g.drawLine(scale.scale(last.getX()), scale.scale(last.getY()),scale.scale(current.getX()), scale.scale(current.getY()));
 		}
 		Point2D last = outlinePoints.get(outlinePoints.size()-1);
 		Point2D current = outlinePoints.get(0);
 		
-		g.drawLine((int)last.getX(), (int)last.getY(),(int)current.getX(), (int)current.getY());
+		g.drawLine(scale.scale(last.getX()), scale.scale(last.getY()),scale.scale(current.getX()), scale.scale(current.getY()));
 		
 		
 		return  img ;
@@ -56,5 +57,6 @@ public class SimulationPanel extends JPanel {
 	public SimulationPanel(Simulation simulation) {
 		super();
 		this.simulation = simulation;
+		scale.calculateScale(simulation);
 	};
 }
