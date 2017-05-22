@@ -1,10 +1,13 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
 
+import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 
+import javax.imageio.ImageIO;
 import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -22,7 +25,7 @@ public class Main {
 		
 		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
-		Simulation simulation = new Simulation(room,new Robot(0, new Point2D.Double(500,500)));
+		Simulation simulation = new Simulation(room,new Robot(0, new Point2D.Double(500,500),100));
 		
 		if(args.length >0 )
 		{
@@ -32,7 +35,7 @@ public class Main {
 			}
 		}
 		else
-		{
+		{		
 			//Launch in ui mode.
 			SimulationUI window = new SimulationUI(simulation);
 		

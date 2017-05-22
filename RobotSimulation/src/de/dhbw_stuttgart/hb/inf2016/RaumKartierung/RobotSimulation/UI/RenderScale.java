@@ -6,11 +6,9 @@ import java.security.InvalidParameterException;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
 
 public class RenderScale {
-	private double currentFactor=1;
+	private double currentFactor = 1;
 	private double maxSize = 1000;
-	
-	
-	
+
 	public RenderScale(double maxSize) {
 		super();
 		this.maxSize = maxSize;
@@ -34,21 +32,21 @@ public class RenderScale {
 				maxY = yRounded;
 			}
 		}
-		double xScale = maxSize/maxX;
-		double yScale = maxSize/maxY;
-		
-		if(xScale < yScale)
-		{
-			currentFactor=xScale;
+		double xScale = maxSize / maxX;
+		double yScale = maxSize / maxY;
+
+		if (xScale < yScale) {
+			currentFactor = xScale;
+		} else {
+			currentFactor = yScale;
 		}
-		else
-		{
-			currentFactor=yScale;
-		}	
 	}
-	
-	public Point2D scale(Point2D value)
-	{
-		return new Point2D.Double(value.getX()*currentFactor,value.getY()*currentFactor);
+
+	public Point2D scalePoint(Point2D value) {
+		return new Point2D.Double(value.getX() * currentFactor, value.getY() * currentFactor);
+	}
+
+	public int scale(double value) {
+		return (int) Math.round(value * currentFactor);
 	}
 }

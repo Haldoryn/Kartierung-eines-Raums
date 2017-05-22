@@ -18,7 +18,7 @@ public class RenderYAxisInverter {
 			}
 		}
 
-		maxPoint = scale.scale(maxPoint);
+		maxPoint = scale.scalePoint(maxPoint);
 	}
 
 	public Point2D invertY(Point2D value) {

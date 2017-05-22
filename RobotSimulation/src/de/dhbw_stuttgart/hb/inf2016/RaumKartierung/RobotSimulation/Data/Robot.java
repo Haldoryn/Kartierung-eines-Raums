@@ -5,11 +5,17 @@ import java.awt.geom.Point2D;
 public class Robot {
 	private double rotation = 0;
 	private Point2D position;
+	private int size=100;
 
-	public Robot(double rotation, Point2D position) {
+	public Robot(double rotation, Point2D position,int size) {
 		super();
 		this.rotation = rotation;
 		this.position = position;
+		this.size=size;
+	}
+
+	public int getSize() {
+		return size;
 	}
 
 	public double getRotation() {

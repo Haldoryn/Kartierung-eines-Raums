@@ -3,6 +3,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Component;
+import java.io.IOException;
 import java.awt.BorderLayout;
 import javax.swing.JSplitPane;
 
@@ -19,8 +20,9 @@ public class SimulationUI {
 	private JFrame frame;
 	/**
 	 * Create the application.
+	 * @throws IOException 
 	 */
-	public SimulationUI(Simulation sim) {
+	public SimulationUI(Simulation sim) throws IOException {
 		this.simulation=sim;
 		initialize();
 		this.frame.setVisible(true);		
@@ -28,8 +30,9 @@ public class SimulationUI {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws IOException 
 	 */
-	private void initialize() {
+	private void initialize() throws IOException {
 		frame = new JFrame();
 		frame.setTitle("Robot Simulation UI");
 		frame.setBounds(100, 100, 560, 387);
