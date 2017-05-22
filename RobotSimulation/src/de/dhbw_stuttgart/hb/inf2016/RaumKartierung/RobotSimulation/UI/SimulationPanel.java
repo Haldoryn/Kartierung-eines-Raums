@@ -57,41 +57,13 @@ public class SimulationPanel extends JPanel {
 		// Draw the lines of the room outline.
 		Point2D position = inverter.invertY(scale.scalePoint(sim.getRobot().getPosition()));
 		
+		BufferedImage buffImage =ImageConverter.toBufferedImage(robotImage);
+		buffImage= ImageRotater.RotateImage(buffImage, sim.getRobot().getRotation());
 		
-		double rot = sim.getRobot().getRotation();
-		double rotationRequired = Math.toRadians (rot);
-		double locationX = robotImage.getWidth(null) / 2;
-		double locationY = robotImage.getHeight(null) / 2;
-		AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
-		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-		
-		graphic.drawImage(op.filter(toBufferedImage(robotImage),null),(int)(position.getX()+robotImage.getWidth(null)/2d) , (int)(position.getY()+robotImage.getHeight(null)/2d), null);
+		graphic.drawImage(buffImage,(int)(position.getX()+robotImage.getWidth(null)/2d) , (int)(position.getY()+robotImage.getHeight(null)/2d), null);
 	}
 	
-	/**
-	 * Converts a given Image into a BufferedImage
-	 *
-	 * @param img The Image to be converted
-	 * @return The converted BufferedImage
-	 */
-	public static BufferedImage toBufferedImage(Image img)
-	{
-	    if (img instanceof BufferedImage)
-	    {
-	        return (BufferedImage) img;
-	    }
 
-	    // Create a buffered image with transparency
-	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-	    // Draw the image on to the buffered image
-	    Graphics2D bGr = bimage.createGraphics();
-	    bGr.drawImage(img, 0, 0, null);
-	    bGr.dispose();
-
-	    // Return the buffered image
-	    return bimage;
-	}
 
 	public void paintOutline(Simulation sim, Graphics2D graphic) {
 		// Draw the lines of the room outline.
