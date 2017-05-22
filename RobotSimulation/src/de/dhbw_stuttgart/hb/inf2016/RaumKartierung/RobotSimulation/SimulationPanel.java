@@ -12,8 +12,9 @@ import javax.swing.JPanel;
 
 public class SimulationPanel extends JPanel {
 
+	private final int imageSize = 1000;
 	private Simulation simulation;
-	private RenderScale scale = new RenderScale();
+	private RenderScale scale = new RenderScale(imageSize);
 	
 	@Override
 	public void paint(java.awt.Graphics g) {
@@ -27,12 +28,12 @@ public class SimulationPanel extends JPanel {
 	
 	public Image paintOutline(Simulation sim)
 	{ 
-		BufferedImage img = new BufferedImage(1001, 1001, 
+		BufferedImage img = new BufferedImage(imageSize+1, imageSize+1, 
             BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g = img.createGraphics();
 		g.setBackground(Color.white);
-		g.clearRect(0, 0, 1000, 1000);
+		g.clearRect(0, 0, imageSize, imageSize);
 		g.setColor(Color.red);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		

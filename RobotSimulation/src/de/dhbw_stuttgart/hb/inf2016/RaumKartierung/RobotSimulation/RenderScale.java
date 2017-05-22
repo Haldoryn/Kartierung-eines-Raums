@@ -5,9 +5,15 @@ import java.security.InvalidParameterException;
 
 public class RenderScale {
 	private double currentFactor=1;
-	private final double maxSize = 1000;
+	private double maxSize = 1000;
 	
 	
+	
+	public RenderScale(double maxSize) {
+		super();
+		this.maxSize = maxSize;
+	}
+
 	void calculateScale(Simulation sim) {
 		if (sim == null) {
 			throw new InvalidParameterException("sim parameter must not be null");
