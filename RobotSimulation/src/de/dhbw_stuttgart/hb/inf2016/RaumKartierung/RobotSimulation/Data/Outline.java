@@ -9,4 +9,9 @@ public class Outline extends UltrasonicDetectable {
 		super(definingPoints);
 	}
 
+	@Override 
+	public Object clone()
+	{
+		return new Outline(definingPoints);
+	}
 }

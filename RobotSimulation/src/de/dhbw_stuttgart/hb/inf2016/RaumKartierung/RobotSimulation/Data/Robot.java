@@ -14,6 +14,9 @@ public class Robot {
 		this.position = position;
 		this.size=size;
 	}
+	
+	//Constructor for cloning.
+	private Robot(){};
 
 	public int getSize() {
 		return size;
@@ -30,5 +33,16 @@ public class Robot {
 	public int getSensorRotation()
 	{
 		return sensorRotation;
+	}
+	
+	@Override 
+	public Object clone()
+	{
+		Robot clone = new Robot();
+		clone.position=(Point2D) this.position.clone();
+		clone.rotation= this.rotation;
+		clone.sensorRotation= this.sensorRotation;
+		clone.size= this.size;
+		return clone;
 	}
 }

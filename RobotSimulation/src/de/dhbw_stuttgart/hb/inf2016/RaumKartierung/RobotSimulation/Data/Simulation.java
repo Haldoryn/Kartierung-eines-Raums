@@ -1,6 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data;
 
-public class Simulation {
+public class Simulation implements Cloneable{
 	private SimulatedRoom room;
 	private Robot robot;
 
@@ -16,5 +16,11 @@ public class Simulation {
 
 	public SimulatedRoom getRoom() {
 		return room;
+	}
+	
+	@Override 
+	public Object clone()
+	{
+		return new Simulation(room,(Robot) robot.clone());
 	}
 }

@@ -21,4 +21,9 @@ public class Obstacle extends UltrasonicDetectable {
 		return name;
 	}
 
+	@Override 
+	public Object clone()
+	{
+		return new Obstacle(definingPoints,name);
+	}
 }

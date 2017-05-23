@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class UltrasonicDetectable {
+public abstract class UltrasonicDetectable implements Cloneable{
 	protected List<Point2D> definingPoints;
 
 	public UltrasonicDetectable(List<Point2D> definingPoints) {
