@@ -45,21 +45,21 @@ public class RobotRenderer implements SimulationRenderer {
 
 	@Override
 	public void render(Simulation sim, Graphics2D graphic) {
-		
+
 		if (sim == null) {
 			throw new InvalidParameterException("Parameter 'sim' must not be null.");
 		}
 		if (graphic == null) {
 			throw new InvalidParameterException("Parameter 'graphic' must not be null.");
 		}
-		
-		Point2D position = inverter.invertY(scale.scalePoint(sim.getRobot().getPosition()));
+
+		Point2D position = inverter.invertYOfPoint(scale.scalePoint(sim.getRobot().getPosition()));
 
 		// Convert to BufferedImage and rotate it to match the robot rotation.
 		BufferedImage buffImage = ImageConverter.toBufferedImage(robotImage);
 		buffImage = ImageRotater.RotateImage(buffImage, sim.getRobot().getRotation());
-		int imagePosCenterX = (int) (position.getX() + robotImage.getWidth(null) / 2d);
-		int imagePosCenterY = (int) (position.getY() + robotImage.getHeight(null) / 2d);
+		int imagePosCenterX = (int) (position.getX() - robotImage.getWidth(null) / 2d);
+		int imagePosCenterY = (int) (position.getY() - robotImage.getHeight(null) / 2d);
 
 		graphic.drawImage(buffImage, imagePosCenterX, imagePosCenterY, null);
 	}

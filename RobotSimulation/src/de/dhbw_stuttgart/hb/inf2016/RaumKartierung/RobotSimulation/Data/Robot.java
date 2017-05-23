@@ -6,6 +6,7 @@ public class Robot {
 	private double rotation;
 	private Point2D position;
 	private int size=100;
+	private int sensorRotation =0;
 
 	public Robot(double rotation, Point2D position,int size) {
 		super();
@@ -26,4 +27,8 @@ public class Robot {
 		return position;
 	}
 
+	public int getSensorRotation()
+	{
+		return sensorRotation;
+	}
 }

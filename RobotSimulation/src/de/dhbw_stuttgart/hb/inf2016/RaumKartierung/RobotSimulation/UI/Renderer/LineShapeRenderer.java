@@ -32,14 +32,14 @@ public class LineShapeRenderer {
 		Point2D current = null;
 
 		for (int i = 1; i < outlinePoints.size(); i++) {
-			last = inverter.invertY(scale.scalePoint(outlinePoints.get(i - 1)));
-			current = inverter.invertY(scale.scalePoint(outlinePoints.get(i)));
+			last = inverter.invertYOfPoint(scale.scalePoint(outlinePoints.get(i - 1)));
+			current = inverter.invertYOfPoint(scale.scalePoint(outlinePoints.get(i)));
 			g.drawLine((int) last.getX(), (int) last.getY(), (int) current.getX(), (int) current.getY());
 		}
 
 		// Draw line between first an last point.
 		last = current;
-		current = inverter.invertY(scale.scalePoint(outlinePoints.get(0)));
+		current = inverter.invertYOfPoint(scale.scalePoint(outlinePoints.get(0)));
 		g.drawLine((int) last.getX(), (int) last.getY(), (int) current.getX(), (int) current.getY());
 	}
 }

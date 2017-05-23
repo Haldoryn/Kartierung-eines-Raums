@@ -56,7 +56,7 @@ public class ObstacleRenderer implements SimulationRenderer {
 			// Draw the name text of the obstacle.
 			graphic.setColor(Color.green);
 			graphic.setFont(new Font("Arial", Font.PLAIN, 20));
-			Point2D current = inverter.invertY(scale.scalePoint(obstaclePoints.get(0)));
+			Point2D current = inverter.invertYOfPoint(scale.scalePoint(obstaclePoints.get(0)));
 			graphic.drawString(obstacle.getName(), (int) current.getX(), (int) current.getY());
 		}
 	}

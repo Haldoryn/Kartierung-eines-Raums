@@ -26,6 +26,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.L
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.ObstacleRenderer;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.OutlineRenderer;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.RobotRenderer;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.SensorRotationRenderer;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.SimulationRenderer;
 
 /**
@@ -85,7 +86,8 @@ public class SimulationPanel extends JPanel {
 		// Initialize the renderers
 		LineShapeRenderer lineRenderer = new LineShapeRenderer(inverter, scale);
 		renderers.add(new ObstacleRenderer(inverter, scale, lineRenderer));
-		renderers.add(new RobotRenderer(inverter, scale, simulation));
 		renderers.add(new OutlineRenderer(inverter, scale, lineRenderer));
+		renderers.add(new SensorRotationRenderer(inverter, scale));
+		renderers.add(new RobotRenderer(inverter, scale, simulation));
 	};
 }
