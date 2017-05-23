@@ -38,15 +38,19 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.S
 public class SimulationPanel extends JPanel {
 
 	private final int imageSize = 1000;
-	private SimulationData simulation;
+	private SimulationData currentData;
+
+	RenderScale scale = new RenderScale(imageSize);
+	RenderYAxisInverter inverter = new RenderYAxisInverter();
 
 	private final ArrayList<SimulationRenderer> renderers = new ArrayList<>();
 
 	// Override the paint method of the JPanel to render the simulation.
 	@Override
 	public void paint(java.awt.Graphics g) {
-		if (simulation == null)
+		if (currentData == null)
 			return;
+		super.paintComponent(g);
 
 		// Render the simulation of an additional image.
 		BufferedImage img = new BufferedImage(imageSize + 1, imageSize + 1, BufferedImage.TYPE_INT_ARGB);
@@ -55,7 +59,7 @@ public class SimulationPanel extends JPanel {
 
 		// Invoke the renderers.
 		for (SimulationRenderer renderer : renderers) {
-			renderer.render(simulation, graphic);
+			renderer.render(currentData, graphic);
 		}
 		// Scale the rendered image to match the size of the Panel.
 		g.drawImage(img.getScaledInstance(getWidth() - 20, getHeight() - 20, Image.SCALE_SMOOTH), 10, 10, null);
@@ -68,26 +72,27 @@ public class SimulationPanel extends JPanel {
 	 *            The {@link SimulationData} that should be displayed.
 	 * @throws IOException
 	 */
-	public SimulationPanel(SimulationData simulation) throws IOException {
+	public SimulationPanel() throws IOException {
 		super();
-
-		if (simulation == null) {
-			throw new InvalidParameterException("Parameter 'simulation' must not be null.");
-		}
-
-		this.simulation = simulation;
-
-		// Initialize the calculation classes.
-		RenderScale scale = new RenderScale(imageSize);
-		RenderYAxisInverter inverter = new RenderYAxisInverter();
-		scale.calculateScale(simulation);
-		inverter.calculateYAxis(simulation, scale);
 
 		// Initialize the renderers
 		LineShapeRenderer lineRenderer = new LineShapeRenderer(inverter, scale);
 		renderers.add(new ObstacleRenderer(inverter, scale, lineRenderer));
 		renderers.add(new OutlineRenderer(inverter, scale, lineRenderer));
 		renderers.add(new SensorRotationRenderer(inverter, scale));
-		renderers.add(new RobotRenderer(inverter, scale, simulation));
+		renderers.add(new RobotRenderer(inverter, scale));
 	};
+
+	public void setSimulationData(SimulationData simData) {
+		if(simData==null)
+		{
+			throw new IllegalArgumentException("Argument 'simData' must not be null.");
+		}		
+		// Initialize the calculation classes.
+		scale.calculateScale(simData);
+		inverter.calculateYAxis(simData, scale);
+
+		currentData = simData;
+		this.repaint();
+	}
 }

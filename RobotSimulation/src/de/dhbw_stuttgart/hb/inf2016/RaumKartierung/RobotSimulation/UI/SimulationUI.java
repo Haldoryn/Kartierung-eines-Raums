@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.StringEventOutputStream;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.StringOutputListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
@@ -15,18 +19,18 @@ import net.miginfocom.swing.MigLayout;
 
 public class SimulationUI {
 
-	private SimulationData simulation;
-
 	private JFrame frame;
 	private TextArea outputList;
+	private SimulationPanel simPanel;
+	private List<String> lineList = new  LinkedList<String> ();
+	private int maxLines = 30;
 
 	/**
 	 * Create the application.
 	 * 
 	 * @throws IOException
 	 */
-	public SimulationUI(SimulationData sim) throws IOException {
-		this.simulation = sim;
+	public SimulationUI( ) throws IOException {
 		initialize();
 		this.frame.setVisible(true);
 
@@ -45,7 +49,7 @@ public class SimulationUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new MigLayout("", "[70%:70%,grow][20%:20%,grow]", "[95%:n,top]"));
 
-		SimulationPanel simPanel = new SimulationPanel(simulation);
+		simPanel = new SimulationPanel();
 		simPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		frame.getContentPane().add(simPanel, "cell 0 0,grow");
 		simPanel.setBackground(Color.WHITE);
@@ -65,11 +69,32 @@ public class SimulationUI {
 		});
 		System.setOut(stream);
 	}
-	
-	private synchronized void updateOuputText(String text)
+
+	private synchronized void updateOuputText(String text) {
+		
+		while(lineList.size() >=maxLines)
+		{
+			lineList.remove(0);
+		}
+		lineList.add(text);
+		StringBuilder sb = new StringBuilder();
+		
+		for(String line: lineList)
+		{
+			sb.append(line);
+		}
+		
+		outputList.setText(sb.toString());
+	}
+
+	public void setSimulationData(SimulationData data)
 	{
-		String data = outputList.getText() ;
-		outputList.setText(data + text);
+		if(data==null)
+		{
+			throw new IllegalArgumentException("Argument 'data' must not be null.");
+		}
+		
+		simPanel.setSimulationData(data);
 	}
 
 }

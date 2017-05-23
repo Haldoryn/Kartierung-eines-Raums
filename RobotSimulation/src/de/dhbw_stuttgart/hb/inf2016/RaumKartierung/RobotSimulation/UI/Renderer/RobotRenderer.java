@@ -23,7 +23,7 @@ public class RobotRenderer implements SimulationRenderer {
 	private RenderYAxisInverter inverter;
 	private RenderScale scale;
 
-	public RobotRenderer(RenderYAxisInverter inverter, RenderScale scale, SimulationData simulation) throws IOException {
+	public RobotRenderer(RenderYAxisInverter inverter, RenderScale scale) throws IOException {
 		super();
 
 		if (inverter == null) {
@@ -36,11 +36,10 @@ public class RobotRenderer implements SimulationRenderer {
 		this.inverter = inverter;
 		this.scale = scale;
 
-		int robotSize = scale.scale(simulation.getRobot().getSize());
 
 		// Load robot image.
 		URL resURL = Main.class.getResource("/SimRobot.png");
-		robotImage = ImageIO.read(resURL).getScaledInstance(robotSize, robotSize, Image.SCALE_SMOOTH);
+		robotImage = ImageIO.read(resURL);
 	}
 
 	@Override
@@ -56,10 +55,11 @@ public class RobotRenderer implements SimulationRenderer {
 		Point2D position = inverter.invertYOfPoint(scale.scalePoint(sim.getRobot().getPosition()));
 
 		// Convert to BufferedImage and rotate it to match the robot rotation.
-		BufferedImage buffImage = ImageConverter.toBufferedImage(robotImage);
+		int robotSize = scale.scale(sim.getRobot().getSize());
+		BufferedImage buffImage = ImageConverter.toBufferedImage(robotImage.getScaledInstance(robotSize, robotSize, Image.SCALE_SMOOTH));
 		buffImage = ImageRotater.RotateImage(buffImage, sim.getRobot().getRotation());
-		int imagePosCenterX = (int) (position.getX() - robotImage.getWidth(null) / 2d);
-		int imagePosCenterY = (int) (position.getY() - robotImage.getHeight(null) / 2d);
+		int imagePosCenterX = (int) (position.getX() - robotSize / 2d);
+		int imagePosCenterY = (int) (position.getY() - robotSize / 2d);
 
 		graphic.drawImage(buffImage, imagePosCenterX, imagePosCenterY, null);
 	}

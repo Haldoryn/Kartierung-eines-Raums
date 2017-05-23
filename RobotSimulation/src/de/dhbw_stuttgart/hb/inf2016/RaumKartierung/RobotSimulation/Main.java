@@ -1,15 +1,19 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.management.modelmbean.XMLParseException;
+import javax.swing.Timer;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -22,28 +26,37 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Simulation
 
 public class Main {
 
-	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, XMLParseException {
+	 static int angle = 0;
 	
-		
-		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
+	public static void main(String[] args)
+			throws SAXException, IOException, ParserConfigurationException, XMLParseException {
+
+		File input = new File(
+				"C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
-		SimulationData simulation = new SimulationData(room,new Robot(45, new Point2D.Double(3000,500),100));
-		
+		SimulationData simulation = new SimulationData(room, new Robot());
 
+		SimulationUI ui = new SimulationUI();
+		simulation.getRobot().setPosition(new Point2D.Double(2500,2500));
+		ui.setSimulationData((SimulationData)simulation.clone());
 		
-
 		
-		if(args.length >0 )
-		{
-			if(Arrays.asList(args).contains("/console"))
-			{
-				//Start in console mode.
+		Random rng = new Random();
+		Timer timer = new Timer(50, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				simulation.getRobot().move(10,10);
+				
+				simulation.getRobot().setRotation(45);
+				simulation.getRobot().setSensorRotation((angle+=45)%360);
+				ui.setSimulationData((SimulationData)simulation.clone());
+				System.out.println("Display updated!");
+		
 			}
-		}
-		else
-		{		
-			new SimulationUI(simulation);
-		}
+		});
+		timer.start();
 	}
 
 }
