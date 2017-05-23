@@ -27,7 +27,7 @@ public class Main {
 			throws SAXException, IOException, ParserConfigurationException, XMLParseException {
 
 		File input = new File(
-				"C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
+				"E:/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
 		SimulationData simulation = new SimulationData(room, new Robot());
 
@@ -47,7 +47,6 @@ public class Main {
 				simulation.getRobot().setRotation(45);
 				simulation.getRobot().setSensorRotation((angle+=45)%360);
 				ui.setSimulationData((SimulationData)simulation.clone());
-				System.out.println("Display updated!");
 		
 			}
 		});

@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.StringEventOutputStream;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.StringOutputListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.IO.StringEventOutputStream;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.IO.StringOutputListener;
 
 import java.awt.TextArea;
 
