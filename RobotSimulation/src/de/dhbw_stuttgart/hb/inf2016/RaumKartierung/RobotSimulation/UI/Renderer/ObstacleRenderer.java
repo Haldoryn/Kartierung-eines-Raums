@@ -8,7 +8,7 @@ import java.security.InvalidParameterException;
 import java.util.List;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Obstacle;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.RenderScale;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.RenderYAxisInverter;
 
@@ -36,7 +36,7 @@ public class ObstacleRenderer implements SimulationRenderer {
 	}
 
 	@Override
-	public void render(Simulation sim, Graphics2D graphic) {
+	public void render(SimulationData sim, Graphics2D graphic) {
 
 		if (sim == null) {
 			throw new InvalidParameterException("Parameter 'sim' must not be null.");

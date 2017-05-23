@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Main;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Obstacle;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.LineShapeRenderer;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.ObstacleRenderer;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.OutlineRenderer;
@@ -38,7 +38,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Renderer.S
 public class SimulationPanel extends JPanel {
 
 	private final int imageSize = 1000;
-	private Simulation simulation;
+	private SimulationData simulation;
 
 	private final ArrayList<SimulationRenderer> renderers = new ArrayList<>();
 
@@ -65,10 +65,10 @@ public class SimulationPanel extends JPanel {
 	 * Initializes a new instance of the {@link SimulationPanel} class.
 	 * 
 	 * @param simulation
-	 *            The {@link Simulation} that should be displayed.
+	 *            The {@link SimulationData} that should be displayed.
 	 * @throws IOException
 	 */
-	public SimulationPanel(Simulation simulation) throws IOException {
+	public SimulationPanel(SimulationData simulation) throws IOException {
 		super();
 
 		if (simulation == null) {

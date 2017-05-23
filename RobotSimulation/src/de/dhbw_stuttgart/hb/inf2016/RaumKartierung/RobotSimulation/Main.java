@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Robot;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulatedRoom;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Serialization.SimulatedRoomDeserializer;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.SimulationUI;
 
@@ -27,7 +27,7 @@ public class Main {
 		
 		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
-		Simulation simulation = new Simulation(room,new Robot(45, new Point2D.Double(3000,500),100));
+		SimulationData simulation = new SimulationData(room,new Robot(45, new Point2D.Double(3000,500),100));
 		
 
 		

@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.RenderScale;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.RenderYAxisInverter;
 
@@ -35,7 +35,7 @@ public class SensorRotationRenderer implements SimulationRenderer {
 	}
 
 	@Override
-	public void render(Simulation sim, Graphics2D graphic) {
+	public void render(SimulationData sim, Graphics2D graphic) {
 		int sensorRotation = 90 - sim.getRobot().getSensorRotation();
 
 		// Calculate the center of the robot

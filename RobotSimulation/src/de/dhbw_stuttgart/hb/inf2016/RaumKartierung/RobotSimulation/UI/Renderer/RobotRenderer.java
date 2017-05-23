@@ -11,7 +11,7 @@ import java.security.InvalidParameterException;
 import javax.imageio.ImageIO;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Main;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.ImageConverter;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.ImageRotater;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.RenderScale;
@@ -23,7 +23,7 @@ public class RobotRenderer implements SimulationRenderer {
 	private RenderYAxisInverter inverter;
 	private RenderScale scale;
 
-	public RobotRenderer(RenderYAxisInverter inverter, RenderScale scale, Simulation simulation) throws IOException {
+	public RobotRenderer(RenderYAxisInverter inverter, RenderScale scale, SimulationData simulation) throws IOException {
 		super();
 
 		if (inverter == null) {
@@ -44,7 +44,7 @@ public class RobotRenderer implements SimulationRenderer {
 	}
 
 	@Override
-	public void render(Simulation sim, Graphics2D graphic) {
+	public void render(SimulationData sim, Graphics2D graphic) {
 
 		if (sim == null) {
 			throw new InvalidParameterException("Parameter 'sim' must not be null.");

@@ -3,7 +3,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI;
 import java.awt.geom.Point2D;
 import java.security.InvalidParameterException;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 
 public class RenderScale {
 	private double currentFactor = 1;
@@ -14,7 +14,7 @@ public class RenderScale {
 		this.maxSize = maxSize;
 	}
 
-	void calculateScale(Simulation sim) {
+	void calculateScale(SimulationData sim) {
 		if (sim == null) {
 			throw new InvalidParameterException("sim parameter must not be null");
 		}

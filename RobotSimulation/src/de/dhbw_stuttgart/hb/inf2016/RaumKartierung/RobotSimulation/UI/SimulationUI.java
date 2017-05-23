@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.StringEventOutputStream;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.StringOutputListener;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.Simulation;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.Data.SimulationData;
 
 import java.awt.TextArea;
 
@@ -15,7 +15,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class SimulationUI {
 
-	private Simulation simulation;
+	private SimulationData simulation;
 
 	private JFrame frame;
 	private TextArea outputList;
@@ -25,7 +25,7 @@ public class SimulationUI {
 	 * 
 	 * @throws IOException
 	 */
-	public SimulationUI(Simulation sim) throws IOException {
+	public SimulationUI(SimulationData sim) throws IOException {
 		this.simulation = sim;
 		initialize();
 		this.frame.setVisible(true);
