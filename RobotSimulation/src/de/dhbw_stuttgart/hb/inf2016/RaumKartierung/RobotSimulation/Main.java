@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -22,10 +23,15 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.RobotSimulation.UI.Simulation
 public class Main {
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, XMLParseException {
+	
 		
 		File input = new File("C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
 		Simulation simulation = new Simulation(room,new Robot(0, new Point2D.Double(500,500),100));
+		
+
+		
+
 		
 		if(args.length >0 )
 		{
