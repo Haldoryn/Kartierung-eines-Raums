@@ -3,6 +3,9 @@
     <outline>
         <!-- The wall of the simulated room -->
         <point x="0" y="0" />
+		<point x="500" y="0" />
+		<point x="500" y="300" />
+		<point x="800" y="300" />
         <point x="5000" y="0" />
         <point x="5000" y="5000" />
         <point x="1500" y="5000" />

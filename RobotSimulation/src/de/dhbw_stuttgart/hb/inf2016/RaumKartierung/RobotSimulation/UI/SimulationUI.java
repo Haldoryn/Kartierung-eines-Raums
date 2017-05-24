@@ -47,7 +47,7 @@ public class SimulationUI {
 		frame.setTitle("Robot Simulation UI");
 		frame.setBounds(100, 100, 800, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new MigLayout("", "[70%:70%,grow][20%:20%,grow]", "[95%:n,top]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[70%:70%,grow][20%:20%,grow]", "[95%:n,grow,top]"));
 
 		simPanel = new SimulationPanel();
 		simPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
