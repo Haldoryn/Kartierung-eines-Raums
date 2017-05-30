@@ -37,7 +37,7 @@ public class Main {
 		
 		
 		Random rng = new Random();
-		Timer timer = new Timer(50, new ActionListener() {
+		Timer timer = new Timer(10, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
