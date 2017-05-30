@@ -5,8 +5,8 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
  */
 public class RobotVector{
 
-    Vector Vector;
-    double Angle;
+    private Vector Vector;
+    private double Angle;
 
     public RobotVector(int x, int y, double Angle) {
         this.Angle = Angle;

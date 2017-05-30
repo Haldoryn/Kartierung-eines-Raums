@@ -4,8 +4,8 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
  * Created by samue on 30.05.2017.
  */
 public class Vector {
-    double x;
-    double y;
+    private double x;
+    private double y;
 
     public Vector(double x,double y){
         this.x = x;
