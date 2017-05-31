@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Parser class for the command of the robot text protocoll.
+ * 
+ * @author Julian Vogel
+ *
+ */
 public class CommandParser {
 	// Stores all supported command classes.
 	private static Class[] commandClasses = { GetGyroscopeCmd.class, GetStatusCmd.class, GetUltrasonicCmd.class,
@@ -36,9 +42,9 @@ public class CommandParser {
 	private static DataType[] GetConstructorParameters(Constructor cons) {
 		ArrayList<DataType> list = new ArrayList<>();
 		for (Class dataType : cons.getParameterTypes()) {
-			if (dataType.equals(Integer.class)|| dataType.equals(int.class)) {
+			if (dataType.equals(Integer.class) || dataType.equals(int.class)) {
 				list.add(DataType.Integer);
-			} else if (dataType.equals(Double.class)|| dataType.equals(double.class)) {
+			} else if (dataType.equals(Double.class) || dataType.equals(double.class)) {
 				list.add(DataType.Double);
 			} else if (dataType.equals(String.class)) {
 				list.add(DataType.String);
@@ -86,15 +92,17 @@ public class CommandParser {
 	// Stores the constructors for instantiating the command classes.
 	private HashMap<String, Constructor> nameConstructorMap = new HashMap<>();
 
-	/** Initializes a new instance of the {@link CommandParser} class. 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException */
+	/**
+	 * Initializes a new instance of the {@link CommandParser} class.
+	 * 
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 */
 	public CommandParser() throws InstantiationException, IllegalAccessException {
 		// Initialize the data that is required to later parse the parameters
 		// and initialize the command classes.
 		for (Class cls : commandClasses) {
-			
-			
+
 			// Find the parameterized constructor or return the default
 			// constructor.
 			Constructor foundConstructor = GetConstructor(cls);

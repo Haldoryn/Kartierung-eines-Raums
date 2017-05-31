@@ -2,9 +2,6 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.*;
 
 public class TestMain {
