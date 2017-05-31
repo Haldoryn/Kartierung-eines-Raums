@@ -2,7 +2,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands;
 
 public class GetStatusCmd extends CommandBase {
 
-	public GetStatusCmd(CommandType type) {
+	public GetStatusCmd() {
 		super(CommandType.getStatus);
 	}
 
