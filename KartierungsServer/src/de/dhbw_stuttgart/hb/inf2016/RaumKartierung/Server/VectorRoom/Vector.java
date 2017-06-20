@@ -33,6 +33,11 @@ public class Vector {
     }
 
     public Vector add(Vector Vec){
-        return new Vector(this.x + Vec.getX(), this.y + Vec.getY());
+        this.x += Vec.getX();
+        this.y += Vec.getY();
+        return this;
+    }
+    public Vector clone(){
+        return new Vector(x,y);
     }
 }

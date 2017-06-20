@@ -3,8 +3,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
 /**
  * Created by samue on 30.05.2017.
  */
-public class SensorVector{
-    private Vector Vector = new Vector();
+public class SensorVector extends Vector{
     private double Spacing;
     private double Angle;
     private RobotVector Robot;
@@ -17,7 +16,8 @@ public class SensorVector{
     public void refresh(){
         double Adjacent = Math.cos(Robot.getAngle()) * Spacing;
         double Opposite = Math.sin(Robot.getAngle()) * Spacing;
-        Vector = Robot.getVector().add(new Vector(Adjacent,Opposite));
+        this.setX(Robot.getX() + Adjacent);
+        this.setY(Robot.getY() + Opposite);
     }
 
     public double getAngle() {
@@ -26,5 +26,10 @@ public class SensorVector{
 
     public void setAngle(double Angle) {
         this.Angle = Angle;
+    }
+
+    @Override
+    public SensorVector clone(){
+        return new SensorVector(Robot);
     }
 }

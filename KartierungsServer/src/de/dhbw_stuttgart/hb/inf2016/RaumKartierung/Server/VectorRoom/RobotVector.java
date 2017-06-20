@@ -3,18 +3,18 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
 /**
  * Created by samue on 30.05.2017.
  */
-public class RobotVector{
+public class RobotVector extends Vector{
 
-    private Vector Vector;
+
     private double Angle;
 
-    public RobotVector(int x, int y, double Angle) {
+    public RobotVector(double x, double y, double Angle) {
         this.Angle = Angle;
-        Vector = new Vector(x,y);
+        this.setX(x);
+        this.setY(y);
     }
-    public RobotVector(Vector Vector, double Angle){
+    public RobotVector(double Angle){
         this.Angle = Angle;
-        this.Vector = Vector;
     }
 
     public double getAngle() {
@@ -24,12 +24,8 @@ public class RobotVector{
     public void setAngle(double angle) {
         this.Angle = angle;
     }
-
-    public Vector getVector() {
-        return Vector;
-    }
-
-    public void setVector(Vector vector) {
-        Vector = vector;
+    @Override
+    public RobotVector clone(){
+        return new RobotVector(getX(),getY(),Angle);
     }
 }
