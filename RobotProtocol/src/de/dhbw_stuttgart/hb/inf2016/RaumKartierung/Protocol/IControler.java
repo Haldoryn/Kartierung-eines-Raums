@@ -7,7 +7,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol;
  * @author Julian Vogel
  *
  */
-public interface IServerEndpoint {
+public interface IControler {
 
 	/**
 	 * Tells the robot to move.

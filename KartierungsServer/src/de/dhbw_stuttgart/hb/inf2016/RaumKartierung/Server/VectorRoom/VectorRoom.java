@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 public class VectorRoom {
     private ArrayList<Vector> Points = new ArrayList<>();
+    private ArrayList<EmptyLine> emptyLines = new ArrayList<>();
     private RobotVector Robot = new RobotVector(0,0,0);
     private SensorVector Sensor = new SensorVector(Robot);
     
     public void movingRobot(double distance){
         double Adjacent = Math.cos(Robot.getAngle()) * distance;
         double Opposite = Math.sin(Robot.getAngle()) * distance;
-        Robot.setVector(Robot.getVector().add(new Vector(Adjacent, Opposite)));
+        RobotVector RoboCloneA = Robot.clone();
+        Robot.add(new Vector(Adjacent, Opposite));
+        emptyLines.add(new EmptyLine( RoboCloneA, Robot.clone()));
         Sensor.refresh();
     }
 
@@ -26,10 +29,15 @@ public class VectorRoom {
     public void setScan(double distance){
         double Adjacent = Math.cos(Sensor.getAngle()) * distance;
         double Opposite = Math.sin(Sensor.getAngle()) * distance;
-        Points.add(new Vector(Adjacent,Opposite));
+        Vector ScanPoint = new Vector(Adjacent,Opposite);
+        Points.add(ScanPoint);
+        emptyLines.add(new EmptyLine(Robot.clone(), ScanPoint));
     }
     public ArrayList<Vector> getPoints() {
         return Points;
+    }
+    public ArrayList<EmptyLine> getEmptyLines(){
+        return emptyLines;
     }
     public ArrayList<Vector> getPointsPositivOnly(){
         double lowestX = 0;
