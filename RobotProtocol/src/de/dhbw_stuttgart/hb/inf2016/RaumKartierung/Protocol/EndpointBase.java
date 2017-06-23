@@ -41,6 +41,8 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 		sock.getOutputStream().flush();
 
 		// Read all commands from the input stream.
+		//Suppress the warning because we don't want to close the socket input stream.
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(sock.getInputStream());
 		sc.useDelimiter(";");
 		while (sc.hasNextLine()) {

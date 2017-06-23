@@ -15,14 +15,14 @@ import java.util.List;
  */
 public class CommandParser {
 	// Stores all supported command classes.
-	private static Class[] commandClasses = { GetGyroscopeCmd.class, GetStatusCmd.class, GetUltrasonicCmd.class,
+	private static Class<?>[] commandClasses = { GetGyroscopeCmd.class, GetStatusCmd.class, GetUltrasonicCmd.class,
 			MoveMotorCmd.class, MoveSensorCmd.class, ResetCmd.class, ReturnGyroscopeCmd.class, ReturnMessageCmd.class,
 			ReturnMotorCmd.class, ReturnResetCmd.class, ReturnSensorCmd.class, ReturnSensorCmd.class,
 			ReturnStatusCmd.class, ReturnUltrasonicCmd.class };
 
 	// Finds a fitting constructor for a command class.
-	private static Constructor GetConstructor(Class cls) {
-		for (Constructor cons : cls.getDeclaredConstructors()) {
+	private static Constructor<?> GetConstructor(Class<?> cls) {
+		for (Constructor<?> cons : cls.getDeclaredConstructors()) {
 			if (cons.getParameterTypes().length > 0 && cons.getModifiers() == Modifier.PUBLIC) {
 				return cons;
 			}
@@ -39,9 +39,9 @@ public class CommandParser {
 	}
 
 	// Reads the data types of the parameters of a constructor.
-	private static DataType[] GetConstructorParameters(Constructor cons) {
+	private static DataType[] GetConstructorParameters(Constructor<?> cons) {
 		ArrayList<DataType> list = new ArrayList<>();
-		for (Class dataType : cons.getParameterTypes()) {
+		for (Class<?> dataType : cons.getParameterTypes()) {
 			if (dataType.equals(Integer.class) || dataType.equals(int.class)) {
 				list.add(DataType.Integer);
 			} else if (dataType.equals(Double.class) || dataType.equals(double.class)) {
@@ -90,7 +90,7 @@ public class CommandParser {
 	private HashMap<String, DataType[]> constructionParameters = new HashMap<>();
 
 	// Stores the constructors for instantiating the command classes.
-	private HashMap<String, Constructor> nameConstructorMap = new HashMap<>();
+	private HashMap<String, Constructor<?>> nameConstructorMap = new HashMap<>();
 
 	/**
 	 * Initializes a new instance of the {@link CommandParser} class.
@@ -101,11 +101,11 @@ public class CommandParser {
 	public CommandParser() throws InstantiationException, IllegalAccessException {
 		// Initialize the data that is required to later parse the parameters
 		// and initialize the command classes.
-		for (Class cls : commandClasses) {
+		for (Class<?> cls : commandClasses) {
 
 			// Find the parameterized constructor or return the default
 			// constructor.
-			Constructor foundConstructor = GetConstructor(cls);
+			Constructor<?> foundConstructor = GetConstructor(cls);
 			String name = ((CommandBase) cls.newInstance()).getType().toString();
 			nameConstructorMap.put(name, foundConstructor);
 			// Store the parameter types as enum values.

@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="src/de/dhbw_stuttgart/hb/inf2016/RaumKartierung/Server/Constants/lib/jdom-2.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="./src/de/dhbw_stuttgart/hb/inf2016/RaumKartierung/Server/Constants/lib/jdom-2.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
