@@ -10,6 +10,17 @@ public class Turn implements Move {
     public Turn(double angle) {
         Angle = angle;
         //Code to Calc Left and Right Motor
+        double n = (50/*Temp Abstant zwischen den reifen*/ * angle)/(2 * 50/* Temp Radius der Reifen*/ * 360);
+        if(angle > 0){
+            LeftMotor = 360 * n;
+            RightMotor = - 360 * n;
+        } else if(angle < 0){
+            RightMotor = 360 * n;
+            LeftMotor = - 360 * n;
+        } else {
+            LeftMotor = 0;
+            RightMotor = 0;
+        }
     }
 
     public double getAngle() {
