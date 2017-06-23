@@ -11,10 +11,9 @@ public abstract class CommandBase {
 	public CommandType getType() {
 		return type;
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return type.toString();
 	}
 }

@@ -2,7 +2,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands;
 
 public class ReturnUltrasonicCmd extends CommandBase {
 
-	private double value=0;
+	private double value = 0;
 
 	public ReturnUltrasonicCmd() {
 		super(CommandType.returnUltrasonic);

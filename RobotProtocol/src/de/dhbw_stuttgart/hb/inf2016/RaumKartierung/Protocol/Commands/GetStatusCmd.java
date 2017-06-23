@@ -6,8 +6,7 @@ public class GetStatusCmd extends CommandBase {
 		super(CommandType.getStatus);
 	}
 
-	public String toString()
-	{
-		return super.toString()+";";
+	public String toString() {
+		return super.toString() + ";";
 	}
 }

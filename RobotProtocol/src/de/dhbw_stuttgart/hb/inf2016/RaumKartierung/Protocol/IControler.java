@@ -9,6 +9,15 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol;
  */
 public interface IControler {
 
+	/** Tells the robot to take a rotation measurement. */
+	void sendGetGyroscope();
+
+	/** Tells the robot to send a status message. */
+	void sendGetStatus();
+
+	/** Tells the robot to take a distance measurement. */
+	void sendGetUltrasonic();
+
 	/**
 	 * Tells the robot to move.
 	 * 
@@ -33,15 +42,6 @@ public interface IControler {
 	 */
 	void sendMoveSensor(int anglePerSecond, int totalAngle);
 
-	/** Tells the robot to take a distance measurement. */
-	void sendGetUltrasonic();
-
-	/** Tells the robot to take a rotation measurement. */
-	void sendGetGyroscope();
-
 	/** Tells the robot to reset. Restart the room mapping. */
 	void sendReset();
-
-	/** Tells the robot to send a status message. */
-	void sendGetStatus();
 }

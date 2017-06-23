@@ -10,14 +10,13 @@ import java.net.SocketAddress;
 public class ControlerEndpoint extends EndpointBase {
 
 	private boolean run;
-	
+
 	protected ControlerEndpoint() throws InstantiationException, IllegalAccessException {
 		super();
 	}
-	
-	public void connect(InetAddress ip,int port)
-	{
-	
+
+	public void connect(InetAddress ip, int port) {
+
 	}
 
 	@Override

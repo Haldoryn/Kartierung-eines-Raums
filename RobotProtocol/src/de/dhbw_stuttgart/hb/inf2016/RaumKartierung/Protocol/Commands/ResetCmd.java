@@ -6,8 +6,7 @@ public class ResetCmd extends CommandBase {
 		super(CommandType.reset);
 	}
 
-	public String toString()
-	{
-		return super.toString()+";";
-	}	
+	public String toString() {
+		return super.toString() + ";";
+	}
 }

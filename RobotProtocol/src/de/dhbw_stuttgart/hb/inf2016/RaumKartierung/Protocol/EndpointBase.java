@@ -16,17 +16,23 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	private List<ICommandReceiver> listeners = new LinkedList<>();
 	private Queue<CommandBase> commandQueue = new ConcurrentLinkedQueue<CommandBase>();
 	private CommandParser parser;
-	private IControler server;
-
-	@Override
-	public void sendCommand(CommandBase cmd) {
-		commandQueue.add(cmd);
-	}
+	private IRobot robotInterface;
+	private IControler controlerInterface;
 
 	protected EndpointBase() throws InstantiationException, IllegalAccessException {
 		super();
 		parser = new CommandParser();
-		server = new Controler(this);
+		this.robotInterface=  new Robot(this);
+		this.controlerInterface= new Controler(this);
+	}
+
+	@Override
+	public void addCommandListener(ICommandReceiver receiver) {
+		if (receiver == null) {
+			throw new IllegalArgumentException("The 'receiver' argument must not be null");
+		}
+
+		listeners.add(receiver);
 	}
 
 	protected void doSendReceive(Socket sock) throws IOException {
@@ -41,7 +47,8 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 		sock.getOutputStream().flush();
 
 		// Read all commands from the input stream.
-		//Suppress the warning because we don't want to close the socket input stream.
+		// Suppress the warning because we don't want to close the socket input
+		// stream.
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(sock.getInputStream());
 		sc.useDelimiter(";");
@@ -54,19 +61,20 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 		}
 	}
 
+	@Override
+	public IControler getControlerInterface() {
+		return controlerInterface;
+	}
+
+	@Override
+	public IRobot getRobotInterface() {
+		return robotInterface;
+	}
+
 	private void invokeHandlers(CommandBase cmd) {
 		for (ICommandReceiver listener : listeners) {
 			listener.commandReceived(cmd);
 		}
-	}
-
-	@Override
-	public void addCommandListener(ICommandReceiver receiver) {
-		if (receiver == null) {
-			throw new IllegalArgumentException("The 'receiver' argument must not be null");
-		}
-
-		listeners.add(receiver);
 	}
 
 	@Override
@@ -78,13 +86,7 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	}
 
 	@Override
-	public IRobot getRobotInterface() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IControler getControlerInterface() {
-		return server;
+	public void sendCommand(CommandBase cmd) {
+		commandQueue.add(cmd);
 	}
 }

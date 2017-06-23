@@ -6,13 +6,14 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.*;
 
 public class TestMain {
 
-	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		CommandParser parser = new CommandParser();
-		String commandString = new MoveMotorCmd(50,50,100,100).toString();
-		
+		String commandString = new MoveMotorCmd(50, 50, 100, 100).toString();
+
 		CommandBase cmd = parser.Parse(commandString);
-		
+
 		System.out.println(cmd);
 	}
 

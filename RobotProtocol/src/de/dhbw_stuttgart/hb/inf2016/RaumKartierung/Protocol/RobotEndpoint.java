@@ -5,13 +5,18 @@ import java.net.ServerSocket;
 
 public class RobotEndpoint extends EndpointBase {
 
+	private ServerSocket socket;
+
+	private boolean run;
+
 	public RobotEndpoint() throws InstantiationException, IllegalAccessException {
 		super();
 	}
 
-	private ServerSocket socket;
-
-	private boolean run;
+	@Override
+	public boolean isConnected() {
+		return !socket.isBound() && !socket.isClosed();
+	}
 
 	public void open(int port) throws IOException {
 		socket = new ServerSocket(port);
@@ -31,10 +36,5 @@ public class RobotEndpoint extends EndpointBase {
 				}
 			}
 		});
-	}
-
-	@Override
-	public boolean isConnected() {
-		return !socket.isBound() && !socket.isClosed();
 	}
 }
