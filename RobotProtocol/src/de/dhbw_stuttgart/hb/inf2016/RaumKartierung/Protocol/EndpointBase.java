@@ -18,12 +18,13 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	private CommandParser parser;
 	private IRobot robotInterface;
 	private IControler controlerInterface;
+	private List<IDisconnectedEventListener> disconnectedListeners = new LinkedList<>();
 
 	protected EndpointBase() throws InstantiationException, IllegalAccessException {
 		super();
 		parser = new CommandParser();
-		this.robotInterface=  new Robot(this);
-		this.controlerInterface= new Controler(this);
+		this.robotInterface = new Robot(this);
+		this.controlerInterface = new Controler(this);
 	}
 
 	@Override
@@ -35,8 +36,10 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 		listeners.add(receiver);
 	}
 
-	protected void doSendReceive(Socket sock) throws IOException {
+	public abstract void close();
 
+	protected void doSendReceive(Socket sock) throws IOException {
+		
 		// Write all enqueued commands to the output stream.
 		while (!commandQueue.isEmpty()) {
 			CommandBase cmd = commandQueue.poll();
@@ -88,5 +91,29 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	@Override
 	public void sendCommand(CommandBase cmd) {
 		commandQueue.add(cmd);
+	}
+	
+	public void addOnDisconnectListener(IDisconnectedEventListener listener)
+	{
+		if (listener == null) {
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		disconnectedListeners.add(listener);
+	}
+	
+	public void removeOnDisconnectListener(IDisconnectedEventListener listener)
+	{
+		if (listener == null) {
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		disconnectedListeners.remove(listener);
+	}
+	
+	protected void callDisconnectEventHandlers()
+	{
+		for(IDisconnectedEventListener handler:disconnectedListeners)
+		{
+			handler.OnDisconnect();
+		}
 	}
 }
