@@ -5,8 +5,15 @@ import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 
+/**
+ * @author Julian Vogel The main class of the robot program.
+ */
 public class Main {
 
+	/**
+	 * The port used by the robot protocol.
+	 * 
+	 */
 	private final static int PORT = 9876;
 
 	public static void main(String[] args) {
@@ -20,11 +27,16 @@ public class Main {
 		Delay.msDelay(1000);
 	}
 
+	
+	/**(Re)initializes the robot protocol and the robot state machine.
+	 * 
+	 */
 	public static void initializes() {
+		RobotEndpoint endpoint=null;
 		try {
 			LCD.clear();
 			LCD.drawString("Starting Program: Kartierung eines Raumes", 1, 1);
-			RobotEndpoint endpoint = new RobotEndpoint();
+			endpoint = new RobotEndpoint();
 			RobotStateMachine stateMachine = new RobotStateMachine(endpoint.getRobotInterface());
 			endpoint.addCommandListener(stateMachine);
 			endpoint.open(PORT);
@@ -37,6 +49,14 @@ public class Main {
 			LCD.drawString("An exception occured" + e, 1, 1);
 			while (!Button.ESCAPE.isDown()) {
 				Delay.msDelay(1);
+			}
+		}
+		finally
+		{	
+			//No matter what happened try to close the robot endpoint, so the port is released and can be reopened.
+			if(endpoint != null)
+			{
+				endpoint.close();
 			}
 		}
 	}
