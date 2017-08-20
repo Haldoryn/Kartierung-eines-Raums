@@ -31,7 +31,7 @@ public class ControlerEndpoint extends EndpointBase {
 	 */
 	Thread thread;
 
-	protected ControlerEndpoint() throws InstantiationException, IllegalAccessException {
+	public ControlerEndpoint() throws InstantiationException, IllegalAccessException {
 		super();
 	}
 
@@ -50,25 +50,30 @@ public class ControlerEndpoint extends EndpointBase {
 	public void connect(InetAddress ip, int port) throws IOException {
 		final Socket sock = new Socket();
 		sock.connect(new InetSocketAddress(ip, port), TIMEOUT);
+		run=true;
 
 		// Connection successful. start the network thread.
 		thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				System.out.println("Controller enpoint thread started");
 				while (run) {
 					try {
 						doSendReceive(sock);
+						Thread.sleep(10);
 
-					} catch (IOException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						System.out.println("An socket error occured.");
-					}
+					}				
 				}
 			}
 		});
 		thread.setDaemon(true);
+		
 		thread.start();
+		System.out.println("SenderReceiver Thread Started");
 	}
 
 	@Override

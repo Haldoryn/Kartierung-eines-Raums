@@ -39,29 +39,28 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	public abstract void close();
 
 	protected void doSendReceive(Socket sock) throws IOException {
-		
 		// Write all enqueued commands to the output stream.
 		while (!commandQueue.isEmpty()) {
 			CommandBase cmd = commandQueue.poll();
 			byte[] data = cmd.toString().getBytes(StandardCharsets.US_ASCII);
 			sock.getOutputStream().write(data);
+			sock.getOutputStream().flush();
 		}
-		// Flush the stream after all data was written.
-		sock.getOutputStream().flush();
-
+		
 		// Read all commands from the input stream.
 		// Suppress the warning because we don't want to close the socket input
 		// stream.
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(sock.getInputStream());
 		sc.useDelimiter(";");
-		while (sc.hasNextLine()) {
+		while (sock.getInputStream().available()>0 &&sc.hasNext()) {
 			try {
-				invokeHandlers(parser.Parse(sc.nextLine()));
+				CommandBase cmd = parser.Parse(sc.next());
+				invokeHandlers(cmd);
 			} catch (Exception e) {
 				System.out.println("Something went wrong while receiving a command");
 			}
-		}
+		}		
 	}
 
 	@Override

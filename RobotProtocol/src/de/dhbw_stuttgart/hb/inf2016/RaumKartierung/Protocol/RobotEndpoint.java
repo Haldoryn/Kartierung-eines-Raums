@@ -77,8 +77,9 @@ public class RobotEndpoint extends EndpointBase {
 							for(IConnectionIncommingEventHandler handler: connectionIncommingHandler){
 								handler.OnNewConnection(connection);
 							}
-						}						
-					} catch (IOException e) {
+						}		
+						Thread.sleep(10);
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						System.out.println("An socket error occured.");
@@ -86,7 +87,7 @@ public class RobotEndpoint extends EndpointBase {
 				}
 			}
 		});
-		thread.setDaemon(true);
+		thread.setDaemon(true);		
 		thread.start();
 	}
 	

@@ -140,8 +140,13 @@ public class CommandParser {
 		cmdParts = cmd.split(",");
 		String identifier = cmdParts[0];
 
-		DataType[] params = constructionParameters.getOrDefault(identifier, null);
-		if (params == null) {
+		DataType[] params=null;
+		if(constructionParameters.containsKey(identifier))
+		{
+			params=constructionParameters.get(identifier);
+		}
+		else
+		{
 			throw new IllegalArgumentException("Invalid command identifier in 'command' parameter.");
 		}
 

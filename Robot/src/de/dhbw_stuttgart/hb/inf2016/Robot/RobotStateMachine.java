@@ -1,5 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.Robot;
 
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.EndpointBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ICommandReceiver;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IRobot;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
@@ -35,6 +36,9 @@ public class RobotStateMachine implements ICommandReceiver {
 
 	// Interface to the robot protocol
 	private IRobot responseSender;
+
+	private EndpointBase endpoint;
+
 	// The current state
 	private State currentState = State.Init;
 	// The command that should be executed.
@@ -47,20 +51,23 @@ public class RobotStateMachine implements ICommandReceiver {
 	private RegulatedMotor rightMotor;
 	private EV3GyroSensor gyro;
 
-	public RobotStateMachine(IRobot robotCommands) {
-		responseSender = robotCommands;
+	private long lastIdleMessage = System.currentTimeMillis();
+
+	public RobotStateMachine(EndpointBase endpoint) {
+		responseSender = endpoint.getRobotInterface();
+		this.endpoint = endpoint;
 
 		sonar = new RangeFinderAdapter(new EV3UltrasonicSensor(SensorPort.S1));
 		DisplayConsole.writeString("Ultrasonic OK");
-		
+
 		sensorMotor = new EV3MediumRegulatedMotor(MotorPort.A);
 		DisplayConsole.writeString("Sensor Motor Ok");
 		leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
 		DisplayConsole.writeString("Left Motor OK");
-		
+
 		rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
 		DisplayConsole.writeString("Right Motor Ok");
-		
+
 		gyro = new EV3GyroSensor(SensorPort.S2);
 		DisplayConsole.writeString("Gyro Sensor Ok");
 
@@ -81,8 +88,10 @@ public class RobotStateMachine implements ICommandReceiver {
 	public void commandReceived(CommandBase cmd) {
 		if (currentCommand != null) {
 			responseSender.sendReturnMessage("Robot is busy with " + currentCommand.getType().toString());
+			DisplayConsole.writeString("Allready has cmd");
 		}
 
+		DisplayConsole.writeString("Received new command: " + cmd.toString());
 		currentCommand = cmd;
 	}
 
@@ -108,8 +117,9 @@ public class RobotStateMachine implements ICommandReceiver {
 				break;
 			case Init:
 				responseSender.sendReturnMessage("Initializing robot state machine");
+				DisplayConsole.writeString("Initializing robot state machine");
 				sensorMotor.rotateTo(0);
-				currentState = State.AwaitingCommand;
+				returnToMainState();
 				break;
 			case Moving:
 				DoMoveMotor();
@@ -125,11 +135,11 @@ public class RobotStateMachine implements ICommandReceiver {
 				break;
 			case ScanUltrasonic:
 				responseSender.sendReturnUltrasonic(sonar.getRange());
-				currentState = State.AwaitingCommand;
+				returnToMainState();
 				break;
 			case Status:
 				responseSender.sendReturnStatus(Battery.getVoltageMilliVolt());
-				currentState = State.AwaitingCommand;
+				returnToMainState();
 				break;
 			default:
 				throw new Exception("Unknown state");
@@ -169,6 +179,10 @@ public class RobotStateMachine implements ICommandReceiver {
 				break;
 			}
 			return;
+		} else if (System.currentTimeMillis() - lastIdleMessage > 5000 && endpoint.isConnected()) {
+			responseSender.sendReturnMessage("I am stil here");
+			lastIdleMessage = System.currentTimeMillis();
+			DisplayConsole.writeString("idle send");
 		}
 		Delay.msDelay(1);
 	}
@@ -189,9 +203,17 @@ public class RobotStateMachine implements ICommandReceiver {
 		sensorMotor.rotate(cmd.getTotalAngle());
 
 		// Set state and send answer
+		responseSender.sendReturnSensor();
+		returnToMainState();
+	}
+
+	/**
+	 * Return to the main state of the state machine(AwaitingCommand)
+	 * 
+	 */
+	private void returnToMainState() {
 		currentCommand = null;
 		currentState = State.AwaitingCommand;
-		responseSender.sendReturnSensor();
 	}
 
 	/**
@@ -222,9 +244,8 @@ public class RobotStateMachine implements ICommandReceiver {
 		}
 
 		// Set state and send answer
-		currentCommand = null;
-		currentState = State.AwaitingCommand;
 		responseSender.sendReturnMotor(cmd.getDistanceAngleLeft(), cmd.getDistanceAngleRight());
+		returnToMainState();
 	}
 
 	/**
@@ -237,8 +258,7 @@ public class RobotStateMachine implements ICommandReceiver {
 		angleProvider.fetchSample(sample, 0);
 
 		// Set state and send answer
-		currentCommand = null;
-		currentState = State.AwaitingCommand;
 		responseSender.sendReturnGyroscope(sample[0]);
+		returnToMainState();
 	}
 }
