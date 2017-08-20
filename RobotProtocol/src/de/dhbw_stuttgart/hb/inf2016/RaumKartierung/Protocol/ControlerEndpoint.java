@@ -48,7 +48,7 @@ public class ControlerEndpoint extends EndpointBase {
 	}
 
 	public void connect(InetAddress ip, int port) throws IOException {
-		Socket sock = new Socket();
+		final Socket sock = new Socket();
 		sock.connect(new InetSocketAddress(ip, port), TIMEOUT);
 
 		// Connection successful. start the network thread.

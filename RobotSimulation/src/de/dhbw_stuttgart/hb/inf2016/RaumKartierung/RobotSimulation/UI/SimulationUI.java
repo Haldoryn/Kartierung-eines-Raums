@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

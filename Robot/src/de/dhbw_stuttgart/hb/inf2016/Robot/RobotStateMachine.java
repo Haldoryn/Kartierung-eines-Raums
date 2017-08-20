@@ -41,17 +41,33 @@ public class RobotStateMachine implements ICommandReceiver {
 	private CommandBase currentCommand;
 
 	// The objects that are used to access the robot hardware.
-	private RangeFinder sonar = new RangeFinderAdapter(new EV3UltrasonicSensor(SensorPort.S1));
-	private RegulatedMotor sensorMotor = new EV3MediumRegulatedMotor(MotorPort.A);
-	private RegulatedMotor leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
-	private RegulatedMotor rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
-	private EV3GyroSensor gyro = new EV3GyroSensor(SensorPort.S2);
+	private RangeFinder sonar;
+	private RegulatedMotor sensorMotor;
+	private RegulatedMotor leftMotor;
+	private RegulatedMotor rightMotor;
+	private EV3GyroSensor gyro;
 
 	public RobotStateMachine(IRobot robotCommands) {
 		responseSender = robotCommands;
+
+		sonar = new RangeFinderAdapter(new EV3UltrasonicSensor(SensorPort.S1));
+		DisplayConsole.writeString("Ultrasonic OK");
+		
+		sensorMotor = new EV3MediumRegulatedMotor(MotorPort.A);
+		DisplayConsole.writeString("Sensor Motor Ok");
+		leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);
+		DisplayConsole.writeString("Left Motor OK");
+		
+		rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);
+		DisplayConsole.writeString("Right Motor Ok");
+		
+		gyro = new EV3GyroSensor(SensorPort.S2);
+		DisplayConsole.writeString("Gyro Sensor Ok");
+
 		// Hardware calibration of the Gyro sensor and reset off accumulated angle to
 		// zero. From no on the angle is tracked
 		gyro.reset();
+		DisplayConsole.writeString("Gyro Reset Ok");
 	}
 
 	/*
