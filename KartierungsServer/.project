@@ -3,6 +3,7 @@
 	<name>KartierungsServer</name>
 	<comment></comment>
 	<projects>
+		<project>RobotProtocol</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

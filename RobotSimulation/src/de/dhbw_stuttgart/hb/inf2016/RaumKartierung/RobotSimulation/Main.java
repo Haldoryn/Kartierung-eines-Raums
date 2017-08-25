@@ -27,7 +27,7 @@ public class Main {
 			throws SAXException, IOException, ParserConfigurationException, XMLParseException {
 
 		File input = new File(
-				"C:/Users/Julian Vogel/Desktop/Kartierung/Kartierung-eines-Raums/RobotSimulation/SimulatedRoomTemplates/SquareRoom.xml");
+				"C:/Users/Jan Wäckers/Desktop/SquareRoom.xml");
 		SimulatedRoom room = SimulatedRoomDeserializer.deserialize(input);
 		SimulationData simulation = new SimulationData(room, new Robot());
 
