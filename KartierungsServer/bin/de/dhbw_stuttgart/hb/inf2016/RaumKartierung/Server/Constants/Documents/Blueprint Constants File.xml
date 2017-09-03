@@ -1,0 +1,8 @@
+<!---Hinweis:Beim Attribut type den Typ immer mit Großbuchstaben beginnen  --->
+<?xml version="1.0" encoding="UTF-8"?>
+<constants>
+<constant name = "erster" type ="String">ich komme als erstes</constant>
+<constant name = "zweiter" type ="String">ich komme als zweites </constant>
+<constant name = "meinInt" type ="Integer">64</constant>
+<constant name = "meinDouble" type ="Double">232.45</constant>
+</constants>
