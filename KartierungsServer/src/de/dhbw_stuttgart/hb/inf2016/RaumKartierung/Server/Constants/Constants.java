@@ -24,7 +24,7 @@ public class Constants
 		
 		// try catch um das Abbilden der XML Datei auf ein Document Objekt
 		try{
-			File pfad =new File(path);
+			File pfad = new File(path);
 			doc = new SAXBuilder().build(pfad);	 
 		} 
 		catch(JDOMException e){
@@ -76,9 +76,9 @@ public class Constants
 	{
 	
 		if( myConstants.get(name)  != null)
-		return myConstants.get(name);
+			return myConstants.get(name);
 		else
-		return "No such Element";
+			return "No such Element";
 		
 	}
 }

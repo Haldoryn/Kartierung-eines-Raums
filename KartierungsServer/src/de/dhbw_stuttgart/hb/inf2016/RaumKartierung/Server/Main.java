@@ -1,16 +1,21 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Line;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorOperations;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.old.Line;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.old.Vector;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.old.VectorOperations;
 
 public class Main {
 
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		VectorOperations VO = new VectorOperations();
-		Line line = new Line (new Vector(1,1), new Vector(3,3));
-		System.out.println(line.getVectorAtY(2).getX());
-	}
 
+		//Start GUI
+		Controller controller = new Controller();
+		controller.doMove();
+	}
 }
