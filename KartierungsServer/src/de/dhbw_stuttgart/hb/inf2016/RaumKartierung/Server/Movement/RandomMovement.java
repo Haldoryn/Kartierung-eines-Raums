@@ -1,8 +1,7 @@
-package Movement;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Movement;
 
 import java.net.InetAddress;
 import java.util.Random;
-import java.util.Scanner;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ControlerEndpoint;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ICommandReceiver;
