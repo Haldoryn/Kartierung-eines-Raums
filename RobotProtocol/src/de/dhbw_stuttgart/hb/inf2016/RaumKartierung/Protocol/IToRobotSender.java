@@ -9,7 +9,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.*;
  * @author Julian Vogel
  *
  */
-public interface IControler {
+public interface IToRobotSender {
 
 	/** Tells the robot to take a rotation measurement. */
 	void sendGetGyroscope();
@@ -52,7 +52,7 @@ public interface IControler {
 	 * @param timeoutMs
 	 *            Time in that in ms till the a timeout should be detected(throws exception).
 	*/
-	ReturnGyroscopeCmd sendGetGyroscopeAndWait(int timeoutMs)  throws InterruptedException;
+	ReturnGyroscopeCmd  sendGetGyroscopeAndWait(int timeoutMs)  throws InterruptedException;
 
 	/** Tells the robot to send a status message. 
 	 * @param timeoutMs

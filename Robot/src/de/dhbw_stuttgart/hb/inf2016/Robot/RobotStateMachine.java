@@ -2,7 +2,7 @@ package de.dhbw_stuttgart.hb.inf2016.Robot;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.EndpointBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ICommandReceiver;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IRobot;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IFromRobotSender;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.MoveMotorCmd;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.MoveSensorCmd;
@@ -35,7 +35,7 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 public class RobotStateMachine implements ICommandReceiver {
 
 	// Interface to the robot protocol
-	private IRobot responseSender;
+	private IFromRobotSender responseSender;
 
 	private EndpointBase endpoint;
 
@@ -54,7 +54,7 @@ public class RobotStateMachine implements ICommandReceiver {
 	private long lastIdleMessage = System.currentTimeMillis();
 
 	public RobotStateMachine(EndpointBase endpoint) {
-		responseSender = endpoint.getRobotInterface();
+		responseSender = endpoint.getFromRobotSender();
 		this.endpoint = endpoint;
 
 		sonar = new RangeFinderAdapter(new EV3UltrasonicSensor(SensorPort.S1));

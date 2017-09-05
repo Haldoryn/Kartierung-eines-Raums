@@ -5,7 +5,7 @@ import java.util.Random;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ControlerEndpoint;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ICommandReceiver;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IControler;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType;
 
@@ -63,7 +63,7 @@ public class RandomMovement {
 			} catch (Exception e) {
 				System.err.println("Could not connect to to robot: " + e);
 			}
-			IControler controler = endpoint.getControlerInterface();
+			IToRobotSender controler = endpoint.getToRobotSender();
 			
 			/* moving algorithm old version 
 			while(rand !=0){

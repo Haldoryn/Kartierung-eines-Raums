@@ -1,6 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol;
 
-public interface IRobot {
+public interface IFromRobotSender {
 
 	/**
 	 * Sends a message to controller which contains the detected gyroscope
