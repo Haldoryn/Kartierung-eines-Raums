@@ -7,15 +7,19 @@ import java.util.Random;
 
 public class Controlling {
     Move NextMove;
+    // int scanresult
 
     public Move next() {
         if(NextMove == null || NextMove instanceof Turn){
-            NextMove = new Forward(500 /*TEMP*/);
+        	
+        	// if ultrasonicScan < distance + securityDistance
+            NextMove = new Forward(500 /*TEMP*/); // how to set the distance? 
             return NextMove;
         }
         else if(NextMove instanceof Forward){
             Random random = new Random();
             NextMove = new Turn(random.nextInt(360 * 2) - 360);
+            // return gyro Value
             return NextMove;
         }
         else{

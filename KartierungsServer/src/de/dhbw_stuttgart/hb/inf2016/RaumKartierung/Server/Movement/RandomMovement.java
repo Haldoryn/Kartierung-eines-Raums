@@ -12,7 +12,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType
 /**
  * @author Jan Wäckers
  *  First Implementation of the movement algorithm
- * What it should do: Let the robo move until there is an obstacle (less than distance of 25). Then the robo  rotates and mesure again. 
+ * What it should do: Let the robo move until there is an obstacle (less than distance of 25). Then the robo  rotates and measure again. 
  * If no obstacle is recognized, it moves again.
  */
 public class RandomMovement {
@@ -22,13 +22,14 @@ public class RandomMovement {
 		private int frontMeasuring;
 		private int rand;
 		private Random gen =new Random();
+		/* old:
 		private boolean newUltrasonicValue = false;
 		private boolean movefinished = true;
-		
+		*/
 		
 		
 
-		public  void move() throws InstantiationException, IllegalAccessException {
+		public  void move() throws InstantiationException, IllegalAccessException, InterruptedException{
 			System.out.println("Starting ProtocolConsole...");
 
 			 //Scanner in = new Scanner(System.in);
@@ -45,11 +46,12 @@ public class RandomMovement {
 					switch( type){
 					case returnUltrasonic :
 						frontMeasuring = Integer.parseInt(cmd.toString());
-						newUltrasonicValue = true; 
+						// old:  newUltrasonicValue = true; 
 						break;
-					case returnMotor:
+				/* old:	case returnMotor:
 						movefinished = true;
 						break;
+						*/
 					}
 				
 				}
@@ -63,15 +65,16 @@ public class RandomMovement {
 			}
 			IControler controler = endpoint.getControlerInterface();
 			
-			// moving algorithm
-			while(true){
+			/* moving algorithm old version 
+			while(rand !=0){
 				
 				
 				
 				if(movefinished == true){ // check if robo is moving
 				newUltrasonicValue = false;  // signal: waiting for Value
 				controler.sendGetUltrasonic();
-
+			
+				System.out.println("Waiting Sucessfull");
 				while(newUltrasonicValue == false){ // waiting for value
 					//wait
 				}
@@ -93,6 +96,29 @@ public class RandomMovement {
 					else System.out.println("Ultrasonic Value is not suitable and gets ignored");
 				
 			  }
+			} //end while
+			 */
+			
+			// new Moving algorithm
+			while(true){
+				
+				controler.sendGetUltrasonicAndWait(2000);
+				if(frontMeasuring > 5 && frontMeasuring < 80 ){ // checks if value is usable
+					if(frontMeasuring > 25){ // checks if distance is enough
+						 
+						controler.sendMoveMotorAndWait(180, 180, 360, 360, 5000);
+						// Move Forward
+					} 
+					else { // rotate randomly
+						
+						rand = gen.nextInt(360);
+						//TURN
+						controler.sendMoveMotorAndWait(180, 0, rand*8, 0, 5000);
+					// rotate random degrees. I figured out that with one wheel moved: 
+				   // gewünschter winkel *8 = Gesamtwinkel für Motorbewegung	
+					}
+				}
+				else System.out.println("Ultrasonic Value is not suitable and gets ignored");
 			} // end while
 
 		}
