@@ -5,9 +5,9 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase
 public interface IProtocolEndpoint {
 	public void addCommandListener(ICommandReceiver receiver);
 
-	public IControler getControlerInterface();
+	public IToRobotSender getToRobotSender();
 
-	public IRobot getRobotInterface();
+	public IFromRobotSender getFromRobotSender();
 
 	public boolean isConnected();
 

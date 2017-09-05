@@ -37,12 +37,12 @@ public class TestMain {
 		});
 		
 	
-		IRobot robot = controlerEnd.getRobotInterface();
+		IFromRobotSender robot = controlerEnd.getFromRobotSender();
 		
 		//Tell the controler thatthe reset was completed.
 		robot.sendReturnReset();
 		
-		IControler controler = controlerEnd.getControlerInterface();
+		IToRobotSender controler = controlerEnd.getToRobotSender();
 		
 		//Reset the robot
 		controler.sendReset();

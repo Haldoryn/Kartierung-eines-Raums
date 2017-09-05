@@ -2,11 +2,11 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.*;
 
-class Robot implements IRobot {
+class FromRobotSender implements IFromRobotSender {
 
 	private IProtocolEndpoint protocolEndpoint;
 
-	protected Robot(IProtocolEndpoint protocolEndpoint) {
+	protected FromRobotSender(IProtocolEndpoint protocolEndpoint) {
 		super();
 		if (protocolEndpoint == null) {
 			throw new IllegalArgumentException("The 'protocolEndpoint' argument must not be null");

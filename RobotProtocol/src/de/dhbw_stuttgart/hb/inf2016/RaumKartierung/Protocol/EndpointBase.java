@@ -16,15 +16,15 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	private List<ICommandReceiver> listeners = new LinkedList<>();
 	private Queue<CommandBase> commandQueue = new ConcurrentLinkedQueue<CommandBase>();
 	private CommandParser parser;
-	private IRobot robotInterface;
-	private IControler controlerInterface;
+	private IFromRobotSender robotInterface;
+	private IToRobotSender controlerInterface;
 	private List<IDisconnectedEventListener> disconnectedListeners = new LinkedList<>();
 
 	protected EndpointBase() throws InstantiationException, IllegalAccessException {
 		super();
 		parser = new CommandParser();
-		this.robotInterface = new Robot(this);
-		this.controlerInterface = new Controler(this);
+		this.robotInterface = new FromRobotSender(this);
+		this.controlerInterface = new ToRobotSender(this);
 	}
 
 	@Override
@@ -64,12 +64,12 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	}
 
 	@Override
-	public IControler getControlerInterface() {
+	public IToRobotSender getToRobotSender() {
 		return controlerInterface;
 	}
 
 	@Override
-	public IRobot getRobotInterface() {
+	public IFromRobotSender getFromRobotSender() {
 		return robotInterface;
 	}
 

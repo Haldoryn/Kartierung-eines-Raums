@@ -52,7 +52,7 @@ public class Main {
 				@Override
 				public void OnNewConnection(Socket sock) {
 					DisplayConsole.writeString("Incomming connection from:" + sock.getInetAddress().toString());		
-					endpoint.getRobotInterface().sendReturnMessage("Connection detected");
+					endpoint.getFromRobotSender().sendReturnMessage("Connection detected");
 					DisplayConsole.writeString("Test return message send");
 				}
 			});
@@ -78,7 +78,7 @@ public class Main {
 			// No matter what happened try to close the robot endpoint, so the port is
 			// released and can be reopened.
 			if (endpoint != null) {
-				endpoint.getRobotInterface().sendReturnMessage("Closing endpoint");
+				endpoint.getFromRobotSender().sendReturnMessage("Closing endpoint");
 				endpoint.close();
 			}
 		}

@@ -4,13 +4,13 @@ import java.util.Hashtable;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.*;
 
-class Controler implements IControler {
+class ToRobotSender implements IToRobotSender {
 
 	private Hashtable<CommandType, PaketNotifier> notifiers = new Hashtable<>();
 
 	private IProtocolEndpoint protocolEndpoint;
 
-	protected Controler(IProtocolEndpoint protocolEndpoint) {
+	protected ToRobotSender(IProtocolEndpoint protocolEndpoint) {
 		super();
 		if (protocolEndpoint == null) {
 			throw new IllegalArgumentException("The 'protocolEndpoint' argument must not be null");
@@ -75,7 +75,7 @@ class Controler implements IControler {
 	}
 
 	@Override
-	public ReturnGyroscopeCmd sendGetGyroscopeAndWait(int timeoutMs) throws InterruptedException {
+	public synchronized ReturnGyroscopeCmd sendGetGyroscopeAndWait(int timeoutMs) throws InterruptedException {
 		sendGetGyroscope();
 		PaketNotifier notifier = notifiers.get(CommandType.getGyroscope);
 		notifier.wait(timeoutMs);
@@ -83,7 +83,7 @@ class Controler implements IControler {
 	}
 
 	@Override
-	public ReturnStatusCmd sendGetStatusAndWait(int timeoutMs) throws InterruptedException {
+	public synchronized ReturnStatusCmd sendGetStatusAndWait(int timeoutMs) throws InterruptedException {
 		sendGetStatus();
 		PaketNotifier notifier = notifiers.get(CommandType.getStatus);
 		notifier.wait(timeoutMs);
@@ -91,7 +91,7 @@ class Controler implements IControler {
 	}
 
 	@Override
-	public ReturnUltrasonicCmd sendGetUltrasonicAndWait(int timeoutMs) throws InterruptedException {
+	public synchronized ReturnUltrasonicCmd sendGetUltrasonicAndWait(int timeoutMs) throws InterruptedException {
 		sendGetUltrasonic();
 		PaketNotifier notifier = notifiers.get(CommandType.getUltrasonic);
 		notifier.wait(timeoutMs);
@@ -99,7 +99,7 @@ class Controler implements IControler {
 	}
 
 	@Override
-	public ReturnMotorCmd sendMoveMotorAndWait(int anglePerSecondLeft, int anglePerSecondRight, int distanceAngleLeft,
+	public synchronized ReturnMotorCmd sendMoveMotorAndWait(int anglePerSecondLeft, int anglePerSecondRight, int distanceAngleLeft,
 			int distanceAngleRight, int timeoutMs) throws InterruptedException {
 		sendMoveMotor(anglePerSecondLeft, anglePerSecondRight, distanceAngleLeft, distanceAngleRight);
 		PaketNotifier notifier = notifiers.get(CommandType.moveMotor);
@@ -108,7 +108,7 @@ class Controler implements IControler {
 	}
 
 	@Override
-	public ReturnSensorCmd sendMoveSensorAndWait(int anglePerSecond, int totalAngle, int timeoutMs) throws InterruptedException {
+	public synchronized ReturnSensorCmd sendMoveSensorAndWait(int anglePerSecond, int totalAngle, int timeoutMs) throws InterruptedException {
 		sendMoveSensor(anglePerSecond,totalAngle);
 		PaketNotifier notifier = notifiers.get(CommandType.moveSensor);
 		notifier.wait(timeoutMs);
@@ -116,7 +116,7 @@ class Controler implements IControler {
 	}
 
 	@Override
-	public ReturnResetCmd sendResetAndWait(int timeoutMs) throws InterruptedException {
+	public synchronized ReturnResetCmd sendResetAndWait(int timeoutMs) throws InterruptedException {
 		sendReset();
 		PaketNotifier notifier = notifiers.get(CommandType.reset);
 		notifier.wait(timeoutMs);
