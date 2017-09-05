@@ -1,4 +1,4 @@
-package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.old;
 
 /**
  * Created by samue on 30.05.2017.
