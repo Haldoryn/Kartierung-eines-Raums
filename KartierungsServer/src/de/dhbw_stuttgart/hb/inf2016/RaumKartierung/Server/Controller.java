@@ -13,11 +13,14 @@ public class Controller {
     private Controlling controlling = new Controlling();
     private int timesScaned;
 
+    
+    // here all stuff with moving and sends commands to robo
     public void doMove(){
         //return if GUI switch is off
         nextMove = controlling.next(); //getting next move
         //Send nextMove.leftMotor and nextMove.rightMotor to Robot.
     }
+    // decides what will be done after a move
     public void moveDone(){ //if robot finished moving this method gets called
         vectorRoom.movingRobot(nextMove); //saving move in vectorRoom
         if(nextMove instanceof Forward){
@@ -28,6 +31,9 @@ public class Controller {
             doMove();
         }
     }
+    // method doMeasureing(return ultrasonic value + gyro value
+    
+    // gets called after each scan. Evaluates the Scan result
     public void scanDone(double distance){ // starts with finished scan
         vectorRoom.setScan(distance);
 
