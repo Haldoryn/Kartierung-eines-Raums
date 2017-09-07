@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="jdom-2.0.6.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/src/de/dhbw_stuttgart/hb/inf2016/RaumKartierung/Server/Constants/lib/jdom-2.0.6.jar!/"/>
+	</lib>
+</component>

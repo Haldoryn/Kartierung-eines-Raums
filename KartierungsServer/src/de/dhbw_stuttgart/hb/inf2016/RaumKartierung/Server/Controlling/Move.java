@@ -7,4 +7,5 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 public interface Move {
     public double getLeftMotor();
     public double getRightMotor();
+    public void setMotor(double leftMotor, double rightMotor);
 }
