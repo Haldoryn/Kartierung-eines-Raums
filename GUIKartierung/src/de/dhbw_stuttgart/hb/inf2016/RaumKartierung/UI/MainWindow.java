@@ -1,47 +1,34 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.UI;
 
-import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
+
 import javax.swing.ImageIcon;
-import javax.swing.SpringLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JTextPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
 
 
-public class GUI {
+public class MainWindow {
 
 	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {	
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI window = new GUI();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public GUI() {
-		initialize();
-	}
 	
+	
+	
+	/**Show the window
+	 * 
+	 */
+	public void Show()
+	{
+		initialize();
+		this.frame.setVisible(true);
+	}
 	
 
 	/**
