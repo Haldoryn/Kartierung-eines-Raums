@@ -4,21 +4,14 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
-import jdk.nashorn.internal.runtime.regexp.joni.ScanEnvironment;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.*;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnGyroscopeCmd;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnMotorCmd;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnResetCmd;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnSensorCmd;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnStatusCmd;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnUltrasonicCmd;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType;
 
 
@@ -46,7 +39,7 @@ public class Main {
 	/*
 	 * cons is the object, that reads the constants xml file and returns the wanted constant. Id needs the path of the xml file as the parameter in the constructor. 
 	 */
-	private static Constants cons = new Constants("temp"); //temp path must be replaced with real path
+	private static Constants cons;//temp path must be replaced with real path
 	
 	/*
 	 * vectorRoom is the object, that saves all points. It needs the movement of the robot in order to calculate the scanned points.
@@ -56,7 +49,7 @@ public class Main {
 	/*
 	 * Controlling is responsible for the movement of the robot.
 	 */
-	private static Controlling controlling = new Controlling();
+	private static Controlling controlling;
 	
 	/*
 	 * Endpoint is the facade of the robot protocol.
@@ -83,6 +76,16 @@ public class Main {
 		 * It has to wait till the GUI responds with informations on how to proceed. 
 		 * If the start button was pressed, the main continues with the procedure.
 		 */
+		MainWindow window = new MainWindow();
+		window.Show();
+		
+		
+		int test =0;
+		while(test==0) {}
+		
+		cons = new Constants("temp"); //temp path must be replaced with real path
+		controlling = new Controlling();
+		
 		try {
 			buildConnection();
 			robotSender = endpoint.getToRobotSender();
