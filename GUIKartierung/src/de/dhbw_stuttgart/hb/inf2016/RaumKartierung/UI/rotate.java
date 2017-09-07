@@ -1,4 +1,4 @@
-package gui.main;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.UI;
 
 public class rotate {
 

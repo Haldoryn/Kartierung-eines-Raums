@@ -1,4 +1,4 @@
-package gui.main;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.UI;
 
 import java.awt.EventQueue;
 import java.awt.GridLayout;
@@ -41,6 +41,8 @@ public class GUI {
 	public GUI() {
 		initialize();
 	}
+	
+	
 
 	/**
 	 * Initialize the contents of the frame.
