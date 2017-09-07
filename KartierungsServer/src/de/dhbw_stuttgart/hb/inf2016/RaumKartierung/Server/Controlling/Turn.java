@@ -1,16 +1,28 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+
 /**
  * Created by samue on 20.06.2017.
  */
 public class Turn implements Move {
     double LeftMotor;
     double RightMotor;
+    Constants cons;
 
     public Turn(double angle) {
+        cons = new Constants("tempPath");
+        setAngle(angle);
+
+    }
+
+    public double getAngle() {
+        return Angle;
+    }
+
+    public void setAngle(double angle) {
         Angle = angle;
-        //Code to Calc Left and Right Motor
-        double n = (50/*Temp Abstant zwischen den reifen*/ * angle)/(2 * 50/* Temp Radius der Reifen*/ * 360);
+        double n = ((double)cons.getConstbyName("wheelDistance") * angle)/(2 * (double)cons.getConstbyName("wheelRadius") * 360);
         if(angle > 0){
             LeftMotor = 360 * n;
             RightMotor = - 360 * n;
@@ -23,14 +35,6 @@ public class Turn implements Move {
         }
     }
 
-    public double getAngle() {
-        return Angle;
-    }
-
-    public void setAngle(double angle) {
-        Angle = angle;
-    }
-
     double Angle;
     @Override
     public double getLeftMotor() {
@@ -41,4 +45,9 @@ public class Turn implements Move {
     public double getRightMotor() {
         return RightMotor;
     }
+
+	@Override
+	public void setMotor(double leftMotor, double rightMotor) {
+		
+	}
 }
