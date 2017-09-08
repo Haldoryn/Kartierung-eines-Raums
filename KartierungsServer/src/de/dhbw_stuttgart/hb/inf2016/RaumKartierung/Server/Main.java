@@ -24,7 +24,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType
 public class Main {
 
 	private static RobotInteractionHandler robotInteractionHandler;
-	private static Constants constants = new Constants("temp");
+	private static Constants constants;
 	private static boolean allowRobotToMove;
 	private static boolean isRunning;
 	/**
@@ -50,12 +50,10 @@ public class Main {
 			try {
 				robotInteractionHandler = new RobotInteractionHandler();
 			} catch (InstantiationException | IllegalAccessException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//Method call to the GUI with the Message "Something went wrong with 
 			}
 			run();
 		}
-
 	}
 	
 	/**
@@ -74,15 +72,14 @@ public class Main {
 			try {
 				robotInteractionHandler.doMove();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				// method call to the GUI with the message "System was interupted"
 			} 
 		}
 		//Stuff to do if the robot should stop running.
 	}
 	
 	public static void changeInformation(String name, Object value) {
-		
+		//constants.setConstByName(name, value);
 	}
 }
 
