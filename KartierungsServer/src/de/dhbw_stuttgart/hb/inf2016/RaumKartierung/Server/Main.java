@@ -10,14 +10,21 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.omg.PortableServer.ServantActivator;
+
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.*;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType;
-
+/**
+ * 
+ * @author Samuel Volz
+ *
+ */
 
 public class Main {
 
 	private static RobotInteractionHandler robotInteractionHandler;
+	private static Constants constants = new Constants("temp");
 	private static boolean allowRobotToMove;
 	private static boolean isRunning;
 	/**
@@ -72,6 +79,10 @@ public class Main {
 			} 
 		}
 		//Stuff to do if the robot should stop running.
+	}
+	
+	public static void changeInformation(String name, Object value) {
+		
 	}
 }
 

@@ -14,7 +14,11 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controllin
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
-
+/**
+ * 
+ * @author Samuel Volz
+ *
+ */
 public class RobotInteractionHandler {
 	/*
 	 * measuredDistance saves the distance from the last scan.
