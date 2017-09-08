@@ -19,6 +19,7 @@ public class Main {
 
 	private static RobotInteractionHandler robotInteractionHandler;
 	private static boolean allowRobotToMove;
+	private static boolean isRunning;
 	/**
 	 * main is the starting class of this program. It calls the GUI and goes thru the procedure of the robot.
 	 * @param args just some args idk
@@ -31,33 +32,46 @@ public class Main {
 		 */
 		MainWindow window = new MainWindow();
 		window.Show();
-		
-		
-		int test =0;
-		while(test==0) {}
-				
-		try {
-			robotInteractionHandler = new RobotInteractionHandler();
-			/*
-			 * This while loop runs as long the program runs. 
-			 * In the future it should run as long the GUI says something else.
-			 */
-			while(allowRobotToMove) {
-				robotInteractionHandler.doMove();
-			}
-
-		} catch (Exception e) {
-			/*
-			 * I don't know jet what we need in this catch block.
-			 */
-			e.printStackTrace();
-		}
 	}
+	/**
+	 * The start method gets called, if the start button in the GUI gets clicked.
+	 * It starts the interaction procedure.
+	 */
 	public static void start() {
-		
+		if(isRunning == false) {
+			isRunning = true;
+			try {
+				robotInteractionHandler = new RobotInteractionHandler();
+			} catch (InstantiationException | IllegalAccessException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			run();
+		}
+
 	}
+	
+	/**
+	 * The stop method gets called, if the stop button in the GUI gets clicked.
+	 * It stops the interaction procedure.
+	 */
 	public static void stop() {
-		
+		isRunning = false;
+	}
+	
+	/**
+	 * The run method calls the doMove method in a loop till isRunning == false.
+	 */
+	public static void run() {
+		while (isRunning) {
+			try {
+				robotInteractionHandler.doMove();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
+		//Stuff to do if the robot should stop running.
 	}
 }
 
