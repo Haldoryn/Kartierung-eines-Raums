@@ -39,6 +39,9 @@ public class Main {
 		 */
 		MainWindow window = new MainWindow();
 		window.Show();
+		// window.addStartListener(start());
+		// window.addStopListener(stop());
+		// window.addConstantChangeListener(changeInformation());
 	}
 	/**
 	 * The start method gets called, if the start button in the GUI gets clicked.
@@ -82,23 +85,3 @@ public class Main {
 		//constants.setConstByName(name, value);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
