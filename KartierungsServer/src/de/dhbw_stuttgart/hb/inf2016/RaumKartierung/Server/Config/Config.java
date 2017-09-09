@@ -26,7 +26,7 @@ public class Config
 		
 		// try catch um das Abbilden der XML Datei auf ein Document Objekt
 		try{
-			 File pfad = new File(System.getProperty("user.dir\\Config.xml")); // set path on Current working directory
+			 File pfad = new File(System.getProperty("user.dir")+"\\Config.xml"); // set path on Current working directory
 			 doc = new SAXBuilder().build(pfad);	 
 		} 
 		catch(JDOMException e){
