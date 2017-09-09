@@ -2,7 +2,12 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI;
 
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -26,6 +31,26 @@ public class MainWindow {
 	private JFrame frame;
 	public static JTextArea textPane = new JTextArea();
 	public static PointImage drawImage = new PointImage();
+	
+	private List<IConnectEventListener> onConnectListeners = new LinkedList<>();
+	
+	public void addOnConnectEventListener(IConnectEventListener listener)
+	{
+		if (listener == null) {
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onConnectListeners.add(listener);
+	}
+
+	public void removeOnConnectEventListener(IConnectEventListener listener)
+	{
+		if (listener == null) {
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onConnectListeners.remove(listener);
+	}
+	
+	
 	
 	/**
 	 * Show the window
@@ -78,7 +103,20 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.WEST, btnVerbinden, 6, SpringLayout.EAST, textField);
 		btnVerbinden.addActionListener(new WindowActionListener());
 		btnVerbinden.setActionCommand("Connect");
+		btnVerbinden.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			
+				for(IConnectEventListener listener:onConnectListeners)
+				{
+					//ToDo add port to gui
+					listener.OnConnect(textField.getText(), 0);
+				}			
+			}
+		});
 		frame.getContentPane().add(btnVerbinden);
+		
 		
 		
 		//the tab Pane at the top
