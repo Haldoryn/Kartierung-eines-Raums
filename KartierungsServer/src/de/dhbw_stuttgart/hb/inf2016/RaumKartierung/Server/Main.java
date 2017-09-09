@@ -1,6 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
@@ -24,7 +24,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType
 public class Main {
 
 	private static RobotInteractionHandler robotInteractionHandler;
-	private static Constants constants;
+	private static Config constants;
 	private static boolean allowRobotToMove;
 	private static boolean isRunning;
 	/**

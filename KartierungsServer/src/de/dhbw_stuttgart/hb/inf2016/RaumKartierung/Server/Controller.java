@@ -1,6 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
@@ -8,7 +8,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 
 public class Controller {
     private Move nextMove;
-    private Constants cons = new Constants("temp" /* path must be enterd*/);
+    private Config cons = new Config("temp" /* path must be enterd*/);
     private VectorRoom vectorRoom = new VectorRoom();
     private Controlling controlling = new Controlling();
     private int timesScaned;

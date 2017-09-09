@@ -1,6 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 
 /**
  * Created by samue on 20.06.2017.
@@ -8,12 +8,12 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
 public class Forward implements Move {
     double LeftMotor;
     double RightMotor;
-    Constants cons;
+    Config cons;
 
     public Forward(double distence) {
         Distence = distence;
         //Code to Calc LeftMotor and Right Motor
-        cons = new Constants("tempPath");
+        cons = new Config("tempPath");
         LeftMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
         RightMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
 

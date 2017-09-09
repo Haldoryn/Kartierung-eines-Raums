@@ -3,7 +3,6 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -11,19 +10,25 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.SpringLayout;
 
-
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.PointImage;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.WindowActionListener;
+/**
+ * The Window class
+ * @author dh10hcn
+ *
+ */
 public class MainWindow {
 
 	private JFrame frame;
+	public static JTextArea textPane = new JTextArea();
+	public static PointImage drawImage = new PointImage();
 	
-	
-	
-	/**Show the window
-	 * 
+	/**
+	 * Show the window
 	 */
 	public void Show()
 	{
@@ -71,6 +76,8 @@ public class MainWindow {
 		JButton btnVerbinden = new JButton("Verbinden");
 		springLayout.putConstraint(SpringLayout.NORTH, btnVerbinden, -4, SpringLayout.NORTH, labelIP);
 		springLayout.putConstraint(SpringLayout.WEST, btnVerbinden, 6, SpringLayout.EAST, textField);
+		btnVerbinden.addActionListener(new WindowActionListener());
+		btnVerbinden.setActionCommand("Connect");
 		frame.getContentPane().add(btnVerbinden);
 		
 		
@@ -95,6 +102,8 @@ public class MainWindow {
 		sl_panel1.putConstraint(SpringLayout.WEST, btnStart, 10, SpringLayout.WEST, panel1);
 		springLayout.putConstraint(SpringLayout.NORTH, btnStart, 10, SpringLayout.NORTH, panel1);
 		springLayout.putConstraint(SpringLayout.WEST, btnStart, 10, SpringLayout.WEST, panel1);
+		btnStart.addActionListener(new WindowActionListener());
+		btnStart.setActionCommand("Start");
 		panel1.add(btnStart);
 		
 		//button stop
@@ -103,15 +112,19 @@ public class MainWindow {
 		sl_panel1.putConstraint(SpringLayout.WEST, btnStopp, 6, SpringLayout.EAST, btnStart);
 		springLayout.putConstraint(SpringLayout.NORTH, btnStopp, 0, SpringLayout.NORTH, btnStart);
 		springLayout.putConstraint(SpringLayout.WEST, btnStopp, 6, SpringLayout.EAST, btnStart);
+		btnStopp.addActionListener(new WindowActionListener());
+		btnStopp.setActionCommand("Stopp");
 		panel1.add(btnStopp);
 		
 		//button abort
-		JButton btnAbbrechen = new JButton("Abbrechen");
-		sl_panel1.putConstraint(SpringLayout.NORTH, btnAbbrechen, 6, SpringLayout.SOUTH, btnStart);
-		sl_panel1.putConstraint(SpringLayout.WEST, btnAbbrechen, 0, SpringLayout.WEST, btnStart);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAbbrechen, 6, SpringLayout.SOUTH, btnStart);
-		springLayout.putConstraint(SpringLayout.WEST, btnAbbrechen, 0, SpringLayout.WEST, btnStart);
-		panel1.add(btnAbbrechen);
+		JButton btnAbort = new JButton("Abbrechen");
+		sl_panel1.putConstraint(SpringLayout.NORTH, btnAbort, 6, SpringLayout.SOUTH, btnStart);
+		sl_panel1.putConstraint(SpringLayout.WEST, btnAbort, 0, SpringLayout.WEST, btnStart);
+		springLayout.putConstraint(SpringLayout.NORTH, btnAbort, 6, SpringLayout.SOUTH, btnStart);
+		springLayout.putConstraint(SpringLayout.WEST, btnAbort, 0, SpringLayout.WEST, btnStart);
+		btnAbort.addActionListener(new WindowActionListener());
+		btnAbort.setActionCommand("Abort");
+		panel1.add(btnAbort);
 
 		//the second tab
 		JComponent panel2 = new JPanel();
@@ -126,9 +139,11 @@ public class MainWindow {
 		
 		//the button forward
 		ImageIcon iconForward = new ImageIcon("res/PfeilHoch.png");
-		JButton forward = new JButton(iconForward);
-		forward.setMnemonic(KeyEvent.VK_UP);
-		panel2.add(forward);
+		JButton btnForward = new JButton(iconForward);
+		btnForward.setMnemonic(KeyEvent.VK_UP);
+		btnForward.addActionListener(new WindowActionListener());
+		btnForward.setActionCommand("Forward");
+		panel2.add(btnForward);
 		
 		//next five placeholder
 		panel2.add(javax.swing.Box.createGlue());
@@ -139,21 +154,27 @@ public class MainWindow {
 		
 		//the button left
 		ImageIcon iconLeft = new ImageIcon("res/PfeilLinks.png");
-		JButton left = new JButton(iconLeft);
-		left.setMnemonic(KeyEvent.VK_LEFT);
-		panel2.add(left);
+		JButton btnLeft = new JButton(iconLeft);
+		btnLeft.setMnemonic(KeyEvent.VK_LEFT);
+		btnLeft.addActionListener(new WindowActionListener());
+		btnLeft.setActionCommand("Left");
+		panel2.add(btnLeft);
 		
 		//button to scan
 		ImageIcon iconScan = new ImageIcon("res/Fadenkreuzlaser.png");
-		JButton scan = new JButton(iconScan);
-		scan.setMnemonic(KeyEvent.VK_END);
-		panel2.add(scan);
+		JButton btnScan = new JButton(iconScan);
+		btnScan.setMnemonic(KeyEvent.VK_END);
+		btnScan.addActionListener(new WindowActionListener());
+		btnScan.setActionCommand("Scan");
+		panel2.add(btnScan);
 		
 		//button right
 		ImageIcon iconRight = new ImageIcon("res/PfeilRechts.png");
-		JButton right = new JButton(iconRight);
-		right.setMnemonic(KeyEvent.VK_RIGHT);
-		panel2.add(right);
+		JButton btnRight = new JButton(iconRight);
+		btnRight.setMnemonic(KeyEvent.VK_RIGHT);
+		btnRight.addActionListener(new WindowActionListener());
+		btnRight.setActionCommand("Right");
+		panel2.add(btnRight);
 		
 		//next five placeholder
 		panel2.add(javax.swing.Box.createGlue());
@@ -164,9 +185,11 @@ public class MainWindow {
 		
 		//the button backwards
 		ImageIcon iconBackwards = new ImageIcon("res/PfeilRunter.png");
-		JButton backward = new JButton(iconBackwards);
-		backward.setMnemonic(KeyEvent.VK_DOWN);
-		panel2.add(backward);
+		JButton btnBackward = new JButton(iconBackwards);
+		btnBackward.setMnemonic(KeyEvent.VK_DOWN);
+		btnBackward.addActionListener(new WindowActionListener());
+		btnBackward.setActionCommand("Backwards");
+		panel2.add(btnBackward);
 
 		//last three placeholder
 		panel2.add(javax.swing.Box.createGlue());
@@ -186,7 +209,6 @@ public class MainWindow {
 		frame.getContentPane().add(labelcommand);
 		
 		//the panel to show some simple commands to the user
-		JTextPane textPane = new JTextPane();
 		textPane.setEditable(false);
 		springLayout.putConstraint(SpringLayout.NORTH, textPane, 6, SpringLayout.SOUTH, labelcommand);
 		springLayout.putConstraint(SpringLayout.WEST, textPane, 0, SpringLayout.WEST, labelIP);
@@ -194,29 +216,18 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.EAST, textPane, 0, SpringLayout.EAST, tabbedPane);
 		frame.getContentPane().add(textPane);
 		
-		//the panel for the points
-		JPanel panelDraw = new JPanel();
-		springLayout.putConstraint(SpringLayout.NORTH, panelDraw, 6, SpringLayout.SOUTH, labeldraw);
-		springLayout.putConstraint(SpringLayout.WEST, panelDraw, 6, SpringLayout.EAST, tabbedPane);
-		springLayout.putConstraint(SpringLayout.SOUTH, panelDraw, -10, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, panelDraw, -10, SpringLayout.EAST, frame.getContentPane());
-		
+		//the image with the points
+		drawImage.buildUI();
+        frame.add("Center", drawImage);
+		springLayout.putConstraint(SpringLayout.NORTH, drawImage, 6, SpringLayout.SOUTH, labeldraw);
+		springLayout.putConstraint(SpringLayout.WEST, drawImage, 6, SpringLayout.EAST, tabbedPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, drawImage, -10, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, drawImage, -10, SpringLayout.EAST, frame.getContentPane());
 		frame.setVisible(true);
 		
 	}
 	
-	
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

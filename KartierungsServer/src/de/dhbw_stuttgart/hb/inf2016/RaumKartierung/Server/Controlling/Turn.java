@@ -1,6 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 
 /**
  * Created by samue on 20.06.2017.
@@ -8,10 +8,10 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
 public class Turn implements Move {
     double LeftMotor;
     double RightMotor;
-    Constants cons;
+    Config cons;
 
     public Turn(double angle) {
-        cons = new Constants("tempPath");
+        cons = new Config("tempPath");
         setAngle(angle);
 
     }

@@ -1,4 +1,4 @@
-package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants;
+package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
-public class Constants 
+public class Config 
 {
 	private Document doc;
 	private Map<String, Object> myConstants = new HashMap<String, Object>();
@@ -18,7 +18,7 @@ public class Constants
 	 * @param path
 	 * creates a new Constants Class with the path of the XML File as Argument
 	 */
-	public Constants(String path)
+	public Config(String path)
 	{
 		List<Element> constantsList;
 		
@@ -79,6 +79,10 @@ public class Constants
 			return myConstants.get(name);
 		else
 			return "No such Element";
+		
+	}
+	
+	public void setConst(String constName){
 		
 	}
 }

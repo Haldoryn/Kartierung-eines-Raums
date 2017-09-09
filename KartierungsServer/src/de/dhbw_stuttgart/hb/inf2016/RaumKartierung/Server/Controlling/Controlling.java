@@ -3,16 +3,16 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 import com.sun.javafx.scene.layout.region.Margins;
 import com.sun.xml.internal.ws.commons.xmlutil.Converter;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 
 import java.util.Random;
 
 public class Controlling {
     Move NextMove;
-    Constants constants;
+    Config constants;
     // int scanresult
     public Controlling() {
-    	constants = new Constants("tempPath");
+    	constants = new Config("tempPath");
     }
 
     public Move next() {

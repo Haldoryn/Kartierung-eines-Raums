@@ -9,7 +9,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ICommandReceiver;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Constants.Constants;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
@@ -43,7 +43,7 @@ public class RobotInteractionHandler {
 	/*
 	 * cons is the object, that reads the constants xml file and returns the wanted constant. Id needs the path of the xml file as the parameter in the constructor. 
 	 */
-	private Constants cons;//temp path must be replaced with real path
+	private Config cons;//temp path must be replaced with real path
 	
 	/*
 	 * vectorRoom is the object, that saves all points. It needs the movement of the robot in order to calculate the scanned points.
