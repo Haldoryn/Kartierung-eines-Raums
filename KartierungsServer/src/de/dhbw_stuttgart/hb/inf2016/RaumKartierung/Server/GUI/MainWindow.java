@@ -28,7 +28,7 @@ public class MainWindow {
 	public static PointImage drawImage = new PointImage();
 	
 	/**
-	 * Show the window
+	 * Show the maiWindow
 	 */
 	public void Show()
 	{
