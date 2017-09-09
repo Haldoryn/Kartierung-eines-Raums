@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RobotProtocol"/>
-	<classpathentry kind="lib" path="C:/Users/Jan Wäckers/Documents/GitHub/Kartierung-eines-Raums/KartierungsServer/bin/de/dhbw_stuttgart/hb/inf2016/RaumKartierung/Server/Constants/lib/jdom-2.0.6.jar"/>
+	<classpathentry kind="lib" path="src/de/dhbw_stuttgart/hb/inf2016/RaumKartierung/Server/Config/lib/jdom-2.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
