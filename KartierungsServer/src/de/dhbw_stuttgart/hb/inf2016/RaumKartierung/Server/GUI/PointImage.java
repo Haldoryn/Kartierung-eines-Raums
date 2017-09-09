@@ -39,19 +39,16 @@ class Points extends Component
     {	
     	if(coordinates.size()==0)
     		return;
-    	
-    	
+    	    	
     	Graphics2D g2d = (Graphics2D) g;
         g2d.translate(0, getHeight() - 1);
         g2d.scale(1, -1);
-        
-    	for (int[] is : coordinates) 
-    	{
-			g.drawLine(is[0], is[1], is[0], is[1]);
-		}   	
+         	
+    	BufferedImage image = renderToImage();
+    	g2d.drawImage(image,0,0,null);
     	
     	try {
-			SaveToDisc("D:\\Desktop\\robot.jpg");
+			saveToDisc("D:\\Desktop\\robot.jpg",image);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,19 +56,11 @@ class Points extends Component
     }  
     
     
-    
-    /**Saves the points image to a file on the hard disc.
-     * @param path The path of the image file
-     * @throws IOException Thrown if something goes wrong while writing the file to the hard disc.
+    /**Renders the coordinates to a BufferedImage.
+     * @return The rendered image.
      */
-    public void SaveToDisc(String path) throws IOException
+    public BufferedImage renderToImage()
     {
-    	if(path == null)
-    	{
-    		throw new IllegalArgumentException("Path must not be null");
-    	}
-    	
-    	
     	//Get the dimensions of the image from the points list.
     	int width =0;
     	int heigth=0;
@@ -103,9 +92,25 @@ class Points extends Component
 		} 
     	g2d.dispose();
     	
+    	return bi;
+    }
+    
+    
+    /**Saves the points image to a file on the hard disc.
+     * @param path The path of the image file
+     * @throws IOException Thrown if something goes wrong while writing the file to the hard disc.
+     */
+    public void saveToDisc(String path,BufferedImage image) throws IOException
+    {
+    	if(path == null)
+    	{
+    		throw new IllegalArgumentException("Path must not be null");
+    	}
+    	
+    
     	//Write the image to the file
     	File outputfile = new File(path);
-    	ImageIO.write(bi, "jpg", outputfile);
+    	ImageIO.write(image, "jpg", outputfile);
     }
 }
 
