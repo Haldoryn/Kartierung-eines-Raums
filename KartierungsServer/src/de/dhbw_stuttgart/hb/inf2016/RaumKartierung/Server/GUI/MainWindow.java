@@ -53,7 +53,7 @@ public class MainWindow {
 	
 	
 	/**
-	 * Show the window
+	 * Show the maiWindow
 	 */
 	public void Show()
 	{
