@@ -11,7 +11,7 @@ public class Turn implements Move {
     Config cons;
 
     public Turn(double angle) {
-        cons = new Config("tempPath");
+        cons = new Config();
         setAngle(angle);
 
     }

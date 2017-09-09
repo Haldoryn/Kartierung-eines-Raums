@@ -8,24 +8,26 @@ import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
+
+/**
+ * @author Jan Wäckers
+ * The Config class provides the possibility to get or set the Attribute Content of an constant Element
+ * of an Attribute in the Config File 
+ * Possible return types: Integer, Double, Long, Float, Short, Boolean, Byte, Char, String
+ * 
+ */
 public class Config 
 {
 	private Document doc;
 	private Map<String, Object> myConstants = new HashMap<String, Object>();
 	
-	 
-	/**
-	 * @param path
-	 * creates a new Constants Class with the path of the XML File as Argument
-	 */
-	public Config(String path)
+	public Config()
 	{
-		List<Element> constantsList;
 		
 		// try catch um das Abbilden der XML Datei auf ein Document Objekt
 		try{
-			File pfad = new File(path);
-			doc = new SAXBuilder().build(pfad);	 
+			 File pfad = new File(System.getProperty("user.dir\\Config.xml")); // set path on Current working directory
+			 doc = new SAXBuilder().build(pfad);	 
 		} 
 		catch(JDOMException e){
 			System.err.println("Error (JDOMException");
@@ -35,7 +37,17 @@ public class Config
 		{
 			System.err.println("Wrong path or invalid XML Document (IO Exception)");
 		}
-		 constantsList= doc.getRootElement().getChildren();
+		
+		 readFile();
+	}	
+	
+	/**
+	 * 
+	 */
+	private void readFile(){
+		
+		List<Element> constantsList;
+		constantsList= doc.getRootElement().getChildren();
 		 
 		// gets the name and content of all "constant"-Elements
 		// and converts the Content to the right type(specifed by "type")  
@@ -70,8 +82,13 @@ public class Config
 			}
 			myConstants.put(name, myValue);
 		}
-	}	
+	}
 
+	/**
+	 * returns the Content of an Attribute in the Config File 
+	 * The return type depends on the type entry in of the Attribute 
+	 * 
+	 */
 	public Object getConstbyName(String name)
 	{
 	
@@ -82,7 +99,16 @@ public class Config
 		
 	}
 	
-	public void setConst(String constName){
+	/**
+	 * Method for setting a Attributes Content in the Config File
+	 * @param elementName
+	 *  Name of the Attribute
+	 * @param elementContent
+	 * the new Attribute Content
+	 */
+	public void setConst(String elementName, String elementContent){
 		
+		doc.getRootElement().getChild(elementName).addContent(elementContent);
+		readFile(); // update myConstans 
 	}
 }

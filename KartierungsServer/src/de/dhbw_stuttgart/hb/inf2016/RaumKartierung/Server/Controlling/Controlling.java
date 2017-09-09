@@ -12,7 +12,7 @@ public class Controlling {
     Config constants;
     // int scanresult
     public Controlling() {
-    	constants = new Config("tempPath");
+    	constants = new Config();
     }
 
     public Move next() {

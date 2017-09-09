@@ -8,7 +8,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 
 public class Controller {
     private Move nextMove;
-    private Config cons = new Config("temp" /* path must be enterd*/);
+    private Config cons = new Config();
     private VectorRoom vectorRoom = new VectorRoom();
     private Controlling controlling = new Controlling();
     private int timesScaned;

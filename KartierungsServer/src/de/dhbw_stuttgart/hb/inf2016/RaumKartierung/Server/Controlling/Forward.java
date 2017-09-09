@@ -13,7 +13,7 @@ public class Forward implements Move {
     public Forward(double distence) {
         Distence = distence;
         //Code to Calc LeftMotor and Right Motor
-        cons = new Config("tempPath");
+        cons = new Config();
         LeftMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
         RightMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
 
