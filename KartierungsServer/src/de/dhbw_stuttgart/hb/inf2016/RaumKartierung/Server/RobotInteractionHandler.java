@@ -125,7 +125,10 @@ public class RobotInteractionHandler {
 		/*
 		 * The results of the scan get saved in the veectorRoom. 
 		 */
-		vectorRoom.setScan(returnUltrasonic.getValue());
+		Double ScanValue = returnUltrasonic.getValue();
+		if(ScanValue >(int)config.getConstbyName("minScanDist") && ScanValue <(int)config.getConstbyName("maxScanDist")) {
+			vectorRoom.setScan(returnUltrasonic.getValue());
+		}
 		
         if(timesScaned >= (int)config.getConstbyName("maxScans")){
         	/*

@@ -7,6 +7,7 @@ import java.util.Random;
 public class Controlling {
     Move NextMove;
     Config config;
+    Random random = new Random();
 
     
     
@@ -17,7 +18,18 @@ public class Controlling {
 
 
 
-	public Move next() {
+	public Move next(/*Double ScanResult*/) {
+		
+		/*Alternative Moving algo
+		 * if(ScanResult > 15){
+			NextMove = new Forward((int)config.getConstbyName("distancePerMove"),config); // how to set the distance? 
+            return NextMove;
+		}
+		else{
+			 NextMove = new Turn(random.nextInt(360 * 2) - 360,config);
+	            // return gyro Value
+	            return NextMove;
+		}*/
         if(NextMove == null || NextMove instanceof Turn){
         	
         	// if ultrasonicScan < distance + securityDistance
@@ -25,7 +37,7 @@ public class Controlling {
             return NextMove;
         }
         else if(NextMove instanceof Forward){
-            Random random = new Random();
+           
             NextMove = new Turn(random.nextInt(360 * 2) - 360,config);
             // return gyro Value
             return NextMove;
