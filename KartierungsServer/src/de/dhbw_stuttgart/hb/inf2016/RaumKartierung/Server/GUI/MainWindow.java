@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -138,7 +139,15 @@ public class MainWindow {
 			});
 		}
 		
-		textPane.setText(textPane.getText() + "\n" + message);
+		if(textPane.getText().length() > 1000)
+		{
+			textPane.setText(textPane.getText().substring(500) + "\n" + message);
+		}	
+		else
+		{
+			textPane.setText(textPane.getText() + "\n" + message);
+		}
+
 	}
 
 	/**
@@ -291,9 +300,10 @@ public class MainWindow {
 		// the second tab
 		JComponent panel2 = new JPanel();
 		tabbedPane.addTab("Manuelle Kartierung", null, panel2, "Manuelle Kartierung");
-		panel2.setLayout(new GridLayout(3, 7, 0, 0));
+		panel2.setLayout(new GridLayout(3, 7, 0, 0));		
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 
+		
 		// first three placeholder
 		panel2.add(javax.swing.Box.createGlue());
 		panel2.add(javax.swing.Box.createGlue());
@@ -364,16 +374,19 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.NORTH, labelcommand, 6, SpringLayout.SOUTH, tabbedPane);
 		springLayout.putConstraint(SpringLayout.WEST, labelcommand, 0, SpringLayout.WEST, tabbedPane);
 		frame.getContentPane().add(labelcommand);
-
+		
 		// the panel to show some simple commands to the user
 		textPane.setEditable(false);
-		springLayout.putConstraint(SpringLayout.NORTH, textPane, 6, SpringLayout.SOUTH, labelcommand);
-		springLayout.putConstraint(SpringLayout.WEST, textPane, 0, SpringLayout.WEST, labelIP);
-		springLayout.putConstraint(SpringLayout.SOUTH, textPane, -10, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, textPane, 0, SpringLayout.EAST, tabbedPane);
-		frame.getContentPane().add(textPane);
+		
+		//Scrollbar for the texpane
+		JScrollPane scrollPane = new JScrollPane(textPane);
+		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, labelcommand);
+		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, labelIP);
+		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, tabbedPane);
+		frame.getContentPane().add(scrollPane);
 
-		// the image with the points
+		// the image with the points		
 		springLayout.putConstraint(SpringLayout.NORTH, drawImage, 6, SpringLayout.SOUTH, labeldraw);
 		springLayout.putConstraint(SpringLayout.WEST, drawImage, 6, SpringLayout.EAST, tabbedPane);
 		springLayout.putConstraint(SpringLayout.SOUTH, drawImage, -10, SpringLayout.SOUTH, frame.getContentPane());
