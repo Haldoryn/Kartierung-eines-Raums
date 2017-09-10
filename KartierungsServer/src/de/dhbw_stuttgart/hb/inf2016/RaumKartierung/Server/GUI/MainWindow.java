@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -15,11 +16,13 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 
 /**
  * The Window class
@@ -80,18 +83,69 @@ public class MainWindow {
 	}
 
 	public void clearPoints() {
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					clearPoints();
+				}
+			});
+		}
+
 		drawImage.clearPoints();
 	}
 
 	public void addPoint(Point point) {
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					addPoint(point);
+				}
+			});
+		}
+				
 		drawImage.addPoint(point);
+	}
+
+	public void ClearLog() {	
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					textPane.setText("");
+				}
+			});
+		}
+		textPane.setText("");
+	}
+
+	public void addLogEntry(String message) {
+		if (message == null) {
+			throw new IllegalArgumentException("The 'message' argument must not be null");
+		}
+		
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					addLogEntry(message);
+				}
+			});
+		}
+		
+		textPane.setText(textPane.getText() + "\n" + message);
 	}
 
 	/**
 	 * Show the maiWindow
 	 */
 	public void Show() {
-		EventQueue.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					initialize();
@@ -101,6 +155,20 @@ public class MainWindow {
 				}
 			}
 		});
+	}
+	
+	public void repaintImage()
+	{
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					repaintImage();
+				}
+			});
+		}
+		drawImage.repaint();
 	}
 
 	/**
@@ -142,7 +210,14 @@ public class MainWindow {
 
 				for (IConnectEventListener listener : onConnectListeners) {
 					// ToDo add port to gui
-					listener.OnConnect(textField.getText(), 0);
+					try {
+						InetAddress netAddress = InetAddress.getByName(textField.getText());
+						// Default port
+						listener.onConnect(netAddress, 9876);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Invalid address", "Connection Error",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			}
 		});
@@ -306,12 +381,6 @@ public class MainWindow {
 		frame.getContentPane().add(drawImage);
 
 		frame.setVisible(true);
-
-		//Just for testing
-		Random random = new Random();
-		for (int i = 0; i < 500; i++) {
-			addPoint(new Point(random.nextInt(1000), random.nextInt(1000)));
-		}
 	}
 
 }

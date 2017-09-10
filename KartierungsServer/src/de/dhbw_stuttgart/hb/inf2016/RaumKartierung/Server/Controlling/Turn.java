@@ -10,8 +10,8 @@ public class Turn implements Move {
     double RightMotor;
     Config cons;
 
-    public Turn(double angle) {
-        cons = new Config();
+    public Turn(double angle,Config cfg) {
+        cons = cfg;
         setAngle(angle);
 
     }

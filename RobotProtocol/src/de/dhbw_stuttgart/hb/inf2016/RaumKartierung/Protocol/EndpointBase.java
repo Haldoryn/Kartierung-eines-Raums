@@ -14,6 +14,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandPars
 
 public abstract class EndpointBase implements IProtocolEndpoint {
 	private List<ICommandReceiver> listeners = new LinkedList<>();
+	private List<ICommandReceiver> sendInterceptor = new LinkedList<>();
 	private Queue<CommandBase> commandQueue = new ConcurrentLinkedQueue<CommandBase>();
 	private CommandParser parser;
 	private IFromRobotSender robotInterface;
@@ -56,9 +57,19 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 		while (sock.getInputStream().available()>0 &&sc.hasNext()) {
 			try {
 				CommandBase cmd = parser.Parse(sc.next());
-				invokeHandlers(cmd);
+				try
+				{
+					invokeHandlers(cmd);
+				}
+				catch(Exception ex)
+				{
+					System.err.println("A command handler caused an exception");
+					ex.printStackTrace();
+				}
+				
 			} catch (Exception e) {
-				System.out.println("Something went wrong while receiving a command");
+				System.err.println("Something went wrong while receiving a command: ["+e.getClass().getName()+"]"+e.toString());
+				e.printStackTrace();
 			}
 		}		
 	}
@@ -90,6 +101,18 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 	@Override
 	public void sendCommand(CommandBase cmd) {
 		commandQueue.add(cmd);
+		for(ICommandReceiver ic :sendInterceptor)
+		{
+			try
+			{
+				ic.commandReceived(cmd);
+			}
+			catch(Exception ex)
+			{
+				System.err.println("An command interceptor handler caused an exception.");
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 	public void addOnDisconnectListener(IDisconnectedEventListener listener)
@@ -114,5 +137,22 @@ public abstract class EndpointBase implements IProtocolEndpoint {
 		{
 			handler.OnDisconnect();
 		}
+	}
+	
+
+	@Override
+	public void addSendCommandInterceptorListener(ICommandReceiver handler) {
+		if (handler == null) {
+			throw new IllegalArgumentException("The 'handler' argument must not be null");
+		}
+		sendInterceptor.add(handler);
+	}
+
+	@Override
+	public void removeSendCommandInterceptorListener(ICommandReceiver handler) {
+		if (handler == null) {
+			throw new IllegalArgumentException("The 'handler' argument must not be null");
+		}
+		sendInterceptor.remove(handler);
 	}
 }

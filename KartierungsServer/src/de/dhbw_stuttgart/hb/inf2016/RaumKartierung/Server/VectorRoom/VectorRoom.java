@@ -61,6 +61,11 @@ public class VectorRoom {
      * @param distance is the distance the robot scanned something saved in a double.
      */
     public void setScan(double distance){
+    	
+    	//ToDo get this from somewhere else
+    	if(distance > 100 || distance< 0)
+    		return;
+    	
         double Adjacent = Math.cos(Math.toRadians(sensor.getAngle())) * distance;
         double Opposite = Math.sin(Math.toRadians(sensor.getAngle())) * distance;
         Points.add(new double[]{Adjacent, Opposite});

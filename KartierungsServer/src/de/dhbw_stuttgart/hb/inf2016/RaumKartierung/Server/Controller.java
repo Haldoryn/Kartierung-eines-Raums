@@ -8,13 +8,19 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 
 public class Controller {
     private Move nextMove;
-    private Config cons = new Config();
+    private Config config;
     private VectorRoom vectorRoom = new VectorRoom();
-    private Controlling controlling = new Controlling();
+    private Controlling controlling;
     private int timesScaned;
 
     
-    // here all stuff with moving and sends commands to robo
+    
+    public Controller(Config config) {
+		super();
+		this.config = config;
+		controlling=new Controlling(config);
+	}
+	// here all stuff with moving and sends commands to robo
     public void doMove(){
         //return if GUI switch is off
         nextMove = controlling.next(); //getting next move
@@ -37,24 +43,24 @@ public class Controller {
     public void scanDone(double distance){ // starts with finished scan
         vectorRoom.setScan(distance);
 
-        if(timesScaned >= (int)cons.getConstbyName("maxScans")){
+        if(timesScaned >= (int)config.getConstbyName("maxScans")){
             //turn robots scanner by cons.getConstbyName("AnglePerScan") * cons.getConstbyName("maxScans") / 2 in order to get the scanner to his original position.
-            vectorRoom.turningSensor((int)cons.getConstbyName("AnglePerScan"));
+            vectorRoom.turningSensor((int)config.getConstbyName("AnglePerScan"));
             doMove();
         }
-        else if(timesScaned > (int)cons.getConstbyName("maxScans") / 2){
+        else if(timesScaned > (int)config.getConstbyName("maxScans") / 2){
             //turn robots scanner by - cons.getConstbyName("AnglePerScan")
-            vectorRoom.turningSensor(-(int)cons.getConstbyName("AnglePerScan"));
+            vectorRoom.turningSensor(-(int)config.getConstbyName("AnglePerScan"));
             //let robot scan
         }
-        else if(timesScaned == (int)cons.getConstbyName("maxScans") / 2){
+        else if(timesScaned == (int)config.getConstbyName("maxScans") / 2){
             //turn robots scanner by -(cons.getConstbyName("AnglePerScan") * cons.getConstbyName("maxScans") / 2 + cons.getConstbyName("AnglePerScan")) in order to turn the scanner back to the other side
-            vectorRoom.turningSensor(-((int)cons.getConstbyName("AnglePerScan") * (int)cons.getConstbyName("maxScans") / 2 + (int)cons.getConstbyName("AnglePerScan")));
+            vectorRoom.turningSensor(-((int)config.getConstbyName("AnglePerScan") * (int)config.getConstbyName("maxScans") / 2 + (int)config.getConstbyName("AnglePerScan")));
             //let robot scan
         }
         else{
             //turn robots scanner by cons.getConstbyName("AnglePerScan")
-            vectorRoom.turningSensor((int)cons.getConstbyName("AnglePerScan"));
+            vectorRoom.turningSensor((int)config.getConstbyName("AnglePerScan"));
             //let robot scan
         }
     }

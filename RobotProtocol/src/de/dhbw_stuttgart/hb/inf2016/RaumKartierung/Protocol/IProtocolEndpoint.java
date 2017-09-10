@@ -14,4 +14,8 @@ public interface IProtocolEndpoint {
 	public void removeCommandListener(ICommandReceiver receiver);
 
 	public void sendCommand(CommandBase cmd);
+	
+	public void addSendCommandInterceptorListener(ICommandReceiver handler);
+	
+	public void removeSendCommandInterceptorListener(ICommandReceiver handler);
 }

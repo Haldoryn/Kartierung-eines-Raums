@@ -29,8 +29,10 @@ class ToRobotSender implements IToRobotSender {
 			@Override
 			public void commandReceived(CommandBase cmd) {
 				PaketNotifier notifier = notifiers.get(cmd.getType());
-				notifier.setValue(cmd);
-				notifier.notify();
+				synchronized (notifier) {
+					notifier.setValue(cmd);
+					notifier.notify();
+				}
 			}
 		});
 	}
@@ -75,52 +77,67 @@ class ToRobotSender implements IToRobotSender {
 	}
 
 	@Override
-	public synchronized ReturnGyroscopeCmd sendGetGyroscopeAndWait(int timeoutMs) throws InterruptedException {
+	public ReturnGyroscopeCmd sendGetGyroscopeAndWait(int timeoutMs) throws InterruptedException {
 		sendGetGyroscope();
-		PaketNotifier notifier = notifiers.get(CommandType.getGyroscope);
-		notifier.wait(timeoutMs);
-		return (ReturnGyroscopeCmd) notifier.getValue();
+		PaketNotifier notifier = notifiers.get(CommandType.returnGyroscope);
+		synchronized (notifier) {
+			notifier.wait(timeoutMs);
+			return (ReturnGyroscopeCmd) notifier.getValue();
+		}
 	}
 
 	@Override
-	public synchronized ReturnStatusCmd sendGetStatusAndWait(int timeoutMs) throws InterruptedException {
+	public ReturnStatusCmd sendGetStatusAndWait(int timeoutMs) throws InterruptedException {
 		sendGetStatus();
-		PaketNotifier notifier = notifiers.get(CommandType.getStatus);
-		notifier.wait(timeoutMs);
-		return (ReturnStatusCmd) notifier.getValue();
+		PaketNotifier notifier = notifiers.get(CommandType.returnStatus);
+		synchronized (notifier) {
+			notifier.wait(timeoutMs);
+			return (ReturnStatusCmd) notifier.getValue();
+		}
 	}
 
 	@Override
-	public synchronized ReturnUltrasonicCmd sendGetUltrasonicAndWait(int timeoutMs) throws InterruptedException {
+	public ReturnUltrasonicCmd sendGetUltrasonicAndWait(int timeoutMs) throws InterruptedException {
 		sendGetUltrasonic();
-		PaketNotifier notifier = notifiers.get(CommandType.getUltrasonic);
-		notifier.wait(timeoutMs);
-		return (ReturnUltrasonicCmd) notifier.getValue();
+		PaketNotifier notifier = notifiers.get(CommandType.returnUltrasonic);
+		synchronized (notifier) {
+			notifier.wait(timeoutMs);
+			return (ReturnUltrasonicCmd) notifier.getValue();
+		}
 	}
 
 	@Override
-	public synchronized ReturnMotorCmd sendMoveMotorAndWait(int anglePerSecondLeft, int anglePerSecondRight, int distanceAngleLeft,
+	public ReturnMotorCmd sendMoveMotorAndWait(int anglePerSecondLeft, int anglePerSecondRight, int distanceAngleLeft,
 			int distanceAngleRight, int timeoutMs) throws InterruptedException {
 		sendMoveMotor(anglePerSecondLeft, anglePerSecondRight, distanceAngleLeft, distanceAngleRight);
-		PaketNotifier notifier = notifiers.get(CommandType.moveMotor);
-		notifier.wait(timeoutMs);
-		return (ReturnMotorCmd) notifier.getValue();
+		PaketNotifier notifier = notifiers.get(CommandType.returnMotor);
+
+		synchronized (notifier) {
+			notifier.wait(timeoutMs);
+			return (ReturnMotorCmd) notifier.getValue();
+		}
+
 	}
 
 	@Override
-	public synchronized ReturnSensorCmd sendMoveSensorAndWait(int anglePerSecond, int totalAngle, int timeoutMs) throws InterruptedException {
-		sendMoveSensor(anglePerSecond,totalAngle);
-		PaketNotifier notifier = notifiers.get(CommandType.moveSensor);
-		notifier.wait(timeoutMs);
-		return (ReturnSensorCmd) notifier.getValue();
+	public ReturnSensorCmd sendMoveSensorAndWait(int anglePerSecond, int totalAngle, int timeoutMs)
+			throws InterruptedException {
+		sendMoveSensor(anglePerSecond, totalAngle);
+		PaketNotifier notifier = notifiers.get(CommandType.returnSensor);
+		synchronized (notifier) {
+			notifier.wait(timeoutMs);
+			return (ReturnSensorCmd) notifier.getValue();
+		}
 	}
 
 	@Override
-	public synchronized ReturnResetCmd sendResetAndWait(int timeoutMs) throws InterruptedException {
+	public ReturnResetCmd sendResetAndWait(int timeoutMs) throws InterruptedException {
 		sendReset();
-		PaketNotifier notifier = notifiers.get(CommandType.reset);
-		notifier.wait(timeoutMs);
-		return (ReturnResetCmd) notifier.getValue();
+		PaketNotifier notifier = notifiers.get(CommandType.returnReset);
+		synchronized (notifier) {
+			notifier.wait(timeoutMs);
+			return (ReturnResetCmd) notifier.getValue();
+		}
 	}
 
 }
