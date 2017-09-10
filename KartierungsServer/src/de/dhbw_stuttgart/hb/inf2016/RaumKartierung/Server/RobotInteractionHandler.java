@@ -72,7 +72,9 @@ public class RobotInteractionHandler {
 		/* 
 		 * at the Start of the loop the program gets the new move the robot has to perform. 
 		 */
-		nextMove = controlling.next();
+		//ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		//Double ScanValue = returnUltrasonic.getValue();
+		nextMove = controlling.next(/*ScanValue*/);
 	
 		/*
 		 * The speed of both the Motors and the distance both motors have to drive get send to the robot.
