@@ -59,7 +59,7 @@ public class MapDiplay extends Component {
 		g2d.scale(1, -1);
 
 		BufferedImage image = renderToImage();
-		g2d.drawImage(image, 0, 0, null);
+		g2d.drawImage(image, 0, 0,this.getWidth(),this.getHeight(), null);
 	}
 
 	/**

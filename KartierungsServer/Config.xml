@@ -9,6 +9,6 @@
 <constant name = "RobotPort" type ="String">???</constant>
 <constant name = "wheelDistance" type ="Double">15.8</constant>
 <constant name = "wheelRadius" type ="Double">5.5</constant>
-<constant name = "distancePerMove" type ="Integer">50</constant>
+<constant name = "distancePerMove" type ="Integer">20</constant>
 <constant name = "MaxValidSensorRange" type ="Integer">100</constant>
 </constants>

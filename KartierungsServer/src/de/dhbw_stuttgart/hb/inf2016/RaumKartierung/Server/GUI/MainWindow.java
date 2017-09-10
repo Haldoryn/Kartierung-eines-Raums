@@ -92,6 +92,7 @@ public class MainWindow {
 					clearPoints();
 				}
 			});
+			return;
 		}
 
 		drawImage.clearPoints();
@@ -106,6 +107,7 @@ public class MainWindow {
 					addPoint(point);
 				}
 			});
+			return;
 		}
 				
 		drawImage.addPoint(point);
@@ -120,6 +122,7 @@ public class MainWindow {
 					textPane.setText("");
 				}
 			});
+			return;
 		}
 		textPane.setText("");
 	}
@@ -137,11 +140,12 @@ public class MainWindow {
 					addLogEntry(message);
 				}
 			});
+			return;
 		}
 		
-		if(textPane.getText().length() > 1000)
+		if(textPane.getText().length() > 10000)
 		{
-			textPane.setText(textPane.getText().substring(500) + "\n" + message);
+			textPane.setText(textPane.getText().substring(8000) + "\n" + message);
 		}	
 		else
 		{
