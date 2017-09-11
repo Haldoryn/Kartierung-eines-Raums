@@ -14,13 +14,16 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.omg.PortableServer.ServantActivator;
 
@@ -63,17 +66,15 @@ public class Main {
 			public void onSave() 
 			{
 				JFileChooser chooser = new JFileChooser();
-				chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung.png");
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				chooser.showOpenDialog(null);
-				File folder = chooser.getSelectedFile();
-				if(folder != null)
+				chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung");
+				chooser.showSaveDialog(null);
+				File file = chooser.getSelectedFile();
+				if(file != null)
 				{
 					BufferedImage image = window.drawImage.renderToImage();
-					String directory = folder + "\\Kartierung.png";
 					try 
 					{
-						window.drawImage.saveToDisc(directory, image);
+						window.drawImage.saveToDisc(file.toString(), image);
 					} catch (IOException e) 
 					{
 						throw new IllegalArgumentException("Path must not be null");
