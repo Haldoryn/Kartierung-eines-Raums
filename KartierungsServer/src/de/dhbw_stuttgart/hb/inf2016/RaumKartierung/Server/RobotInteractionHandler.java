@@ -181,57 +181,87 @@ public class RobotInteractionHandler {
 	 */
 	public boolean checkScan() throws InterruptedException {
 		/*
+		 * speed is the movement speed in which the robot should turn its sensor. This config is called from the config object.
+		 */
+		int speed = (int)config.getConstbyName("SensorMoveSpeed");
+		/*
+		 * timeout is the time the program waits for a answer from the robot. This config is called from the config object.
+		 */
+		int timeout = (int)config.getConstbyName("timeout");
+		/*
+		 * width is the width of the robot. This class needs it in order to check if the robot can fit thru a checked space.
+		 * This config is called from the config object.
+		 */
+		double width = (double)config.getConstbyName("wheelDistance");
+		/*
+		 * distance is the distance this method has to check. This config is called from the config object.
+		 */
+		double distance = (double)config.getConstbyName("distancePerMove");
+		/*
+		 * hypotenuse is the hypotenuse of the triangle distance and width/2. 
+		 * The hypotenuse is needed in order to check if the scan length is long enough for the robot to fit.
+		 * This constant is calculated by the formula root((width/2)^2 + distance^2.
+		 */
+		double hypotenuse = Math.sqrt(Math.pow(width/2, 2) + Math.pow(distance,2));
+		/*
+		 * angle is the angle between hypotenuse and distance in the triangle distance width and hypotenuse.
+		 * This angle is needed in order to turn the sensor to this angle in order to scan and measure the hypotenuse.
+		 * This constant is calculated by the formula tan((width/2)/distance)
+		 * The double calculated by this formula gets rounded up in order to get a Integer because the robot needs its turning angle in an Integer. 
+		 */
+		int angle = (int)Math.ceil(Math.tan((width/2)/distance));
+		/*
 		 * The Robot scans in front of him.
 		 */
-		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		Double ScanValue = returnUltrasonic.getValue();
 		/*
 		 * It gets checked, if there is space for the robot to move. If not it returns false. 
 		 */
-		if(ScanValue < (int)config.getConstbyName("distancePerMove"))
+		if(ScanValue < distance)
 			return false;
 		/*
 		 * The Robot turns its head in the angle tan((width/2)/distancePerMove) in order to scan if the right side would fit.
 		 */
-		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+		robotSender.sendMoveSensorAndWait(speed, angle, timeout);
 		/*
 		 * The robot scans 
 		 */
-		returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		ScanValue = returnUltrasonic.getValue();
 		/*
 		 * It gets calculated if the robot would fit.
 		 */
-		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("wheelDistance")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2))) {
+		if(ScanValue < hypotenuse) {
 			/*
 			 * If it does not fit, the sensor gets turned back again and the method returns false.
 			 */
-			robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -((int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
+			robotSender.sendMoveSensorAndWait(speed, -angle, timeout);
 			return false;
 		}
 		/*
 		 * The robot turns its sensor in the angle -2 * tan((width/2)/distancePerMove) in order to rotate the scanner back to its previous position and further to the position, were it can scan if it would fit.
 		 */
-		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -2 * ((int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
+		robotSender.sendMoveSensorAndWait(speed, -2 * angle, timeout);
 		/*
 		 * the robot scans
 		 */
-		returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		ScanValue = returnUltrasonic.getValue();
 		/*
 		 * It gets calculated if the robot would fit.
 		 */
-		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("wheelDistance")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2))) {
+		if(ScanValue < hypotenuse) {
 			/*
 			 * If it does not fit, the sensor gets turned back again and the method returns false.
 			 */
-			robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+			robotSender.sendMoveSensorAndWait(speed, angle, timeout);
 			return false;
 		}
 		/*
 		 * If the robot fits it turns its sensor back and returns true.
 		 */
-		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+		robotSender.sendMoveSensorAndWait(speed, angle, timeout);
 		return true;
 	}
 }
