@@ -18,37 +18,22 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
  *
  */
 public class RobotInteractionHandler {
-	/*
-	 * timesScaned is a counter of every scan the robot makes. It counts only the scans of one sweep.
-	 */
-	private int timesScaned;
-	
-	/*
-	 * cons is the object, that reads the constants xml file and returns the wanted constant. 
-	 * It needs the path of the xml file as the parameter in the constructor. 
-	 */
-	private Config config;
-	
-	/*
-	 * vectorRoom is the object, that saves all points. It needs the movement of the robot in order to calculate the scanned points.
-	 */
-	private VectorRoom vectorRoom = new VectorRoom();
-	
-	/*
-	 * Controlling is responsible for the movement of the robot.
-	 */
-	private Controlling controlling;
 
-
-	/*
-	 * robotSender sends all commands to the robot.
-	 */
-	private IToRobotSender robotSender;
-	
-	/*
-	 * nextMove saves the next move of the robot.
-	 */
-	private Move nextMove;
+	private int timesScaned; // timesScaned is a counter of every scan the robot makes. It counts only the scans of one sweep.
+	private Config config; //cons is the object, that reads the constants xml file and returns the wanted constant. 
+	private VectorRoom vectorRoom; //vectorRoom is the object, that saves all points. It needs the movement of the robot in order to calculate the scanned points.
+	private Controlling controlling; //Controlling is responsible for the movement of the robot.
+	private IToRobotSender robotSender; //robotSender sends all commands to the robot.
+	private Move nextMove; //nextMove saves the next move of the robot.
+	private int speed; //speed is the speed in which the motors are rotating.
+	private int timeout; //timeout is the time the program waits for a reaction of the robot.
+	private int minScanDist; //minScanDist is the minimum a scan distance can be before the scan gets trashed.
+	private int maxScanDist; //maxScanDist is the maximum a scan distance can be before the scan gets trashed.
+	private int sensorSpeed; //sensorSpeed is the speed in which the sensor turns.
+	private int anglePerScan; //anglePerScan is the angle the sensor turns before it performs another scan.
+	private int maxScans; //maxScans is the amount of scans the robot performs per sweep.
+	private double width; //width is the width of the robot. This class needs it in order to check if the robot can fit thru a checked space.
+	double distance; //distance is the distance this method has to check.
 	
 	public RobotInteractionHandler(IProtocolEndpoint endpoint,Config config) throws InstantiationException, IllegalAccessException, UnknownHostException, IOException {
 		if(endpoint == null)
@@ -61,114 +46,104 @@ public class RobotInteractionHandler {
 		}
 				
 		this.robotSender = endpoint.getToRobotSender();
-		this.config=config;
-		 controlling= new Controlling(config);
+		this.config =config;
+		controlling = new Controlling(config);
+		speed  = (int)config.getConstbyName("speed");
+		timeout = (int)config.getConstbyName("timeout");
+		minScanDist = (int)config.getConstbyName("minScanDist");
+		maxScanDist = (int)config.getConstbyName("maxScanDist");
+		sensorSpeed = (int)config.getConstbyName("SensorMoveSpeed");
+		anglePerScan = (int)config.getConstbyName("AnglePerScan");
+		maxScans = (int)config.getConstbyName("maxScans");
+		width = (double)config.getConstbyName("wheelDistance");
+		distance = (double)config.getConstbyName("distancePerMove");
+		vectorRoom = new VectorRoom();
+	}
+	/**
+	 * @return vectorRoom
+	 */
+	public VectorRoom getVectorRoom() {
+		return vectorRoom;
 	}
 	
 	/**
-	 * It calls the and goes thru the procedure of controlling and communicating with the robot.
+	 * This class goes thru the procedure of controlling and communicating with the robot.
 	 * @throws InterruptedException
 	 */
 	public void doMove() throws InterruptedException {
-		/* 
-		 * at the Start of the loop the program gets the new move the robot has to perform. 
-		 */
-		//ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
-		//Double ScanValue = returnUltrasonic.getValue();
+		 
+		// at the Start of the loop the program gets the new move the robot has to perform. 
 		nextMove = controlling.next(checkScan());
-	
-		/*
-		 * The speed of both the Motors and the distance both motors have to drive get send to the robot.
-		 * It also gets the time, the protocol waits for a message from the robot till it stops waiting.
-		 */
+		
+		// The speed of both the Motors and the distance both motors have to drive get send to the robot.
+		// It also gets the time, the protocol waits for a message from the robot till it stops waiting.
 		ReturnMotorCmd returnMotor= robotSender.sendMoveMotorAndWait(
-				(int)config.getConstbyName("speed"), 
-				(int)config.getConstbyName("speed"), 
+				speed, 
+				speed, 
 				(int)Math.floor(nextMove.getLeftMotor()), 
 				(int)Math.floor(nextMove.getRightMotor()), 
-				(int)config.getConstbyName("timeout")
+				timeout
 		);
-		/*
-		 * the nextMove gets updated with the informations the robot returned and the move gets send to the vectorRoob 
-		 * in order to save the move and calculate the location of the robot.
-		 */
+		
+		// the nextMove gets updated with the informations the robot returned and the move gets send to the vectorRoob 
+	 	// in order to save the move and calculate the location of the robot.
 		nextMove.setMotor(returnMotor.getReachedLeftDistanceAngle(), returnMotor.getReachedRightDistanceAngle());
 		vectorRoom.movingRobot(nextMove);
 		
-		/*
-		 * If the last move was a move forward and not a turn the robot should mace a scan sweep.
-		 * The timesScanned counter gets reseted and the scan method gets called. 
-		 */
+		// If the last move was a move forward and not a turn the robot should mace a scan sweep.
+		// The timesScanned counter gets reseted and the scan method gets called. 
 		if(nextMove instanceof Forward) {
 			timesScaned = 0;
 			scan();
 		}
 	}
-	public VectorRoom getVectorRoom() {
-		return vectorRoom;
-	}
-	
 	
 	/**
 	 * This method goes thru the procedure of a sweep. Call it once and it runs a full sweep. It saves all the scans in the vectorRoom object.
 	 * @throws InterruptedException
 	 */
 	public void scan() throws InterruptedException {
-		/*
-		 * It gets counted, how many times the robot did scans in this sweep.
-		 * Eventually this has to be moved to the end of this method.
-		 */
+		
+		// It gets counted, how many times the robot did scans in this sweep.
 		timesScaned++;
 		
-		/*
-		 * The robot gets called to do a scan. This method waits till the robot returned something or till the timeout runs out. 
-		 */
-		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
-		
-		/*
-		 * The results of the scan get saved in the veectorRoom. 
-		 */
+		// The robot gets called to do a scan. This method waits till the robot returned something or till the timeout runs out. 
+		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		Double ScanValue = returnUltrasonic.getValue();
-		if(ScanValue >(int)config.getConstbyName("minScanDist") && ScanValue <(int)config.getConstbyName("maxScanDist")) {
+
+		// The results of the scan get saved in the veectorRoom if the scan value is in the trustworthy range. 
+		if(ScanValue > minScanDist && ScanValue < maxScanDist) {
 			vectorRoom.setScan(returnUltrasonic.getValue());
 		}
 		
-        if(timesScaned >= (int)config.getConstbyName("maxScans")){
-        	/*
-        	 * If the robot did all the scans he needs he needs to move the sensor to its original position.
-        	 * This sensor move gets saved in the vectorRoom.
-        	 */
-        	robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)config.getConstbyName("AnglePerScan") * (int)config.getConstbyName("maxScans") / 2, (int)config.getConstbyName("timeout"));
-            vectorRoom.turningSensor((int)config.getConstbyName("AnglePerScan") * (int)config.getConstbyName("maxScans") / 2);
+        if(timesScaned >= maxScanDist){
+        	// If the robot did all the scans he needs he needs to move the sensor to its original position.
+        	// This sensor move gets saved in the vectorRoom.
+        	robotSender.sendMoveSensorAndWait(sensorSpeed, anglePerScan * maxScans / 2, timeout);
+            vectorRoom.turningSensor(anglePerScan * maxScans / 2);
         }
-        else if(timesScaned > (int)config.getConstbyName("maxScans") / 2){
-        	/*
-        	 * If the robot did over the half of all the scans he needs, he turns his sensor to the other direction.
-        	 * This sensor turning move gets saved in the vectorRoom.
-        	 * The scan method gets called again to make the next scan.
-        	 */
-        	robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -(int)config.getConstbyName("AnglePerScan"), (int)config.getConstbyName("timeout"));
-            vectorRoom.turningSensor(-(int)config.getConstbyName("AnglePerScan"));
+        else if(timesScaned > maxScans / 2){
+        	// If the robot did over the half of all the scans he needs, he turns his sensor to the other direction.
+        	// This sensor turning move gets saved in the vectorRoom.
+        	// The scan method gets called again to make the next scan.
+        	robotSender.sendMoveSensorAndWait(sensorSpeed, -anglePerScan, timeout);
+            vectorRoom.turningSensor(-anglePerScan);
             scan();
         }
-        else if(timesScaned == (int)config.getConstbyName("maxScans") / 2){
-        	/*
-        	 * If the robot did the half of its scans it turns its sensor back to its neutral position and turns it in the other direction.
-        	 * This sensor move gets saved in the vectorRoom.
-        	 * The scan method gets called again to make the next scan.
-        	 */
-        	robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -(int)config.getConstbyName("AnglePerScan") * (int)config.getConstbyName("maxScans") / 2, (int)config.getConstbyName("timeout"));
-            vectorRoom.turningSensor(-((int)config.getConstbyName("AnglePerScan") * (int)config.getConstbyName("maxScans") / 2 + (int)config.getConstbyName("AnglePerScan")));
+        else if(timesScaned == maxScans / 2){
+        	// If the robot did the half of its scans it turns its sensor back to its neutral position and turns it in the other direction.
+        	// This sensor move gets saved in the vectorRoom.
+        	// The scan method gets called again to make the next scan.
+        	robotSender.sendMoveSensorAndWait(sensorSpeed, -anglePerScan * maxScans / 2, timeout);
+            vectorRoom.turningSensor(-(anglePerScan * maxScans / 2 + anglePerScan));
             scan();
         }
         else{
-        	/*
-        	 * If the robot did oder the half of its scans, it rotates its scanner.
-        	 * This sensor move gets saved in the vectorRoom.
-        	 * The scan method gets called again to make the next scan.
-        	 */
-        	robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)config.getConstbyName("AnglePerScan"), (int)config.getConstbyName("timeout"));
-            vectorRoom.turningSensor((int)config.getConstbyName("AnglePerScan"));
+        	// If the robot did oder the half of its scans, it rotates its scanner.
+        	// This sensor move gets saved in the vectorRoom.
+        	// The scan method gets called again to make the next scan.
+        	robotSender.sendMoveSensorAndWait(sensorSpeed, anglePerScan, timeout);
+            vectorRoom.turningSensor(anglePerScan);
             scan();
         }
 	}
@@ -180,88 +155,57 @@ public class RobotInteractionHandler {
 	 * @throws InterruptedException
 	 */
 	public boolean checkScan() throws InterruptedException {
-		/*
-		 * speed is the movement speed in which the robot should turn its sensor. This config is called from the config object.
-		 */
-		int speed = (int)config.getConstbyName("SensorMoveSpeed");
-		/*
-		 * timeout is the time the program waits for a answer from the robot. This config is called from the config object.
-		 */
-		int timeout = (int)config.getConstbyName("timeout");
-		/*
-		 * width is the width of the robot. This class needs it in order to check if the robot can fit thru a checked space.
-		 * This config is called from the config object.
-		 */
-		double width = (double)config.getConstbyName("wheelDistance");
-		/*
-		 * distance is the distance this method has to check. This config is called from the config object.
-		 */
-		double distance = (double)config.getConstbyName("distancePerMove");
-		/*
-		 * hypotenuse is the hypotenuse of the triangle distance and width/2. 
-		 * The hypotenuse is needed in order to check if the scan length is long enough for the robot to fit.
-		 * This constant is calculated by the formula root((width/2)^2 + distance^2.
-		 */
+		// hypotenuse is the hypotenuse of the triangle distance and width/2. 
+		// The hypotenuse is needed in order to check if the scan length is long enough for the robot to fit.
+		// This constant is calculated by the formula root((width/2)^2 + distance^2.
 		double hypotenuse = Math.sqrt(Math.pow(width/2, 2) + Math.pow(distance,2));
-		/*
-		 * angle is the angle between hypotenuse and distance in the triangle distance width and hypotenuse.
-		 * This angle is needed in order to turn the sensor to this angle in order to scan and measure the hypotenuse.
-		 * This constant is calculated by the formula tan((width/2)/distance)
-		 * The double calculated by this formula gets rounded up in order to get a Integer because the robot needs its turning angle in an Integer. 
-		 */
+		
+		// angle is the angle between hypotenuse and distance in the triangle distance width and hypotenuse.
+		// This angle is needed in order to turn the sensor to this angle in order to scan and measure the hypotenuse.
+		// This constant is calculated by the formula tan((width/2)/distance)
+		// The double calculated by this formula gets rounded up in order to get a Integer because the robot needs its turning angle in an Integer. 
 		int angle = (int)Math.ceil(Math.tan((width/2)/distance));
-		/*
-		 * The Robot scans in front of him.
-		 */
+		
+		// The Robot scans in front of him.
 		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		Double ScanValue = returnUltrasonic.getValue();
-		/*
-		 * It gets checked, if there is space for the robot to move. If not it returns false. 
-		 */
+		
+		// It gets checked, if there is space for the robot to move. If not it returns false. 
 		if(ScanValue < distance)
 			return false;
-		/*
-		 * The Robot turns its head in the angle tan((width/2)/distancePerMove) in order to scan if the right side would fit.
-		 */
-		robotSender.sendMoveSensorAndWait(speed, angle, timeout);
-		/*
-		 * The robot scans 
-		 */
+		
+		// The Robot turns its head in the angle tan((width/2)/distancePerMove) in order to scan if the right side would fit.
+		robotSender.sendMoveSensorAndWait(sensorSpeed, angle, timeout);
+		
+		// The robot scans 
 		returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		ScanValue = returnUltrasonic.getValue();
-		/*
-		 * It gets calculated if the robot would fit.
-		 */
+		
+		// It gets calculated if the robot would fit.
 		if(ScanValue < hypotenuse) {
-			/*
-			 * If it does not fit, the sensor gets turned back again and the method returns false.
-			 */
-			robotSender.sendMoveSensorAndWait(speed, -angle, timeout);
+			
+			// If it does not fit, the sensor gets turned back again and the method returns false.
+			robotSender.sendMoveSensorAndWait(sensorSpeed, -angle, timeout);
 			return false;
 		}
-		/*
-		 * The robot turns its sensor in the angle -2 * tan((width/2)/distancePerMove) in order to rotate the scanner back to its previous position and further to the position, were it can scan if it would fit.
-		 */
-		robotSender.sendMoveSensorAndWait(speed, -2 * angle, timeout);
-		/*
-		 * the robot scans
-		 */
+		// The robot turns its sensor in the angle -2 * tan((width/2)/distancePerMove) in order to rotate the scanner 
+		// back to its previous position and further to the position, were it can scan if it would fit.
+		robotSender.sendMoveSensorAndWait(sensorSpeed, -2 * angle, timeout);
+		
+		// the robot scans
 		returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		ScanValue = returnUltrasonic.getValue();
-		/*
-		 * It gets calculated if the robot would fit.
-		 */
+		
+		// It gets calculated if the robot would fit.
 		if(ScanValue < hypotenuse) {
-			/*
-			 * If it does not fit, the sensor gets turned back again and the method returns false.
-			 */
-			robotSender.sendMoveSensorAndWait(speed, angle, timeout);
+			
+			// If it does not fit, the sensor gets turned back again and the method returns false.
+			robotSender.sendMoveSensorAndWait(sensorSpeed, angle, timeout);
 			return false;
 		}
-		/*
-		 * If the robot fits it turns its sensor back and returns true.
-		 */
-		robotSender.sendMoveSensorAndWait(speed, angle, timeout);
+		
+		// If the robot fits it turns its sensor back and returns true.
+		robotSender.sendMoveSensorAndWait(sensorSpeed, angle, timeout);
 		return true;
 	}
 }
