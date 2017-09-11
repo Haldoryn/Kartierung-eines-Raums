@@ -75,7 +75,7 @@ public class RobotInteractionHandler {
 		 */
 		//ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
 		//Double ScanValue = returnUltrasonic.getValue();
-		nextMove = controlling.next(/*ScanValue*/);
+		nextMove = controlling.next(checkScan());
 	
 		/*
 		 * The speed of both the Motors and the distance both motors have to drive get send to the robot.
