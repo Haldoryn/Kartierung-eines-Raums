@@ -24,7 +24,8 @@ public class RobotInteractionHandler {
 	private int timesScaned;
 	
 	/*
-	 * cons is the object, that reads the constants xml file and returns the wanted constant. Id needs the path of the xml file as the parameter in the constructor. 
+	 * cons is the object, that reads the constants xml file and returns the wanted constant. 
+	 * It needs the path of the xml file as the parameter in the constructor. 
 	 */
 	private Config config;
 	
@@ -171,4 +172,41 @@ public class RobotInteractionHandler {
             scan();
         }
 	}
+	public boolean checkScan() throws InterruptedException {
+		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		Double ScanValue = returnUltrasonic.getValue();
+		if(ScanValue < (int)config.getConstbyName("distancePerMove"))
+			return false;
+		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+		returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		ScanValue = returnUltrasonic.getValue();
+		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("width")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2)))
+			return false;
+		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -2 * ((int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
+		returnUltrasonic= robotSender.sendGetUltrasonicAndWait((int)config.getConstbyName("timeout"));
+		ScanValue = returnUltrasonic.getValue();
+		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("width")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2)))
+			return false;
+		return true;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
