@@ -193,7 +193,7 @@ public class RobotInteractionHandler {
 		/*
 		 * The Robot turns its head in the angle tan((width/2)/distancePerMove) in order to scan if the right side would fit.
 		 */
-		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
 		/*
 		 * The robot scans 
 		 */
@@ -202,17 +202,17 @@ public class RobotInteractionHandler {
 		/*
 		 * It gets calculated if the robot would fit.
 		 */
-		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("width")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2))) {
+		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("wheelDistance")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2))) {
 			/*
 			 * If it does not fit, the sensor gets turned back again and the method returns false.
 			 */
-			robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -((int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
+			robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -((int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
 			return false;
 		}
 		/*
 		 * The robot turns its sensor in the angle -2 * tan((width/2)/distancePerMove) in order to rotate the scanner back to its previous position and further to the position, were it can scan if it would fit.
 		 */
-		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -2 * ((int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
+		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), -2 * ((int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove")))), (int)config.getConstbyName("timeout"));
 		/*
 		 * the robot scans
 		 */
@@ -221,17 +221,17 @@ public class RobotInteractionHandler {
 		/*
 		 * It gets calculated if the robot would fit.
 		 */
-		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("width")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2))) {
+		if(ScanValue < Math.sqrt(Math.pow((double)config.getConstbyName("wheelDistance")/2, 2) + Math.pow((double)config.getConstbyName("distancePerMove"),2))) {
 			/*
 			 * If it does not fit, the sensor gets turned back again and the method returns false.
 			 */
-			robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+			robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
 			return false;
 		}
 		/*
 		 * If the robot fits it turns its sensor back and returns true.
 		 */
-		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("width")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
+		robotSender.sendMoveSensorAndWait((int)config.getConstbyName("SensorMoveSpeed"), (int)Math.ceil(Math.tan(((double)config.getConstbyName("wheelDistance")/2)/(double)config.getConstbyName("distancePerMove"))), (int)config.getConstbyName("timeout"));
 		return true;
 	}
 }
