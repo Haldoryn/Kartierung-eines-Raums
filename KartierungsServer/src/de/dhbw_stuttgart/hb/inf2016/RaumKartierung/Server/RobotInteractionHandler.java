@@ -46,7 +46,7 @@ public class RobotInteractionHandler {
 		}
 				
 		this.robotSender = endpoint.getToRobotSender();
-		this.config =config;
+		this.config = config;
 		controlling = new Controlling(config);
 		speed  = (int)config.getConstbyName("speed");
 		timeout = (int)config.getConstbyName("timeout");
@@ -209,23 +209,3 @@ public class RobotInteractionHandler {
 		return true;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

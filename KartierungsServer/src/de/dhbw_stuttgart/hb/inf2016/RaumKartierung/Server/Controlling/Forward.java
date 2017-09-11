@@ -3,33 +3,41 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 
 /**
- * Created by samue on 20.06.2017.
+ * 
+ * @author Samuel Volz
+ *
  */
 public class Forward implements Move {
     double LeftMotor;
     double RightMotor;
-    Config cons;
-
-    public Forward(double distence,Config cfg) {
-        Distence = distence;
+    Config cfg;
+    
+    /**
+     * Constructor of Forward class.
+     * It takes a distance and calculates it into the movement of the motors.
+     * @param distance is the distance the robot should move forward. 
+     * @param cfg is the object that takes configurations from an xml file.
+     */
+    public Forward(double distance,Config cfg) {
+        Distance = distance;
         //Code to Calc LeftMotor and Right Motor
-        cons = cfg;
-        LeftMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
-        RightMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
+        this.cfg = cfg;
+        LeftMotor = Distance/(2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) * 360;
+        RightMotor = Distance/(2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) * 360;
 
     }
 
     public double getDistence() {
-        return Distence;
+        return Distance;
     }
 
     public void setDistence(double distence) {
-        Distence = distence;
-        LeftMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
-        RightMotor = Distence/(2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) * 360;
+        Distance = distence;
+        LeftMotor = Distance/(2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) * 360;
+        RightMotor = Distance/(2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) * 360;
     }
 
-    double Distence;
+    double Distance;
     @Override
     public double getLeftMotor() {
         return LeftMotor;
@@ -42,6 +50,6 @@ public class Forward implements Move {
 
 	@Override
 	public void setMotor(double leftMotor, double rightMotor) {
-		setDistence((leftMotor + rightMotor) / 2 * (2 * Math.PI * (double)cons.getConstbyName("wheelRadius")) / 360);
+		setDistence((leftMotor + rightMotor) / 2 * (2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) / 360);
 	}
 }

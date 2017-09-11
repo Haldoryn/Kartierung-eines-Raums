@@ -163,6 +163,5 @@ public class Main {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
-		// Stuff to do if the robot should stop running.
 	}
 }

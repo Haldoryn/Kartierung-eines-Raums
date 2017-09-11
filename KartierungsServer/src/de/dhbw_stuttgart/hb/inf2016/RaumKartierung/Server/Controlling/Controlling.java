@@ -14,7 +14,10 @@ public class Controlling {
     Random random = new Random();
 
     
-    
+    /**
+     * Sets the config object. 
+     * @param config in an object, that reds from an xml file and returns configured stuff.
+     */
     public Controlling(Config config) {
 		super();
 		this.config = config;
@@ -28,10 +31,12 @@ public class Controlling {
 	public Move next(boolean doesItFit) {
 		
 		 if(doesItFit){
+			//If the robot can perform a forward move he will perform it.
 			NextMove = new Forward((int)config.getConstbyName("distancePerMove"),config);
             return NextMove;
 		}
 		else{
+			//If the robot does not have the space to perform a forward move, he will turn.
 			 NextMove = new Turn(random.nextInt(360 * 2) - 360,config);
 	            return NextMove;
 		}
