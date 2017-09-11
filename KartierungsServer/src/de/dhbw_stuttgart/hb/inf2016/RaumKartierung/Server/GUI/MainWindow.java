@@ -1,6 +1,5 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI;
 
-import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -9,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -31,8 +28,8 @@ import javax.swing.SwingUtilities;
  * @author dh10hcn
  *
  */
-public class MainWindow {
-
+public class MainWindow 
+{
 	private JFrame frame;
 	public JTextArea textPane = new JTextArea();
 	public MapDiplay drawImage = new MapDiplay();
@@ -40,85 +37,218 @@ public class MainWindow {
 	private List<IConnectEventListener> onConnectListeners = new LinkedList<>();
 	private List<IStartEventListener> onStartListeners = new LinkedList<>();
 	private List<IStopEventListener> onStopListeners = new LinkedList<>();
+	private List<ISaveEventListener> onSaveListeners = new LinkedList<>();
+	private List<IScanEventListener> onScanListeners = new LinkedList<>();
+	private List<IForwardEventListener> onForwardListeners = new LinkedList<>();
+	private List<IBackwardEventListener> onBackwardListeners = new LinkedList<>();
+	private List<ILeftEventListener> onLeftListeners = new LinkedList<>();
+	private List<IRightEventListener> onRightListeners = new LinkedList<>();
 
-	public void addOnConnectEventListener(IConnectEventListener listener) {
-		if (listener == null) {
+	public void addOnConnectEventListener(IConnectEventListener listener) 
+	{
+		if (listener == null) 
+		{
 			throw new IllegalArgumentException("The 'listener' argument must not be null");
 		}
 		onConnectListeners.add(listener);
 	}
 
-	public void removeOnConnectEventListener(IConnectEventListener listener) {
-		if (listener == null) {
+	public void removeOnConnectEventListener(IConnectEventListener listener) 
+	{
+		if (listener == null) 
+		{
 			throw new IllegalArgumentException("The 'listener' argument must not be null");
 		}
 		onConnectListeners.remove(listener);
 	}
 
-	public void addOnStartEventListener(IStartEventListener listener) {
-		if (listener == null) {
+	public void addOnStartEventListener(IStartEventListener listener) 
+	{
+		if (listener == null) 
+		{
 			throw new IllegalArgumentException("The 'listener' argument must not be null");
 		}
 		onStartListeners.add(listener);
 	}
 
-	public void removeOnStartEventListener(IStartEventListener listener) {
-		if (listener == null) {
+	public void removeOnStartEventListener(IStartEventListener listener) 
+	{
+		if (listener == null) 
+		{
 			throw new IllegalArgumentException("The 'listener' argument must not be null");
 		}
 		onStartListeners.remove(listener);
 	}
 
-	public void addOnStopEventListener(IStopEventListener listener) {
-		if (listener == null) {
+	public void addOnStopEventListener(IStopEventListener listener) 
+	{
+		if (listener == null) 
+		{
 			throw new IllegalArgumentException("The 'listener' argument must not be null");
 		}
 		onStopListeners.add(listener);
 	}
 
-	public void removeOnStopEventListener(IStopEventListener listener) {
-		if (listener == null) {
+	public void removeOnStopEventListener(IStopEventListener listener) 
+	{
+		if (listener == null) 
+		{
 			throw new IllegalArgumentException("The 'listener' argument must not be null");
 		}
 		onStopListeners.remove(listener);
 	}
+	
+	public void addOnSaveEventListener(ISaveEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onSaveListeners.add(listener);
+	}
 
-	public void clearPoints() {
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
+	public void removeOnSaveEventListener(ISaveEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onSaveListeners.remove(listener);
+	}
+	
+	public void addOnScanEventListener(IScanEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onScanListeners.add(listener);
+	}
 
+	public void removeOnScanEventListener(IScanEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onScanListeners.remove(listener);
+	}
+	
+	public void addOnForwardEventListener(IForwardEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onForwardListeners.add(listener);
+	}
+
+	public void removeOnForwardEventListener(IForwardEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onForwardListeners.remove(listener);
+	}
+	
+	public void addOnBackwardEventListener(IBackwardEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onBackwardListeners.add(listener);
+	}
+
+	public void removeOnBackwardEventListener(IBackwardEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onBackwardListeners.remove(listener);
+	}
+	
+	public void addOnLeftEventListener(ILeftEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onLeftListeners.add(listener);
+	}
+
+	public void removeOnLeftEventListener(ILeftEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onLeftListeners.remove(listener);
+	}
+	
+	public void addOnRightEventListener(IRightEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onRightListeners.add(listener);
+	}
+
+	public void removeOnRightEventListener(IRightEventListener listener) 
+	{
+		if (listener == null) 
+		{
+			throw new IllegalArgumentException("The 'listener' argument must not be null");
+		}
+		onRightListeners.remove(listener);
+	}
+
+	public void clearPoints() 
+	{
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
 				@Override
-				public void run() {
+				public void run() 
+				{
 					clearPoints();
 				}
 			});
 			return;
 		}
-
 		drawImage.clearPoints();
 	}
 
-	public void addPoint(Point point) {
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-
+	public void addPoint(Point point) 
+	{
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
 				@Override
-				public void run() {
+				public void run() 
+				{
 					addPoint(point);
 				}
 			});
 			return;
-		}
-				
+		}			
 		drawImage.addPoint(point);
 	}
 
-	public void ClearLog() {	
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-
+	public void ClearLog() 
+	{	
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
 				@Override
-				public void run() {
+				public void run() 
+				{
 					textPane.setText("");
 				}
 			});
@@ -127,16 +257,20 @@ public class MainWindow {
 		textPane.setText("");
 	}
 
-	public void addLogEntry(String message) {
-		if (message == null) {
+	public void addLogEntry(String message) 
+	{
+		if (message == null) 
+		{
 			throw new IllegalArgumentException("The 'message' argument must not be null");
 		}
 		
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
 				@Override
-				public void run() {
+				public void run() 
+				{
 					addLogEntry(message);
 				}
 			});
@@ -151,19 +285,24 @@ public class MainWindow {
 		{
 			textPane.setText(textPane.getText() + "\n" + message);
 		}
-
+		
 	}
 
 	/**
 	 * Show the maiWindow
 	 */
-	public void Show() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
+	public void Show() 
+	{
+		SwingUtilities.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					initialize();
 
-				} catch (Exception e) {
+				} catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -172,11 +311,13 @@ public class MainWindow {
 	
 	public void repaintImage()
 	{
-		if (!SwingUtilities.isEventDispatchThread()) {
-			SwingUtilities.invokeLater(new Runnable() {
-
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
 				@Override
-				public void run() {
+				public void run() 
+				{
 					repaintImage();
 				}
 			});
@@ -187,7 +328,8 @@ public class MainWindow {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() 
+	{
 
 		// the window itself
 		frame = new JFrame();
@@ -211,34 +353,72 @@ public class MainWindow {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 
-		// the button to commit IP
-		JButton btnVerbinden = new JButton("Verbinden");
-		springLayout.putConstraint(SpringLayout.NORTH, btnVerbinden, -4, SpringLayout.NORTH, labelIP);
-		springLayout.putConstraint(SpringLayout.WEST, btnVerbinden, 6, SpringLayout.EAST, textField);
-		btnVerbinden.setActionCommand("Connect");
-		btnVerbinden.addActionListener(new ActionListener() {
-
+		// the button connect
+		JButton btnConnect = new JButton("Verbinden");
+		springLayout.putConstraint(SpringLayout.NORTH, btnConnect, -4, SpringLayout.NORTH, labelIP);
+		springLayout.putConstraint(SpringLayout.WEST, btnConnect, 6, SpringLayout.EAST, textField);
+		btnConnect.setActionCommand("Connect");
+		btnConnect.addActionListener(new ActionListener() 
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
 
-				for (IConnectEventListener listener : onConnectListeners) {
-					// ToDo add port to gui
-					try {
-						InetAddress netAddress = InetAddress.getByName(textField.getText());
-						// Default port
-						listener.onConnect(netAddress, 9876);
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Invalid address", "Connection Error",
-								JOptionPane.INFORMATION_MESSAGE);
+				for (IConnectEventListener listener : onConnectListeners) 
+				{
+					if (textField.getText().indexOf(':') > -1) 
+					{
+						String[] arr = textField.getText().split(":");
+						String host = arr[0];
+						int port = Integer.parseInt(arr[1]);
+						try 
+						{
+							InetAddress netAddress = InetAddress.getByName(host);
+							listener.onConnect(netAddress, port);
+						} catch (Exception ex) 
+						{
+							JOptionPane.showMessageDialog(null, "Invalid address", "Connection Error", JOptionPane.INFORMATION_MESSAGE);
+						}
+					}
+					else
+					{
+						try 
+						{
+							InetAddress netAddress = InetAddress.getByName(textField.getText());
+							// Default port
+							listener.onConnect(netAddress, 9876);
+						} catch (Exception ex) 
+						{
+							JOptionPane.showMessageDialog(null, "Invalid address", "Connection Error", JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
 				}
 			}
 		});
-		frame.getContentPane().add(btnVerbinden);
+		frame.getContentPane().add(btnConnect);
+		
+		// the button save
+		JButton btnSave = new JButton("Speichern");
+		springLayout.putConstraint(SpringLayout.NORTH, btnSave, 0, SpringLayout.NORTH, btnConnect);
+		springLayout.putConstraint(SpringLayout.WEST, btnSave, 6, SpringLayout.EAST, btnConnect);
+		btnSave.setActionCommand("Save");
+		btnSave.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+
+				for (ISaveEventListener listener : onSaveListeners) 
+				{
+					listener.onSave();
+				}
+			}
+		});
+		frame.getContentPane().add(btnSave);
 
 		// the tab Pane at the top
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		springLayout.putConstraint(SpringLayout.NORTH, tabbedPane, 6, SpringLayout.SOUTH, btnVerbinden);
+		springLayout.putConstraint(SpringLayout.NORTH, tabbedPane, 6, SpringLayout.SOUTH, btnConnect);
 		springLayout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, tabbedPane, 160, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, tabbedPane, 424, SpringLayout.WEST, frame.getContentPane());
@@ -258,12 +438,13 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.NORTH, btnStart, 10, SpringLayout.NORTH, panel1);
 		springLayout.putConstraint(SpringLayout.WEST, btnStart, 10, SpringLayout.WEST, panel1);
 		btnStart.setActionCommand("Start");
-		btnStart.addActionListener(new ActionListener() {
-
+		btnStart.addActionListener(new ActionListener() 
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (IStartEventListener listener : onStartListeners) {
-					// ToDo add port to gui
+			public void actionPerformed(ActionEvent e) 
+			{
+				for (IStartEventListener listener : onStartListeners) 
+				{
 					listener.onStart();
 				}
 
@@ -278,12 +459,13 @@ public class MainWindow {
 		springLayout.putConstraint(SpringLayout.NORTH, btnStopp, 0, SpringLayout.NORTH, btnStart);
 		springLayout.putConstraint(SpringLayout.WEST, btnStopp, 6, SpringLayout.EAST, btnStart);
 		btnStopp.setActionCommand("Stopp");
-		btnStopp.addActionListener(new ActionListener() {
-
+		btnStopp.addActionListener(new ActionListener() 
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (IStopEventListener listener : onStopListeners) {
-					// ToDo add port to gui
+			public void actionPerformed(ActionEvent e) 
+			{
+				for (IStopEventListener listener : onStopListeners) 
+				{
 					listener.onStop();
 				}
 
@@ -318,6 +500,18 @@ public class MainWindow {
 		JButton btnForward = new JButton(iconForward);
 		btnForward.setMnemonic(KeyEvent.VK_UP);
 		btnForward.setActionCommand("Forward");
+		btnForward.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+
+				for (IForwardEventListener listener : onForwardListeners) 
+				{
+					listener.onForward();
+				}
+			}
+		});
 		panel2.add(btnForward);
 
 		// next five placeholder
@@ -332,6 +526,18 @@ public class MainWindow {
 		JButton btnLeft = new JButton(iconLeft);
 		btnLeft.setMnemonic(KeyEvent.VK_LEFT);
 		btnLeft.setActionCommand("Left");
+		btnLeft.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+
+				for (ILeftEventListener listener : onLeftListeners) 
+				{
+					listener.onLeft();
+				}
+			}
+		});
 		panel2.add(btnLeft);
 
 		// button to scan
@@ -339,6 +545,17 @@ public class MainWindow {
 		JButton btnScan = new JButton(iconScan);
 		btnScan.setMnemonic(KeyEvent.VK_END);
 		btnScan.setActionCommand("Scan");
+		btnScan.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				for (IScanEventListener listener : onScanListeners)
+				{
+					listener.onScan();
+				}
+			}
+		});
 		panel2.add(btnScan);
 
 		// button right
@@ -346,6 +563,18 @@ public class MainWindow {
 		JButton btnRight = new JButton(iconRight);
 		btnRight.setMnemonic(KeyEvent.VK_RIGHT);
 		btnRight.setActionCommand("Right");
+		btnRight.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+
+				for (IRightEventListener listener : onRightListeners) 
+				{
+					listener.onRight();
+				}
+			}
+		});
 		panel2.add(btnRight);
 
 		// next five placeholder
@@ -360,6 +589,17 @@ public class MainWindow {
 		JButton btnBackward = new JButton(iconBackwards);
 		btnBackward.setMnemonic(KeyEvent.VK_DOWN);
 		btnBackward.setActionCommand("Backwards");
+		btnBackward.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+
+				for (IBackwardEventListener listener : onBackwardListeners) {
+					listener.onBackward();
+				}
+			}
+		});
 		panel2.add(btnBackward);
 
 		// last three placeholder
@@ -382,7 +622,7 @@ public class MainWindow {
 		// the panel to show some simple commands to the user
 		textPane.setEditable(false);
 		
-		//Scrollbar for the texpane
+		//ScrollBar for the TextPane
 		JScrollPane scrollPane = new JScrollPane(textPane);
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, 6, SpringLayout.SOUTH, labelcommand);
 		springLayout.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, labelIP);

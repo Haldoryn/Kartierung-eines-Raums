@@ -7,15 +7,19 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IConnectEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Random;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.omg.PortableServer.ServantActivator;
@@ -52,6 +56,32 @@ public class Main {
 		 */
 		window = new MainWindow();
 		window.Show();
+		window.addOnSaveEventListener(new ISaveEventListener() 
+		{
+
+			@Override
+			public void onSave() 
+			{
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung.png");
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				chooser.showOpenDialog(null);
+				File folder = chooser.getSelectedFile();
+				if(folder != null)
+				{
+					BufferedImage image = window.drawImage.renderToImage();
+					String directory = folder + "\\Kartierung.png";
+					try 
+					{
+						window.drawImage.saveToDisc(directory, image);
+					} catch (IOException e) 
+					{
+						throw new IllegalArgumentException("Path must not be null");
+					}
+				}
+			}
+		});
+		
 		window.addOnStartEventListener(new IStartEventListener() {
 
 			@Override
