@@ -13,7 +13,6 @@ public class Turn implements Move {
     public Turn(double angle,Config cfg) {
         cons = cfg;
         setAngle(angle);
-
     }
 
     public double getAngle() {

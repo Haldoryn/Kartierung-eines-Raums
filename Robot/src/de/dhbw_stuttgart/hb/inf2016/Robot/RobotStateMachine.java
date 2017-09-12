@@ -16,6 +16,7 @@ import lejos.robotics.RangeFinder;
 import lejos.robotics.RangeFinderAdapter;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
+import lejos.robotics.filter.MedianFilter;
 import lejos.utility.Delay;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
@@ -57,7 +58,8 @@ public class RobotStateMachine implements ICommandReceiver {
 		responseSender = endpoint.getFromRobotSender();
 		this.endpoint = endpoint;
 
-		sonar = new RangeFinderAdapter(new EV3UltrasonicSensor(SensorPort.S1));
+		sonar = new RangeFinderAdapter(new MedianFilter(new EV3UltrasonicSensor(SensorPort.S1), 10));
+
 		DisplayConsole.writeString("Ultrasonic OK");
 
 		sensorMotor = new EV3MediumRegulatedMotor(MotorPort.A);
@@ -134,7 +136,7 @@ public class RobotStateMachine implements ICommandReceiver {
 				DoGyroscopeScan();
 				break;
 			case ScanUltrasonic:
-				responseSender.sendReturnUltrasonic(sonar.getRange());
+				DoUltrasonic();
 				returnToMainState();
 				break;
 			case Status:
@@ -145,6 +147,11 @@ public class RobotStateMachine implements ICommandReceiver {
 				throw new Exception("Unknown state");
 			}
 		}
+	}
+
+	private void DoUltrasonic() {
+		responseSender.sendReturnUltrasonic(sonar.getRange());
+
 	}
 
 	/**

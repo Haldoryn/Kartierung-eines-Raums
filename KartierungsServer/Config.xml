@@ -2,9 +2,9 @@
 <constants>
 <constant name = "speed" type ="Integer">180</constant>
 <constant name = "timeout" type ="Integer">10000</constant>
-<constant name = "maxScans" type ="Integer">20</constant>
+<constant name = "maxScans" type ="Integer">180</constant>
 <constant name = "SensorMoveSpeed" type ="Integer">60</constant>
-<constant name = "AnglePerScan" type ="Integer">9</constant>
+<constant name = "AnglePerScan" type ="Integer">1</constant>
 <constant name = "RobotIP" type ="String">10.0.1.1</constant>
 <constant name = "RobotPort" type ="String">???</constant>
 <constant name = "wheelDistance" type ="Double">15.8</constant>
