@@ -18,7 +18,6 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
