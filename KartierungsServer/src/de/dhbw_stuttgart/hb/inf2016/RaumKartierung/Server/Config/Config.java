@@ -15,10 +15,11 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 /**
- * @author Jan Wäckers The Config class provides the possibility to get or set
+ * The Config class provides the possibility to get or set
  *         the Attribute Content of an constant Element of an Attribute in the
  *         Config File Possible return types: Integer, Double, Long, Float,
  *         Short, Boolean, Byte, Char, String
+ * @author Jan Wäckers 
  * 
  */
 public class Config {
@@ -60,7 +61,6 @@ public class Config {
 			String content = currently.getText();
 			String type = currently.getAttributeValue("type");
 			
-			//Dont use a error message as the default value. this just causes problems
 			Object myValue = null;
 
 			switch (type) {
