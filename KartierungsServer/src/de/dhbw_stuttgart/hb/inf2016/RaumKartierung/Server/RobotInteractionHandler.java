@@ -31,8 +31,8 @@ public class RobotInteractionHandler {
 	private Move nextMove; //nextMove saves the next move of the robot.
 	private int speed; //speed is the speed in which the motors are rotating.
 	private int timeout; //timeout is the time the program waits for a reaction of the robot.
-	private int minScanDist; //minScanDist is the minimum a scan distance can be before the scan gets trashed.
-	private int maxScanDist; //maxScanDist is the maximum a scan distance can be before the scan gets trashed.
+	private double minScanDist; //minScanDist is the minimum a scan distance can be before the scan gets trashed.
+	private double maxScanDist; //maxScanDist is the maximum a scan distance can be before the scan gets trashed.
 	private int sensorSpeed; //sensorSpeed is the speed in which the sensor turns.
 	private int anglePerScan; //anglePerScan is the angle the sensor turns before it performs another scan.
 	private int maxScans; //maxScans is the amount of scans the robot performs per sweep.
@@ -57,8 +57,8 @@ public class RobotInteractionHandler {
 		controlling = new Controlling(config);
 		speed  = (int)config.getConstbyName("speed");
 		timeout = (int)config.getConstbyName("timeout");
-		minScanDist = (int)config.getConstbyName("minScanDist");
-		maxScanDist = (int)config.getConstbyName("maxScanDist");
+		minScanDist = (double)config.getConstbyName("minScanDist");
+		maxScanDist = (double)config.getConstbyName("maxScanDist");
 		sensorSpeed = (int)config.getConstbyName("SensorMoveSpeed");
 		anglePerScan = (int)config.getConstbyName("AnglePerScan");
 		maxScans = (int)config.getConstbyName("maxScans");
