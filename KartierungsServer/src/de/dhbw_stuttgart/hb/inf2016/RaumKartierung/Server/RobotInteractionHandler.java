@@ -133,7 +133,10 @@ public class RobotInteractionHandler {
 		// The robot gets called to do a scan. This method waits till the robot returned something or till the timeout runs out. 
 		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		Double ScanValue = returnUltrasonic.getValue();
-
+		
+		// It gets counted, how many times the robot did scans in this sweep.
+		timesScaned++;
+		
 		// The results of the scan get saved in the veectorRoom if the scan value is in the trustworthy range. 
 		if(ScanValue > minScanDist && ScanValue < maxScanDist) {
 			vectorRoom.setScan(returnUltrasonic.getValue());
