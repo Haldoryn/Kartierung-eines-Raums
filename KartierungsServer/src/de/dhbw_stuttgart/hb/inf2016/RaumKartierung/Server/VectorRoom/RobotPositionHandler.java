@@ -36,7 +36,7 @@ public class RobotPositionHandler {
     public void drivingRobot(Forward forward){
         double Adjacent = Math.cos(Math.toRadians(robot.getAngle())) * forward.getDistence();
         double Opposite = Math.sin(Math.toRadians(robot.getAngle())) * forward.getDistence();
-        robot.setVector(vectorOperations.add(robot.getVector(), new double[]{Adjacent, Opposite}));
+        robot.setVector(robot.getVector().add(new Vector(Adjacent, Opposite)));
         sensor.refresh();
     }
     
