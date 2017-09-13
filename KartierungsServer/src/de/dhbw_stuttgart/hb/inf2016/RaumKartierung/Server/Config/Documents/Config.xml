@@ -7,9 +7,9 @@
 <constant name = "AnglePerScan" type ="Integer">9</constant>
 <constant name = "RobotIP" type ="String">10.0.1.1</constant>
 <constant name = "RobotPort" type ="String">???</constant>
-<constant name = "wheelDistance" type ="Double">0.158</constant><!- in m-->
-<constant name = "wheelRadius" type ="Double">0.055</constant><!- in m-->
-<constant name = "distancePerMove" type ="Integer">0.20</constant><!- in m-->
-<constant name = "minScanDist" type ="Double">0.10</constant><!- in m-->
-<constant name = "maxScanDist" type ="Double">0.80</constant><!- in m-->
+<constant name = "wheelDistance" type ="Double">15.8</constant><!- in cm-->
+<constant name = "wheelRadius" type ="Double">5.5</constant><!- in cm-->
+<constant name = "distancePerMove" type ="Integer">20</constant><!- in cm-->
+<constant name = "minScanDist" type ="Double">10</constant><!- in cm-->
+<constant name = "maxScanDist" type ="Double">80</constant><!- in cm-->
 </constants>
