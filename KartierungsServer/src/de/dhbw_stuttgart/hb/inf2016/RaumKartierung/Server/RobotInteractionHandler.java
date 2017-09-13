@@ -65,7 +65,7 @@ public class RobotInteractionHandler {
 		width = (double)config.getConstbyName("wheelDistance");
 		distance = (double)config.getConstbyName("distancePerMove");
 		robot = new Robot(new Vector(0,0), 0);
-		sensor = new Sensor(robot);
+		sensor = new Sensor(robot, config);
 		robotPositionHandler = new RobotPositionHandler(robot, sensor);
 		vectorRoom = new VectorRoom(sensor);
 

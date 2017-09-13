@@ -1,4 +1,7 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
+
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
+
 /**
  * This class saves the position and the angle of the sensor on the robot.
  * It calculates the current position of the sensor using the spacing between the rotation point of the robot 
@@ -16,8 +19,9 @@ public class Sensor {
      * the constructor of this class needs a robot for the initialization. 
      * @param robot is an object of the Robot class. It uses it to determine the position of the sensor.
      */
-    public Sensor(Robot robot) {
+    public Sensor(Robot robot, Config config) {
         this.robot = robot;
+        Spacing = (double)config.getConstbyName("Spacing");
         Angle = 0;
     }
 
