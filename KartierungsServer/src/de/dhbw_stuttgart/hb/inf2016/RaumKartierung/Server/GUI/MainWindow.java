@@ -1,10 +1,12 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI;
 
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.ImageConsumer;
 import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class MainWindow
 {
 	private JFrame frame;
 	public JTextArea textPane = new JTextArea();
-	public MapDiplay drawImage = new MapDiplay();
+	public JLabel image = new JLabel();
 
 	private List<IConnectEventListener> onConnectListeners = new LinkedList<>();
 	private List<IStartEventListener> onStartListeners = new LinkedList<>();
@@ -43,6 +45,22 @@ public class MainWindow
 	private List<IBackwardEventListener> onBackwardListeners = new LinkedList<>();
 	private List<ILeftEventListener> onLeftListeners = new LinkedList<>();
 	private List<IRightEventListener> onRightListeners = new LinkedList<>();
+	
+	public void setImage(Image newImage)
+	{
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
+				@Override
+				public void run() 
+				{
+					setImage(newImage);
+				}
+			});
+		}
+		this.image.setIcon(new ImageIcon(newImage.getScaledInstance(image.getWidth(), image.getHeight(),  Image.SCALE_DEFAULT)));
+	}
 
 	public void addOnConnectEventListener(IConnectEventListener listener) 
 	{
@@ -206,39 +224,8 @@ public class MainWindow
 		onRightListeners.remove(listener);
 	}
 
-	public void clearPoints() 
-	{
-		if (!SwingUtilities.isEventDispatchThread()) 
-		{
-			SwingUtilities.invokeLater(new Runnable() 
-			{
-				@Override
-				public void run() 
-				{
-					clearPoints();
-				}
-			});
-			return;
-		}
-		drawImage.clearPoints();
-	}
 
-	public void addPoint(Point point) 
-	{
-		if (!SwingUtilities.isEventDispatchThread()) 
-		{
-			SwingUtilities.invokeLater(new Runnable() 
-			{
-				@Override
-				public void run() 
-				{
-					addPoint(point);
-				}
-			});
-			return;
-		}			
-		drawImage.addPoint(point);
-	}
+
 
 	public void ClearLog() 
 	{	
@@ -322,7 +309,7 @@ public class MainWindow
 				}
 			});
 		}
-		drawImage.repaint();
+		image.repaint();
 	}
 
 	/**
@@ -631,11 +618,11 @@ public class MainWindow
 		frame.getContentPane().add(scrollPane);
 
 		// the image with the points		
-		springLayout.putConstraint(SpringLayout.NORTH, drawImage, 6, SpringLayout.SOUTH, labeldraw);
-		springLayout.putConstraint(SpringLayout.WEST, drawImage, 6, SpringLayout.EAST, tabbedPane);
-		springLayout.putConstraint(SpringLayout.SOUTH, drawImage, -10, SpringLayout.SOUTH, frame.getContentPane());
-		springLayout.putConstraint(SpringLayout.EAST, drawImage, -10, SpringLayout.EAST, frame.getContentPane());
-		frame.getContentPane().add(drawImage);
+		springLayout.putConstraint(SpringLayout.NORTH, image, 6, SpringLayout.SOUTH, labeldraw);
+		springLayout.putConstraint(SpringLayout.WEST, image, 6, SpringLayout.EAST, tabbedPane);
+		springLayout.putConstraint(SpringLayout.SOUTH, image, -10, SpringLayout.SOUTH, frame.getContentPane());
+		springLayout.putConstraint(SpringLayout.EAST, image, -10, SpringLayout.EAST, frame.getContentPane());
+		frame.getContentPane().add(image);
 
 		frame.setVisible(true);
 	}

@@ -32,7 +32,7 @@ public class Controlling {
 		
 		 if(doesItFit){
 			//If the robot can perform a forward move he will perform it.
-			NextMove = new Forward((int)config.getConstbyName("distancePerMove"),config);
+			NextMove = new Forward((double)config.getConstbyName("distancePerMove"),config);
             return NextMove;
 		}
 		else{

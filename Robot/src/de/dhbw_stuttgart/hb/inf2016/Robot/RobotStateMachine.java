@@ -28,12 +28,14 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
  *
  * The robot starts with the initialization state and moves to its main step
  * which is the AwaitingCommand state. From this state all the other
- * states(except init) can be reached. All states exept the reset state return
+ * states(except init) can be reached. All states except the reset state return
  * to the AwaitingCommand state.
  * 
  * @author Julian Vogel
  */
 public class RobotStateMachine implements ICommandReceiver {
+
+	private int scanRepeats = 10;
 
 	// Interface to the robot protocol
 	private IFromRobotSender responseSender;
@@ -58,7 +60,8 @@ public class RobotStateMachine implements ICommandReceiver {
 		responseSender = endpoint.getFromRobotSender();
 		this.endpoint = endpoint;
 
-		sonar = new RangeFinderAdapter(new MedianFilter(new EV3UltrasonicSensor(SensorPort.S1), 10));
+		EV3UltrasonicSensor sensor = new EV3UltrasonicSensor(SensorPort.S1);
+		sonar = new RangeFinderAdapter(new MedianFilter(sensor.getDistanceMode(), scanRepeats));
 
 		DisplayConsole.writeString("Ultrasonic OK");
 
@@ -149,9 +152,17 @@ public class RobotStateMachine implements ICommandReceiver {
 		}
 	}
 
+	/**
+	 * Handles the ScanUltrasonic state.
+	 * 
+	 */
 	private void DoUltrasonic() {
-		responseSender.sendReturnUltrasonic(sonar.getRange());
 
+		// Scann 10 times to fill the median filter.
+		for (int i = 0; i < scanRepeats - 1; i++)
+			sonar.getRange();
+
+		responseSender.sendReturnUltrasonic(sonar.getRange());
 	}
 
 	/**
