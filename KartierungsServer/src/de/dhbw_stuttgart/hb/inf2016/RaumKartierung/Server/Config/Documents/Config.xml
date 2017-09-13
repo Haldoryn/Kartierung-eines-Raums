@@ -10,6 +10,6 @@
 <constant name = "wheelDistance" type ="Double">0.158</constant><!- in m-->
 <constant name = "wheelRadius" type ="Double">0.055</constant><!- in m-->
 <constant name = "distancePerMove" type ="Integer">0.20</constant><!- in m-->
-<constant name = "minScanDist" type ="Integer">0.10</constant><!- in m-->
-<constant name = "maxScanDist" type ="Integer">0.80</constant><!- in m-->
+<constant name = "minScanDist" type ="Double">0.10</constant><!- in m-->
+<constant name = "maxScanDist" type ="Double">0.80</constant><!- in m-->
 </constants>
