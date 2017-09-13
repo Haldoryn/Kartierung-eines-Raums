@@ -1,5 +1,8 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -183,10 +186,8 @@ public class Main {
 		while (isRunning) {
 			try {
 				robotInteractionHandler.doMove();
-				GridMap map = createGridMap(robotInteractionHandler.getVectorRoom().getPointsPositivOnly());
-				if (map != null) {
-
-					lastImage = GridMapToImageConverter.Convert(map);
+				lastImage = createGridMap(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),robotInteractionHandler.getRobot().getVector());
+				if (lastImage != null) {
 					window.setImage(lastImage);
 					window.repaintImage();
 				}
@@ -199,7 +200,7 @@ public class Main {
 		}
 	}
 
-	private static GridMap createGridMap(List<Vector> points) {
+	private static BufferedImage createGridMap(List<Vector> points,Vector roboPos) {
 		if (points.size() == 0)
 			return null;
 
@@ -218,11 +219,19 @@ public class Main {
 			if (point.getY() > maxY)
 				maxY = (float) point.getY();
 		}
-		GridMap map = new GridMap(10, new Vector(minX, minY), new Vector(maxX, maxY));
+		
+		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxX),BufferedImage.TYPE_INT_RGB);
+		Graphics2D g =(Graphics2D) img.getGraphics();
+		g.setBackground(Color.WHITE);
+		g.setColor(Color.RED);
+		
 		for (Vector point : points) {
-			map.addMeasure(new Vector(point.getX(), point.getY()));
+			g.fillRect(Math.round((int)point.getX()),(int) Math.round(point.getY()), 1, 1);
 		}
+		
+		g.setColor(Color.BLUE);
+		g.drawRect((int)Math.round(roboPos.getX()),(int) Math.round(roboPos.getY()), 1, 1);
 
-		return map;
+		return img;
 	}
 }
