@@ -180,8 +180,6 @@ public class RobotInteractionHandler {
             robotPositionHandler.turningSensor(anglePerScan);
             scan();
         }
-		// It gets counted, how many times the robot did scans in this sweep.
-		timesScaned++;
 	}
 	
 	/**
