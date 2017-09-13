@@ -12,5 +12,5 @@
 <constant name = "distancePerMove" type ="Integer">20</constant><!- in cm-->
 <constant name = "minScanDist" type ="Double">10</constant><!- in cm-->
 <constant name = "maxScanDist" type ="Double">80</constant><!- in cm-->
-<constant name = "Spacing" type ="Double"></constant>6<!- in cm-->
+<constant name = "Spacing" type ="Double">6</constant><!- in cm-->
 </constants>
