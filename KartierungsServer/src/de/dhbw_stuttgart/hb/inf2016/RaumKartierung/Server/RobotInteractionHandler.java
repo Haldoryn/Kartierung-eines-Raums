@@ -15,6 +15,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Robot;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.RobotPositionHandler;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Sensor;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 /**
  * 
  * @author Samuel Volz
@@ -63,7 +64,7 @@ public class RobotInteractionHandler {
 		maxScans = (int)config.getConstbyName("maxScans");
 		width = (double)config.getConstbyName("wheelDistance");
 		distance = (double)config.getConstbyName("distancePerMove");
-		robot = new Robot(new double[]{0,0}, 0);
+		robot = new Robot(new Vector(0,0), 0);
 		sensor = new Sensor(robot);
 		robotPositionHandler = new RobotPositionHandler(robot, sensor);
 		vectorRoom = new VectorRoom(sensor);
