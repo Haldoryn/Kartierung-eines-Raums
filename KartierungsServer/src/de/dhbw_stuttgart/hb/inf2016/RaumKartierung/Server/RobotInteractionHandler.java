@@ -158,7 +158,7 @@ public class RobotInteractionHandler {
         	// This sensor move gets saved in the vectorRoom.
         	// The scan method gets called again to make the next scan.
         	robotSender.sendMoveSensorAndWait(sensorSpeed, -anglePerScan * maxScans / 2, timeout);
-            robotPositionHandler.turningSensor(-(anglePerScan * maxScans / 2 + anglePerScan));
+            robotPositionHandler.turningSensor(-anglePerScan * maxScans / 2);
             scan();
         }
         else{
