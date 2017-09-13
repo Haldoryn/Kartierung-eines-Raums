@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  */
 public class VectorRoom {
-    private ArrayList<double[]> Points = new ArrayList<>();
+    private ArrayList<Vector> Points = new ArrayList<>();
     private Sensor sensor;
     public VectorRoom (Sensor sensor) {
     	this.sensor = sensor;
@@ -29,14 +29,14 @@ public class VectorRoom {
     	
         double Adjacent = Math.cos(Math.toRadians(sensor.getAngle())) * distance;
         double Opposite = Math.sin(Math.toRadians(sensor.getAngle())) * distance;
-        Points.add(new double[]{Adjacent, Opposite});
+        Points.add(new Vector(Adjacent, Opposite));
     }
     
     /**
      * returns a list of the position of all scanned points.
      * @return ArrayList of the position of all scanned points saved in a double array.
      */
-    public ArrayList<double[]> getPoints() {
+    public ArrayList<Vector> getPoints() {
         return Points;
     }
     
@@ -44,20 +44,20 @@ public class VectorRoom {
      * returns a list of all scanned points. All Values are positive.
      * @return Arraylist of all scanned points.
      */
-    public ArrayList<double[]> getPointsPositivOnly(){
+    public ArrayList<Vector> getPointsPositivOnly(){
         double lowestX = 0;
         double lowestY = 0;
-        for(double[] vector : Points){
-            if(vector[0] < lowestX){
-                lowestX = vector[0];
+        for(Vector vector : Points){
+            if(vector.getX() < lowestX){
+                lowestX = vector.getX();
             }
-            if(vector[1] < lowestY){
-                lowestY = vector[1];
+            if(vector.getY() < lowestY){
+                lowestY = vector.getY();
             }
         }
-        ArrayList<double[]> PointsPositivOnly = new ArrayList<>();
-        for(double[] vector: Points){
-            PointsPositivOnly.add(new double[]{vector[0] + (lowestX * -1), vector[1] + (lowestY *-1)});
+        ArrayList<Vector> PointsPositivOnly = new ArrayList<>();
+        for(Vector vector: Points){
+            PointsPositivOnly.add(new Vector(vector.getX() + (lowestX * -1), vector.getY() + (lowestY *-1)));
         }
         return PointsPositivOnly;
     }

@@ -9,6 +9,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListene
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 
 import java.awt.Point;
@@ -183,8 +184,8 @@ public class Main {
 			try {
 				robotInteractionHandler.doMove();
 				window.clearPoints();
-				for (double[] point : robotInteractionHandler.getVectorRoom().getPointsPositivOnly()) {
-					window.addPoint(new Point((int) point[0], (int) point[1]));
+				for (Vector point : robotInteractionHandler.getVectorRoom().getPointsPositivOnly()) {
+					window.addPoint(new Point((int) point.getX(), (int) point.getY()));
 				}
 				window.repaintImage();
 
