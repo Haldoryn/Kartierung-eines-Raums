@@ -1,39 +1,29 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.text.ParseException;
+import java.util.List;
+
+import javax.activity.InvalidActivityException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ControlerEndpoint;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.ICommandReceiver;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IConnectEventListener;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.GridMap;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.GridMapToImageConverter;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
-
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.omg.PortableServer.ServantActivator;
-
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.*;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandBase;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.CommandType;
 
 /**
  * 
@@ -47,7 +37,7 @@ public class Main {
 	private static boolean isRunning;
 	private static MainWindow window;
 	private static Thread workThread;
-	private static GridMap map;
+	private static BufferedImage lastImage;
 
 	/**
 	 * main is the starting class of this program. It calls the GUI and goes thru
@@ -55,34 +45,40 @@ public class Main {
 	 * 
 	 * @param commandline
 	 *            args. we do not use them.
+	 * @throws ParseException
+	 * @throws InvalidActivityException
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InvalidActivityException, ParseException {
+
+		Config config = new Config();
+
 		/*
 		 * first up the main needs to start the GUI. It has to wait till the GUI
 		 * responds with informations on how to proceed. If the start button was
 		 * pressed, the main continues with the procedure.
 		 */
 		window = new MainWindow();
-		window.Show();
+		window.show();
 		window.addOnSaveEventListener(new ISaveEventListener() {
 
 			@Override
 			public void onSave() {
-				// JFileChooser chooser = new JFileChooser();
-				// chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung");
-				// chooser.showSaveDialog(null);
-				// File file = chooser.getSelectedFile();
-				// if(file != null)
-				// {
-				// BufferedImage image = window.image.renderToImage();
-				// try
-				// {
-				// window.image.saveToDisc(file.toString(), image);
-				// } catch (IOException e)
-				// {
-				// throw new IllegalArgumentException("Path must not be null");
-				// }
-				// }
+				if (lastImage == null)
+					return;
+
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung");
+				chooser.showSaveDialog(null);
+				File file = chooser.getSelectedFile();
+				if (file != null) {
+					try {
+						ImageIO.write(lastImage, "jpg", file);
+					} catch (IOException e) {
+						JOptionPane.showMessageDialog(null, "Could not save image", "File save error",
+								JOptionPane.INFORMATION_MESSAGE);
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 
@@ -127,7 +123,7 @@ public class Main {
 					});
 
 					endpoint.connect(ip, port);
-					robotInteractionHandler = new RobotInteractionHandler(endpoint, new Config());
+					robotInteractionHandler = new RobotInteractionHandler(endpoint, config);
 
 				} catch (Exception e) {
 					if (endpoint != null) {
@@ -187,12 +183,14 @@ public class Main {
 		while (isRunning) {
 			try {
 				robotInteractionHandler.doMove();
-
-				map = createGridMap(robotInteractionHandler.getVectorRoom().getPoints());
+				GridMap map = createGridMap(robotInteractionHandler.getVectorRoom().getPointsPositivOnly());
 				if (map != null) {
-					window.setImage(GridMapToImageConverter.Convert(map));
+
+					lastImage = GridMapToImageConverter.Convert(map);
+					window.setImage(lastImage);
 					window.repaintImage();
 				}
+				window.setPositionText("Pos: "+robotInteractionHandler.getRobot().toString());
 
 			} catch (InterruptedException e) {
 				JOptionPane.showMessageDialog(null, "System was interupted", "System interrupt",
@@ -201,7 +199,7 @@ public class Main {
 		}
 	}
 
-	private static GridMap createGridMap(List<double[]> points) {
+	private static GridMap createGridMap(List<Vector> points) {
 		if (points.size() == 0)
 			return null;
 
@@ -210,21 +208,21 @@ public class Main {
 		float minY = 0;
 		float maxY = 0;
 
-		for (double[] point : points) {
-			if (point[0] < minX)
-				minX = (float) point[0];
-			if (point[1] < minY)
-				minY = (float) point[1];
-			if (point[0] > maxX)
-				maxX = (float) point[0];
-			if (point[1] > maxY)
-				maxY = (float) point[1];
+		for (Vector point : points) {
+			if (point.getX() < minX)
+				minX = (float) point.getX();
+			if (point.getY() < minY)
+				minY = (float) point.getY();
+			if (point.getX() > maxX)
+				maxX = (float) point.getX();
+			if (point.getY() > maxY)
+				maxY = (float) point.getY();
 		}
-		GridMap map = new GridMap(1, new Vector(minX, minY), new Vector(maxX, maxY));
-		for (double[] point : points) {
-			map.addMeasure(new Vector(point[0],point[1]));
+		GridMap map = new GridMap(10, new Vector(minX, minY), new Vector(maxX, maxY));
+		for (Vector point : points) {
+			map.addMeasure(new Vector(point.getX(), point.getY()));
 		}
-		
+
 		return map;
 	}
 }

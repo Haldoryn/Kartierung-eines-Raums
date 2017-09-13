@@ -35,6 +35,7 @@ public class MainWindow
 	private JFrame frame;
 	public JTextArea textPane = new JTextArea();
 	public JLabel image = new JLabel();
+	JLabel lablePosition = new JLabel();
 
 	private List<IConnectEventListener> onConnectListeners = new LinkedList<>();
 	private List<IStartEventListener> onStartListeners = new LinkedList<>();
@@ -225,9 +226,25 @@ public class MainWindow
 	}
 
 
+	public void setPositionText(String text)
+	{
+		if (!SwingUtilities.isEventDispatchThread()) 
+		{
+			SwingUtilities.invokeLater(new Runnable() 
+			{
+				@Override
+				public void run() 
+				{
+					setPositionText(text);
+				}
+			});
+			return;
+		}
+		lablePosition.setText(text);		
+	}
 
 
-	public void ClearLog() 
+	public void clearLog() 
 	{	
 		if (!SwingUtilities.isEventDispatchThread()) 
 		{
@@ -278,7 +295,7 @@ public class MainWindow
 	/**
 	 * Show the maiWindow
 	 */
-	public void Show() 
+	public void show() 
 	{
 		SwingUtilities.invokeLater(new Runnable() 
 		{
@@ -599,10 +616,16 @@ public class MainWindow
 		springLayout.putConstraint(SpringLayout.NORTH, labeldraw, 0, SpringLayout.NORTH, tabbedPane);
 		springLayout.putConstraint(SpringLayout.WEST, labeldraw, 6, SpringLayout.EAST, tabbedPane);
 		frame.getContentPane().add(labeldraw);
+		
+		
+		// the position lable
+		springLayout.putConstraint(SpringLayout.NORTH, lablePosition, 6, SpringLayout.SOUTH, tabbedPane);
+		springLayout.putConstraint(SpringLayout.WEST, lablePosition, 0, SpringLayout.WEST, tabbedPane);
+		frame.getContentPane().add(lablePosition);
 
 		// the Label above the text box
 		JLabel labelcommand = new JLabel("Kommandos:");
-		springLayout.putConstraint(SpringLayout.NORTH, labelcommand, 6, SpringLayout.SOUTH, tabbedPane);
+		springLayout.putConstraint(SpringLayout.NORTH, labelcommand, 30, SpringLayout.SOUTH, tabbedPane);
 		springLayout.putConstraint(SpringLayout.WEST, labelcommand, 0, SpringLayout.WEST, tabbedPane);
 		frame.getContentPane().add(labelcommand);
 		
@@ -616,6 +639,8 @@ public class MainWindow
 		springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.SOUTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, tabbedPane);
 		frame.getContentPane().add(scrollPane);
+		
+		
 
 		// the image with the points		
 		springLayout.putConstraint(SpringLayout.NORTH, image, 6, SpringLayout.SOUTH, labeldraw);

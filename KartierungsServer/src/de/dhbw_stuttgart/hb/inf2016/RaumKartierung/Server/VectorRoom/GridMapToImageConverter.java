@@ -1,12 +1,11 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
 public class GridMapToImageConverter {
 
-	public static Image Convert(GridMap map) {
+	public static BufferedImage Convert(GridMap map) {
 		
 		//Create a image with the dimensions of the map.
 		BufferedImage image = new BufferedImage(map.getWidthCells(), map.getHeightCells(),

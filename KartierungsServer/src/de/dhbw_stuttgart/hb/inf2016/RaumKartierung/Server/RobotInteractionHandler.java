@@ -11,7 +11,11 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Robot;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.RobotPositionHandler;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Sensor;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 /**
  * 
  * @author Samuel Volz
@@ -27,13 +31,16 @@ public class RobotInteractionHandler {
 	private Move nextMove; //nextMove saves the next move of the robot.
 	private int speed; //speed is the speed in which the motors are rotating.
 	private int timeout; //timeout is the time the program waits for a reaction of the robot.
-	private int minScanDist; //minScanDist is the minimum a scan distance can be before the scan gets trashed.
-	private int maxScanDist; //maxScanDist is the maximum a scan distance can be before the scan gets trashed.
+	private double minScanDist; //minScanDist is the minimum a scan distance can be before the scan gets trashed.
+	private double maxScanDist; //maxScanDist is the maximum a scan distance can be before the scan gets trashed.
 	private int sensorSpeed; //sensorSpeed is the speed in which the sensor turns.
 	private int anglePerScan; //anglePerScan is the angle the sensor turns before it performs another scan.
 	private int maxScans; //maxScans is the amount of scans the robot performs per sweep.
 	private double width; //width is the width of the robot. This class needs it in order to check if the robot can fit thru a checked space.
-	double distance; //distance is the distance this method has to check.
+	private double distance; //distance is the distance this method has to check.
+	private Robot robot;
+	private Sensor sensor;
+	private RobotPositionHandler robotPositionHandler;
 	
 	public RobotInteractionHandler(IProtocolEndpoint endpoint,Config config) throws InstantiationException, IllegalAccessException, UnknownHostException, IOException {
 		if(endpoint == null)
@@ -50,14 +57,18 @@ public class RobotInteractionHandler {
 		controlling = new Controlling(config);
 		speed  = (int)config.getConstbyName("speed");
 		timeout = (int)config.getConstbyName("timeout");
-		minScanDist = (int)config.getConstbyName("minScanDist");
-		maxScanDist = (int)config.getConstbyName("maxScanDist");
+		minScanDist = (double)config.getConstbyName("minScanDist");
+		maxScanDist = (double)config.getConstbyName("maxScanDist");
 		sensorSpeed = (int)config.getConstbyName("SensorMoveSpeed");
 		anglePerScan = (int)config.getConstbyName("AnglePerScan");
 		maxScans = (int)config.getConstbyName("maxScans");
 		width = (double)config.getConstbyName("wheelDistance");
 		distance = (double)config.getConstbyName("distancePerMove");
-		vectorRoom = new VectorRoom();
+		robot = new Robot(new Vector(0,0), 0);
+		sensor = new Sensor(robot);
+		robotPositionHandler = new RobotPositionHandler(robot, sensor);
+		vectorRoom = new VectorRoom(sensor);
+
 	}
 	/**
 	 * @return vectorRoom
@@ -66,15 +77,30 @@ public class RobotInteractionHandler {
 		return vectorRoom;
 	}
 	
+	
+	/**Gets the robot data object
+	 * @return The robot data object
+	 */
+	public Robot getRobot()
+	{
+		return robot;
+	}
+	
 	/**
 	 * This class goes thru the procedure of controlling and communicating with the robot.
 	 * @throws InterruptedException
 	 */
-	public void doMove() throws InterruptedException {
-		 
+	public void doMove() throws InterruptedException {	
 		// at the Start of the loop the program gets the new move the robot has to perform. 
 		nextMove = controlling.next(checkScan());
 		
+		// If the last move was a move forward and not a turn the robot should mace a scan sweep.
+		// The timesScanned counter gets reseted and the scan method gets called. 
+		if(nextMove instanceof Forward) {
+			timesScaned = 0;
+			scan();
+		}
+				 	
 		// The speed of both the Motors and the distance both motors have to drive get send to the robot.
 		// It also gets the time, the protocol waits for a message from the robot till it stops waiting.
 		ReturnMotorCmd returnMotor= robotSender.sendMoveMotorAndWait(
@@ -88,14 +114,7 @@ public class RobotInteractionHandler {
 		// the nextMove gets updated with the informations the robot returned and the move gets send to the vectorRoob 
 	 	// in order to save the move and calculate the location of the robot.
 		nextMove.setMotor(returnMotor.getReachedLeftDistanceAngle(), returnMotor.getReachedRightDistanceAngle());
-		vectorRoom.movingRobot(nextMove);
-		
-		// If the last move was a move forward and not a turn the robot should mace a scan sweep.
-		// The timesScanned counter gets reseted and the scan method gets called. 
-		if(nextMove instanceof Forward) {
-			timesScaned = 0;
-			scan();
-		}
+		robotPositionHandler.movingRobot(nextMove);
 	}
 	
 	/**
@@ -116,18 +135,18 @@ public class RobotInteractionHandler {
 			vectorRoom.setScan(returnUltrasonic.getValue());
 		}
 		
-        if(timesScaned >= maxScanDist){
+        if(timesScaned >= maxScans){
         	// If the robot did all the scans he needs he needs to move the sensor to its original position.
         	// This sensor move gets saved in the vectorRoom.
         	robotSender.sendMoveSensorAndWait(sensorSpeed, anglePerScan * maxScans / 2, timeout);
-            vectorRoom.turningSensor(anglePerScan * maxScans / 2);
+            robotPositionHandler.turningSensor(anglePerScan * maxScans / 2);
         }
         else if(timesScaned > maxScans / 2){
         	// If the robot did over the half of all the scans he needs, he turns his sensor to the other direction.
         	// This sensor turning move gets saved in the vectorRoom.
         	// The scan method gets called again to make the next scan.
         	robotSender.sendMoveSensorAndWait(sensorSpeed, -anglePerScan, timeout);
-            vectorRoom.turningSensor(-anglePerScan);
+            robotPositionHandler.turningSensor(-anglePerScan);
             scan();
         }
         else if(timesScaned == maxScans / 2){
@@ -135,7 +154,7 @@ public class RobotInteractionHandler {
         	// This sensor move gets saved in the vectorRoom.
         	// The scan method gets called again to make the next scan.
         	robotSender.sendMoveSensorAndWait(sensorSpeed, -anglePerScan * maxScans / 2, timeout);
-            vectorRoom.turningSensor(-(anglePerScan * maxScans / 2 + anglePerScan));
+            robotPositionHandler.turningSensor(-(anglePerScan * maxScans / 2 + anglePerScan));
             scan();
         }
         else{
@@ -143,7 +162,7 @@ public class RobotInteractionHandler {
         	// This sensor move gets saved in the vectorRoom.
         	// The scan method gets called again to make the next scan.
         	robotSender.sendMoveSensorAndWait(sensorSpeed, anglePerScan, timeout);
-            vectorRoom.turningSensor(anglePerScan);
+            robotPositionHandler.turningSensor(anglePerScan);
             scan();
         }
 	}

@@ -8,23 +8,23 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
  */
 public class Robot {
 
-    private double[] Vector;
+    private Vector vector;
     private double Angle;
 
     /**
-     * Returns the position vector of the robot in a double array.
+     * Returns the position vector of the robot
      * @return vector is the current position of the robot.
      */
-    public double[] getVector() {
-        return Vector;
+    public Vector getVector() {
+        return vector;
     }
 
     /**
-     * Saves the position of the robot in a double array.
+     * Saves the position of the robot
      * @param vector is the current position of the robot.
      */
-    public void setVector(double[] vector) {
-        Vector = vector;
+    public void setVector(Vector vector) {
+        this.vector = vector;
     }
     
     /**
@@ -48,8 +48,13 @@ public class Robot {
      * @param Vector is the current position of the robot.
      * @param Angle is the current angle of the robot.
      */
-    public Robot(double[] Vector, double Angle){
-        this.Vector = Vector;
+    public Robot(Vector vector, double Angle){
+        this.vector = vector;
         this.Angle = Angle;
     }
+
+	@Override
+	public String toString() {
+		return "Robot [vector=" + vector + ", Angle=" + Math.round(Angle) + "]";
+	}  
 }

@@ -2,9 +2,12 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.activity.InvalidActivityException;
@@ -15,17 +18,18 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 /**
- * @author Jan Wäckers The Config class provides the possibility to get or set
+ * The Config class provides the possibility to get or set
  *         the Attribute Content of an constant Element of an Attribute in the
  *         Config File Possible return types: Integer, Double, Long, Float,
  *         Short, Boolean, Byte, Char, String
+ * @author Jan Wäckers 
  * 
  */
 public class Config {
 	private Document doc;
 	private Map<String, Object> myConstants = new HashMap<String, Object>();
 
-	public Config() throws InvalidActivityException {
+	public Config() throws InvalidActivityException, ParseException {
 
 		// try catch um das Abbilden der XML Datei auf ein Document Objekt
 		try {
@@ -45,9 +49,10 @@ public class Config {
 
 	/**
 	 * @throws InvalidActivityException 
+	 * @throws ParseException 
 	 * 
 	 */
-	private void readFile() throws InvalidActivityException {
+	private void readFile() throws InvalidActivityException, ParseException {
 
 		List<Element> constantsList;
 		constantsList = doc.getRootElement().getChildren();
@@ -60,7 +65,8 @@ public class Config {
 			String content = currently.getText();
 			String type = currently.getAttributeValue("type");
 			
-			//Dont use a error message as the default value. this just causes problems
+			NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+			
 			Object myValue = null;
 
 			switch (type) {
@@ -71,7 +77,7 @@ public class Config {
 				myValue = Integer.parseInt(content);
 				break;
 			case "Double":
-				myValue = Double.parseDouble(content);
+				myValue = format.parse(content).doubleValue();
 				break;
 			case "Boolean":
 				myValue = Boolean.parseBoolean(content);
@@ -80,7 +86,7 @@ public class Config {
 				myValue = Long.parseLong(content);
 				break;
 			case "Float":
-				myValue = Float.parseFloat(content);
+				myValue = format.parse(content).floatValue();
 				break;
 			case "Short":
 				myValue = Short.parseShort(content);

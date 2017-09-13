@@ -28,6 +28,7 @@ public class GridMap {
 		this.min = min;
 		this.max = max;
 		this.cellSize = cellSize;
+		buffer = new byte[getWidthCells()*getHeightCells()];
 	}
 
 	/**
@@ -58,9 +59,9 @@ public class GridMap {
 				getHeightCells() * cellSize);
 	}
 
-	public void addMeasure(Vector point) {
-
-		buffer[getIndexOfPoint(point)] =Byte.MAX_VALUE;
+	public void addMeasure(Vector point) {	
+		int index = getIndexOfPoint(point);	
+		buffer[index] =Byte.MAX_VALUE;
 	}
 	
 	public void addMeasureRange(List<Vector> points)
@@ -76,12 +77,16 @@ public class GridMap {
 	 *            The point for which the buffer index should be returned.
 	 * @return
 	 */
-	public int getIndexOfPoint(Vector point) {
-
-		int column = (int) Math.round(point.getX() / cellSize);
+	public int getIndexOfPoint(Vector point) {	
 		int row = (int) Math.round(point.getY() / cellSize);
+		if(row > 0)
+		{
+			row--;
+		}
+		
+		int column = (int) Math.round(point.getX() / cellSize);
 
-		return (this.getWidthCells() * column) + row;
+		return (this.getWidthCells() * row) + column;
 	}
 
 	/**
