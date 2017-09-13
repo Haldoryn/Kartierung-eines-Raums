@@ -3,6 +3,8 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import com.sun.xml.internal.ws.api.pipe.Tube;
+
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IProtocolEndpoint;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnMotorCmd;
@@ -11,6 +13,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Turn;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Robot;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.RobotPositionHandler;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Sensor;
@@ -113,7 +116,10 @@ public class RobotInteractionHandler {
 		
 		// the nextMove gets updated with the informations the robot returned and the move gets send to the vectorRoob 
 	 	// in order to save the move and calculate the location of the robot.
-		nextMove.setMotor(returnMotor.getReachedLeftDistanceAngle(), returnMotor.getReachedRightDistanceAngle());
+		if(nextMove instanceof Forward)
+			nextMove.setMotor(returnMotor.getReachedLeftDistanceAngle(), returnMotor.getReachedRightDistanceAngle());
+		else if(nextMove instanceof Turn)
+			((Turn) nextMove).setAngle(robotSender.sendGetGyroscopeAndWait(timeout).getValue());
 		robotPositionHandler.movingRobot(nextMove);
 	}
 	

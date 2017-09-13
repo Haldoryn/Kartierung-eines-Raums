@@ -20,7 +20,7 @@ public class Turn implements Move {
     }
 
     public void setAngle(double angle) {
-        Angle = angle;
+        Angle = angle%360;
         double n = ((double)cons.getConstbyName("wheelDistance") * angle)/(2 * (double)cons.getConstbyName("wheelRadius") * 360);
         if(angle > 0){
             LeftMotor = 360 * n;
