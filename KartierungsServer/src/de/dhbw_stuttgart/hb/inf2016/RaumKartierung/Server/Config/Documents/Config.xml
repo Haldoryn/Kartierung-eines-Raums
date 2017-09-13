@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <constants>
 <constant name = "speed" type ="Integer">180</constant>
-<constant name = "timeout" type ="Integer">10000</constant>
+<constant name = "timeout" type ="Integer">10000</constant><!-in ms-->
 <constant name = "maxScans" type ="Integer">20</constant>
 <constant name = "SensorMoveSpeed" type ="Integer">60</constant>
 <constant name = "AnglePerScan" type ="Integer">9</constant>
 <constant name = "RobotIP" type ="String">10.0.1.1</constant>
 <constant name = "RobotPort" type ="String">???</constant>
-<constant name = "wheelDistance" type ="Double">15.8</constant>
-<constant name = "wheelRadius" type ="Double">5.5</constant>
-<constant name = "distancePerMove" type ="Integer">20</constant>
-<constant name = "minScanDist" type ="Integer">10</constant>
-<constant name = "maxScanDist" type ="Integer">80</constant>
+<constant name = "wheelDistance" type ="Double">0.158</constant><!- in m-->
+<constant name = "wheelRadius" type ="Double">0.055</constant><!- in m-->
+<constant name = "distancePerMove" type ="Integer">0.20</constant><!- in m-->
+<constant name = "minScanDist" type ="Double">0.10</constant><!- in m-->
+<constant name = "maxScanDist" type ="Double">0.80</constant><!- in m-->
 </constants>
