@@ -136,9 +136,7 @@ public class RobotInteractionHandler {
 	 * @throws InterruptedException
 	 */
 	public void scan() throws InterruptedException {
-		
-		// It gets counted, how many times the robot did scans in this sweep.
-		timesScaned++;
+	
 		
 		// The robot gets called to do a scan. This method waits till the robot returned something or till the timeout runs out. 
 		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
@@ -179,6 +177,8 @@ public class RobotInteractionHandler {
             robotPositionHandler.turningSensor(anglePerScan);
             scan();
         }
+		// It gets counted, how many times the robot did scans in this sweep.
+		timesScaned++;
 	}
 	
 	/**
