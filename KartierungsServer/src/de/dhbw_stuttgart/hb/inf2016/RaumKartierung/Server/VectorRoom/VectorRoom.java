@@ -45,8 +45,8 @@ public class VectorRoom {
      * @return Arraylist of all scanned points.
      */
     public ArrayList<Vector> getPointsPositivOnly(){
-        double lowestX = 0;
-        double lowestY = 0;
+        double lowestX = 1;
+        double lowestY = 1;
         for(Vector vector : Points){
             if(vector.getX() < lowestX){
                 lowestX = vector.getX();
