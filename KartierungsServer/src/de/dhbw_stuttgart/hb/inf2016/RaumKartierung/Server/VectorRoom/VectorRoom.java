@@ -29,7 +29,7 @@ public class VectorRoom {
     	
         double Adjacent = Math.cos(Math.toRadians(sensor.getAngle())) * distance;
         double Opposite = Math.sin(Math.toRadians(sensor.getAngle())) * distance;
-        Points.add(new Vector(Adjacent, Opposite));
+        Points.add(sensor.getVector().add(new Vector(Adjacent, Opposite)));
     }
     
     /**

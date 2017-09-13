@@ -9,7 +9,7 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
 public class Sensor {
     private Robot robot;
     private double Spacing;
-    private double[] Vector = new double[2];
+    private Vector vector = new Vector();
     private double Angle;
     
     /**
@@ -27,16 +27,16 @@ public class Sensor {
     public void refresh(){
         double Adjacent = Math.cos(robot.getAngle()) * Spacing;
         double Opposite = Math.sin(robot.getAngle()) * Spacing;
-        Vector[0] = robot.getVector().getX() + Adjacent;
-        Vector[1] = robot.getVector().getY() + Opposite;
+        vector.setX(robot.getVector().getX() + Adjacent);
+        vector.setY(robot.getVector().getY() + Opposite);
     }
     
     /**
      * Returns the current position of the sensor.
      * @return vector is the current position of the sensor saved in a double array.
      */
-    public double[] getVector() {
-        return Vector;
+    public Vector getVector() {
+        return vector;
     }
 
     /**
