@@ -240,7 +240,7 @@ public class MainWindow
 			});
 			return;
 		}
-		lablePosition.setText(text);		
+		lablePosition.setText("<html><pre>"+text+"</pre></html>");		
 	}
 
 
@@ -625,7 +625,7 @@ public class MainWindow
 
 		// the Label above the text box
 		JLabel labelcommand = new JLabel("Kommandos:");
-		springLayout.putConstraint(SpringLayout.NORTH, labelcommand, 30, SpringLayout.SOUTH, tabbedPane);
+		springLayout.putConstraint(SpringLayout.NORTH, labelcommand, 40, SpringLayout.SOUTH, tabbedPane);
 		springLayout.putConstraint(SpringLayout.WEST, labelcommand, 0, SpringLayout.WEST, tabbedPane);
 		frame.getContentPane().add(labelcommand);
 		

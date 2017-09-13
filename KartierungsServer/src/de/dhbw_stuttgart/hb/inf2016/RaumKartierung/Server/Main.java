@@ -1,7 +1,6 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,8 +23,6 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.GridMap;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.GridMapToImageConverter;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 
 /**
@@ -186,12 +183,12 @@ public class Main {
 		while (isRunning) {
 			try {
 				robotInteractionHandler.doMove();
-				lastImage = createGridMap(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),robotInteractionHandler.getRobot().getVector());
+				lastImage = createMapImage(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),robotInteractionHandler.getRobot().getVector());
 				if (lastImage != null) {
 					window.setImage(lastImage);
 					window.repaintImage();
 				}
-				window.setPositionText("Pos: "+robotInteractionHandler.getRobot().toString());
+				window.setPositionText(robotInteractionHandler.getRobot().toString() +"\n"+ robotInteractionHandler.getSensor());
 
 			} catch (InterruptedException e) {
 				JOptionPane.showMessageDialog(null, "System was interupted", "System interrupt",
@@ -200,33 +197,31 @@ public class Main {
 		}
 	}
 
-	private static BufferedImage createGridMap(List<Vector> points,Vector roboPos) {
+	private static BufferedImage createMapImage(List<Vector> points,Vector roboPos) {
 		if (points.size() == 0)
 			return null;
 
-		float minX = 0;
 		float maxX = 0;
-		float minY = 0;
 		float maxY = 0;
-
+		
 		for (Vector point : points) {
-			if (point.getX() < minX)
-				minX = (float) point.getX();
-			if (point.getY() < minY)
-				minY = (float) point.getY();
 			if (point.getX() > maxX)
 				maxX = (float) point.getX();
 			if (point.getY() > maxY)
 				maxY = (float) point.getY();
 		}
 		
-		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxX),BufferedImage.TYPE_INT_RGB);
+		if(Math.round(maxX)==0 ||Math.round(maxY)==0 )
+			return null;
+		
+		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxY),BufferedImage.TYPE_INT_RGB);
 		Graphics2D g =(Graphics2D) img.getGraphics();
 		g.setBackground(Color.WHITE);
+		g.clearRect(0, 0, Math.round(maxX),  Math.round(maxY));
 		g.setColor(Color.RED);
 		
 		for (Vector point : points) {
-			g.fillRect(Math.round((int)point.getX()),(int) Math.round(point.getY()), 1, 1);
+			g.fillRect((int)Math.round(point.getX()),(int) Math.round(point.getY()), 1, 1);
 		}
 		
 		g.setColor(Color.BLUE);
