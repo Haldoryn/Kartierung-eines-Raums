@@ -410,8 +410,6 @@ public class MainWindow
 		springLayout.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, tabbedPane);
 		frame.getContentPane().add(scrollPane);
 		
-		
-
 		// the image with the points		
 		springLayout.putConstraint(SpringLayout.NORTH, image, 6, SpringLayout.SOUTH, labeldraw);
 		springLayout.putConstraint(SpringLayout.WEST, image, 6, SpringLayout.EAST, tabbedPane);

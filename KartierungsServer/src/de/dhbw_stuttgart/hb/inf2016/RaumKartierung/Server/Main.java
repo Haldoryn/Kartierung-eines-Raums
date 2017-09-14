@@ -1,13 +1,10 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.ParseException;
-import java.util.List;
 
 import javax.activity.InvalidActivityException;
 import javax.imageio.ImageIO;
@@ -23,20 +20,20 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MapImageBuilder;
 
 /**
- * 
+ * Main class of the application.
  * @author Samuel Volz
  *
  */
-
 public class Main {
 
 	private static RobotInteractionHandler robotInteractionHandler;
 	private static boolean isRunning;
 	private static MainWindow window;
 	private static Thread workThread;
+	//Stores the last rendered image. Used to for the save image functionality
 	private static BufferedImage lastImage;
 
 	/**
@@ -50,6 +47,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws InvalidActivityException, ParseException {
 
+		//Initialize the config.
 		Config config = new Config();
 
 		/*
@@ -82,6 +80,7 @@ public class Main {
 			}
 		});
 
+		//Add the start event handler
 		window.addOnStartEventListener(new IStartEventListener() {
 
 			@Override
@@ -90,6 +89,8 @@ public class Main {
 
 			}
 		});
+		
+		//Add the stop event handler
 		window.addOnStopEventListener(new IStopEventListener() {
 
 			@Override
@@ -98,6 +99,8 @@ public class Main {
 
 			}
 		});
+		
+		//Handler for conneting to the robot.
 		window.addOnConnectEventListener(new IConnectEventListener() {
 
 			@Override
@@ -183,7 +186,7 @@ public class Main {
 		while (isRunning) {
 			try {
 				robotInteractionHandler.doMove();
-				lastImage = createMapImage(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),
+				lastImage = MapImageBuilder.createMapImage(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),
 						robotInteractionHandler.getRobot().getVector());
 				if (lastImage != null) {
 					window.setImage(lastImage);
@@ -199,44 +202,5 @@ public class Main {
 		}
 	}
 
-	/** Creates the image of the map.
-	 * @param points The map points.
-	 * @param roboPos Current position of the robot.
-	 * @return The map image.
-	 */
-	private static BufferedImage createMapImage(List<Vector> points, Vector roboPos) {
-		if (points.size() == 0)
-			return null;
 
-		float maxX = 0;
-		float maxY = 0;
-
-		for (Vector point : points) {
-			if (point.getX() > maxX)
-				maxX = (float) point.getX();
-			if (point.getY() > maxY)
-				maxY = (float) point.getY();
-		}
-
-		if (Math.round(maxX) == 0 || Math.round(maxY) == 0)
-			return null;
-
-		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxY), BufferedImage.TYPE_INT_RGB);
-		Graphics2D g = (Graphics2D) img.getGraphics();
-		g.setBackground(Color.WHITE);
-		g.clearRect(0, 0, Math.round(maxX), Math.round(maxY));
-		g.setColor(Color.RED);
-
-		for (Vector point : points) {
-			g.fillRect((int) Math.round(point.getX()) - 1, (int) Math.round(point.getY()) - 1, 2, 2);
-		}
-
-		g.setColor(Color.BLUE);
-		int size = Math.round(Math.max(img.getWidth(), img.getHeight()) / 100);
-
-		// Draw 4 pixel per point to get better visible points.
-		g.drawRect((int) Math.round(roboPos.getX()) - size / 2, (int) Math.round(roboPos.getY()) - size / 2, size,size);
-
-		return img;
-	}
 }
