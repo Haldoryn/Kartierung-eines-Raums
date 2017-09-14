@@ -3,8 +3,10 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javax.activity.InvalidActivityException;
 import javax.imageio.ImageIO;
@@ -21,6 +23,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListene
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MapImageBuilder;
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 
 /**
  * Main class of the application.
@@ -68,11 +71,20 @@ public class Main {
 				chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung");
 				chooser.showSaveDialog(null);
 				File file = chooser.getSelectedFile();
+				
 				if (file != null) {
 					try {
 						ImageIO.write(lastImage, "jpg", file);
+						PrintWriter out = new PrintWriter(file);
+						ArrayList<Vector> list = robotInteractionHandler.getVectorRoom().getPoints();
+			
+						for(Vector v : list ) {
+							out.println("Point: "+"("+String.valueOf(v.getX()) +","+String.valueOf(v.getY())+")");
+						}
+						out.close();
+		
 					} catch (IOException e) {
-						JOptionPane.showMessageDialog(null, "Could not save image", "File save error",
+						JOptionPane.showMessageDialog(null, "Could not save files", "File save error",
 								JOptionPane.INFORMATION_MESSAGE);
 						e.printStackTrace();
 					}
