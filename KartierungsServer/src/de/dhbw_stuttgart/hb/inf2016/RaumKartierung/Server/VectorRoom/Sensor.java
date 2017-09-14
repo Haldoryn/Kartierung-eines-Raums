@@ -31,8 +31,7 @@ public class Sensor {
     public void refresh(){
         double Adjacent = Math.cos(robot.getAngle()) * Spacing;
         double Opposite = Math.sin(robot.getAngle()) * Spacing;
-        vector.setX(robot.getVector().getX() + Adjacent);
-        vector.setY(robot.getVector().getY() + Opposite);
+        vector = robot.getVector().add(new Vector(Adjacent, Opposite));
     }
     
     /**

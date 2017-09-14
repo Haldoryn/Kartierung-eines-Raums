@@ -37,7 +37,7 @@ public class Controlling {
 		}
 		else{
 			//If the robot does not have the space to perform a forward move, he will turn.
-			 NextMove = new Turn(random.nextInt(360 * 2) - 360,config);
+			 NextMove = new Turn(random.nextInt(180 * 2) - 180,config);
 	            return NextMove;
 		}
     }
