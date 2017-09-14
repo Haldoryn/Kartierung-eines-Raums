@@ -4,12 +4,22 @@ import java.util.Hashtable;
 
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.*;
 
+/**Default implementation of the IToRobotSender. Can be used to send commands to the robot.
+ * @author JVogel
+ *
+ */
 class ToRobotSender implements IToRobotSender {
 
+	/**All PaketNotifiers that are used to wait for responses by the type of command that they can be used to wait for.
+	 * 
+	 */
 	private Hashtable<CommandType, PaketNotifier> notifiers = new Hashtable<>();
 
 	private IProtocolEndpoint protocolEndpoint;
 
+	/**Initializes a new instance of the ToRobotSender class.
+	 * @param protocolEndpoint The endpoint that should be used to send and receive commands.
+	 */
 	protected ToRobotSender(IProtocolEndpoint protocolEndpoint) {
 		super();
 		if (protocolEndpoint == null) {
@@ -37,24 +47,36 @@ class ToRobotSender implements IToRobotSender {
 		});
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendGetGyroscope()
+	 */
 	@Override
 	public void sendGetGyroscope() {
 		CommandBase cmd = new GetGyroscopeCmd();
 		protocolEndpoint.sendCommand(cmd);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendGetStatus()
+	 */
 	@Override
 	public void sendGetStatus() {
 		CommandBase cmd = new GetStatusCmd();
 		protocolEndpoint.sendCommand(cmd);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendGetUltrasonic()
+	 */
 	@Override
 	public void sendGetUltrasonic() {
 		CommandBase cmd = new GetUltrasonicCmd();
 		protocolEndpoint.sendCommand(cmd);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendMoveMotor(int, int, int, int)
+	 */
 	@Override
 	public void sendMoveMotor(int anglePerSecondLeft, int anglePerSecondRight, int distanceAngleLeft,
 			int distanceAngleRight) {
@@ -64,18 +86,27 @@ class ToRobotSender implements IToRobotSender {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendMoveSensor(int, int)
+	 */
 	@Override
 	public void sendMoveSensor(int anglePerSecond, int totalAngle) {
 		CommandBase cmd = new MoveSensorCmd(anglePerSecond, totalAngle);
 		protocolEndpoint.sendCommand(cmd);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendReset()
+	 */
 	@Override
 	public void sendReset() {
 		CommandBase cmd = new ResetCmd();
 		protocolEndpoint.sendCommand(cmd);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendGetGyroscopeAndWait(int)
+	 */
 	@Override
 	public ReturnGyroscopeCmd sendGetGyroscopeAndWait(int timeoutMs) throws InterruptedException {
 		sendGetGyroscope();
@@ -86,6 +117,9 @@ class ToRobotSender implements IToRobotSender {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendGetStatusAndWait(int)
+	 */
 	@Override
 	public ReturnStatusCmd sendGetStatusAndWait(int timeoutMs) throws InterruptedException {
 		sendGetStatus();
@@ -96,6 +130,9 @@ class ToRobotSender implements IToRobotSender {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendGetUltrasonicAndWait(int)
+	 */
 	@Override
 	public ReturnUltrasonicCmd sendGetUltrasonicAndWait(int timeoutMs) throws InterruptedException {
 		sendGetUltrasonic();
@@ -106,6 +143,9 @@ class ToRobotSender implements IToRobotSender {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendMoveMotorAndWait(int, int, int, int, int)
+	 */
 	@Override
 	public ReturnMotorCmd sendMoveMotorAndWait(int anglePerSecondLeft, int anglePerSecondRight, int distanceAngleLeft,
 			int distanceAngleRight, int timeoutMs) throws InterruptedException {
@@ -119,6 +159,9 @@ class ToRobotSender implements IToRobotSender {
 
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendMoveSensorAndWait(int, int, int)
+	 */
 	@Override
 	public ReturnSensorCmd sendMoveSensorAndWait(int anglePerSecond, int totalAngle, int timeoutMs)
 			throws InterruptedException {
@@ -130,6 +173,9 @@ class ToRobotSender implements IToRobotSender {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender#sendResetAndWait(int)
+	 */
 	@Override
 	public ReturnResetCmd sendResetAndWait(int timeoutMs) throws InterruptedException {
 		sendReset();

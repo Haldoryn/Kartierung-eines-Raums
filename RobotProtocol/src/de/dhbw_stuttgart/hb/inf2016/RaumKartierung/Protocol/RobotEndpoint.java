@@ -29,14 +29,23 @@ public class RobotEndpoint extends EndpointBase {
 	 */
 	Thread thread;
 	
+	//The connection socket.
 	Socket connection;
 	
+	//Stores the IConnectionIncommingEventHandler listners.
 	private List<IConnectionIncommingEventHandler> connectionIncommingHandler = new LinkedList<>();
 
+	/**Initializes a new instance of the RobotEndpoint class.
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	public RobotEndpoint() throws InstantiationException, IllegalAccessException {
 		super();
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.EndpointBase#close()
+	 */
 	@Override
 	public void close() {
 		if (thread != null && thread.isAlive()) {
@@ -49,11 +58,18 @@ public class RobotEndpoint extends EndpointBase {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IProtocolEndpoint#isConnected()
+	 */
 	@Override
 	public boolean isConnected() {
 		return !serverSocket.isBound() && !serverSocket.isClosed();
 	}
 
+	/**Opens the endpoint.
+	 * @param port The port at which the endpoint should be opened.
+	 * @throws IOException Thrown if the port can not be opened
+	 */
 	public void open(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
 		run = true;
@@ -91,6 +107,9 @@ public class RobotEndpoint extends EndpointBase {
 		thread.start();
 	}
 	
+	/**Adds a listener that informs about incoming connections.
+	 * @param listener The listener that should be added.
+	 */
 	public void addOnConnectionIncommingListener(IConnectionIncommingEventHandler listener)
 	{
 		if (listener == null) {
@@ -99,6 +118,9 @@ public class RobotEndpoint extends EndpointBase {
 		connectionIncommingHandler.add(listener);
 	}
 	
+	/**Removes a OnConnectionIncommingListener.
+	 * @param listener The listner that should be removed.
+	 */
 	public void removeOnConnectionIncommingListener(IConnectionIncommingEventHandler listener)
 	{
 		if (listener == null) {

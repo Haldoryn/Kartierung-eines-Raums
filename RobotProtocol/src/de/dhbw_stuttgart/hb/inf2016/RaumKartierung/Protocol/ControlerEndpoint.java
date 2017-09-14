@@ -29,7 +29,13 @@ public class ControlerEndpoint extends EndpointBase {
 	 * The background thread that is used to send end receive protocol data.
 	 * 
 	 */
-	Thread thread;
+	private Thread thread=null;
+	
+	
+	/**The socket that is used for network communication.
+	 * 
+	 */
+	private Socket sock=null ;
 
 	public ControlerEndpoint() throws InstantiationException, IllegalAccessException {
 		super();
@@ -47,8 +53,13 @@ public class ControlerEndpoint extends EndpointBase {
 		}
 	}
 
+	/**Connects the endpoint to the robot.
+	 * @param ip Ip of the robot.
+	 * @param port Port of the robot programm.
+	 * @throws IOException If the robot is not available.
+	 */
 	public void connect(InetAddress ip, int port) throws IOException {
-		final Socket sock = new Socket();
+		sock = new Socket();
 		sock.connect(new InetSocketAddress(ip, port), TIMEOUT);
 		run=true;
 
@@ -76,10 +87,13 @@ public class ControlerEndpoint extends EndpointBase {
 		System.out.println("SenderReceiver Thread Started");
 	}
 
+	/* (non-Javadoc)
+	 * @see de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IProtocolEndpoint#isConnected()
+	 */
 	@Override
 	public boolean isConnected() {
 		// TODO Auto-generated method stub
-		return false;
+		return  thread != null && thread.isAlive() && sock!=null && !sock.isClosed();
 	}
 
 }
