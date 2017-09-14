@@ -39,7 +39,10 @@ public class MainWindow
 	private List<IStopEventListener> onStopListeners = new LinkedList<>();
 	private List<ISaveEventListener> onSaveListeners = new LinkedList<>();
 	
-	
+	/**
+	 * Displays the image in the gui.
+	 * @param newImage The image to be displayed in the gui
+	 */
 	public void setImage(Image newImage)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) 
@@ -56,6 +59,10 @@ public class MainWindow
 		this.image.setIcon(new ImageIcon(newImage.getScaledInstance(image.getWidth(), image.getHeight(),  Image.SCALE_DEFAULT)));
 	}
 
+	/**
+	 * Adds listeners for the connect button.
+	 * @param listener the listener
+	 */
 	public void addOnConnectEventListener(IConnectEventListener listener) 
 	{
 		if (listener == null) 
@@ -65,6 +72,10 @@ public class MainWindow
 		onConnectListeners.add(listener);
 	}
 
+	/**
+	 * Removes listeners for the connect button.
+	 * @param listener the listener
+	 */
 	public void removeOnConnectEventListener(IConnectEventListener listener) 
 	{
 		if (listener == null) 
@@ -74,6 +85,10 @@ public class MainWindow
 		onConnectListeners.remove(listener);
 	}
 
+	/**
+	 * Adds listeners for the start button.
+	 * @param listener the listener
+	 */
 	public void addOnStartEventListener(IStartEventListener listener) 
 	{
 		if (listener == null) 
@@ -83,6 +98,10 @@ public class MainWindow
 		onStartListeners.add(listener);
 	}
 
+	/**
+	 * Removes listeners for the start button.
+	 * @param listener the listener
+	 */
 	public void removeOnStartEventListener(IStartEventListener listener) 
 	{
 		if (listener == null) 
@@ -92,6 +111,10 @@ public class MainWindow
 		onStartListeners.remove(listener);
 	}
 
+	/**
+	 * Adds listeners for the stop button.
+	 * @param listener the listener
+	 */
 	public void addOnStopEventListener(IStopEventListener listener) 
 	{
 		if (listener == null) 
@@ -101,6 +124,10 @@ public class MainWindow
 		onStopListeners.add(listener);
 	}
 
+	/**
+	 * Removes listeners for the stop button.
+	 * @param listener the listener
+	 */
 	public void removeOnStopEventListener(IStopEventListener listener) 
 	{
 		if (listener == null) 
@@ -110,6 +137,10 @@ public class MainWindow
 		onStopListeners.remove(listener);
 	}
 	
+	/**
+	 * Adds listeners to the save button.
+	 * @param listener the listener
+	 */
 	public void addOnSaveEventListener(ISaveEventListener listener) 
 	{
 		if (listener == null) 
@@ -119,6 +150,10 @@ public class MainWindow
 		onSaveListeners.add(listener);
 	}
 
+	/**
+	 * Removes listeners for the save button.
+	 * @param listener the listener
+	 */
 	public void removeOnSaveEventListener(ISaveEventListener listener) 
 	{
 		if (listener == null) 
@@ -129,6 +164,10 @@ public class MainWindow
 	}
 	
 	
+	/**
+	 * Writes the position of the Robot in the gui.
+	 * @param text the text for the label
+	 */
 	public void setPositionText(String text)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) 
@@ -146,7 +185,9 @@ public class MainWindow
 		lablePosition.setText("<html><pre>"+text+"</pre></html>");		
 	}
 
-
+	/**
+	 * Clears the text from the text pane.
+	 */
 	public void clearLog() 
 	{	
 		if (!SwingUtilities.isEventDispatchThread()) 
@@ -164,6 +205,10 @@ public class MainWindow
 		textPane.setText("");
 	}
 
+	/**
+	 * Appends text to the text pane.
+	 * @param message the message to be added
+	 */
 	public void addLogEntry(String message) 
 	{
 		if (message == null) 
@@ -216,6 +261,9 @@ public class MainWindow
 		});
 	}
 	
+	/**
+	 * Repaints the image when new points where added.
+	 */
 	public void repaintImage()
 	{
 		if (!SwingUtilities.isEventDispatchThread()) 
