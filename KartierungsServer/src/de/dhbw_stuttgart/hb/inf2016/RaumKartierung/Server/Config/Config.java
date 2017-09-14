@@ -50,6 +50,7 @@ public class Config {
 	/**
 	 * @throws InvalidActivityException 
 	 * @throws ParseException 
+	 * reads in all constant elements in the Config File and saves them so that the user can get them through the getConstbyName Method
 	 * 
 	 */
 	private void readFile() throws InvalidActivityException, ParseException {
