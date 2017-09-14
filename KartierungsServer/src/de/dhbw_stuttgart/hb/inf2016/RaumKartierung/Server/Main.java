@@ -183,12 +183,14 @@ public class Main {
 		while (isRunning) {
 			try {
 				robotInteractionHandler.doMove();
-				lastImage = createMapImage(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),robotInteractionHandler.getRobot().getVector());
+				lastImage = createMapImage(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),
+						robotInteractionHandler.getRobot().getVector());
 				if (lastImage != null) {
 					window.setImage(lastImage);
 					window.repaintImage();
 				}
-				window.setPositionText(robotInteractionHandler.getRobot().toString() +"\n"+ robotInteractionHandler.getSensor());
+				window.setPositionText(
+						robotInteractionHandler.getRobot().toString() + "\n" + robotInteractionHandler.getSensor());
 
 			} catch (InterruptedException e) {
 				JOptionPane.showMessageDialog(null, "System was interupted", "System interrupt",
@@ -197,35 +199,43 @@ public class Main {
 		}
 	}
 
-	private static BufferedImage createMapImage(List<Vector> points,Vector roboPos) {
+	/** Creates the image of the map.
+	 * @param points The map points.
+	 * @param roboPos Current position of the robot.
+	 * @return The map image.
+	 */
+	private static BufferedImage createMapImage(List<Vector> points, Vector roboPos) {
 		if (points.size() == 0)
 			return null;
 
 		float maxX = 0;
 		float maxY = 0;
-		
+
 		for (Vector point : points) {
 			if (point.getX() > maxX)
 				maxX = (float) point.getX();
 			if (point.getY() > maxY)
 				maxY = (float) point.getY();
 		}
-		
-		if(Math.round(maxX)==0 ||Math.round(maxY)==0 )
+
+		if (Math.round(maxX) == 0 || Math.round(maxY) == 0)
 			return null;
-		
-		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxY),BufferedImage.TYPE_INT_RGB);
-		Graphics2D g =(Graphics2D) img.getGraphics();
+
+		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxY), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = (Graphics2D) img.getGraphics();
 		g.setBackground(Color.WHITE);
-		g.clearRect(0, 0, Math.round(maxX),  Math.round(maxY));
+		g.clearRect(0, 0, Math.round(maxX), Math.round(maxY));
 		g.setColor(Color.RED);
-		
+
 		for (Vector point : points) {
-			g.fillRect((int)Math.round(point.getX()),(int) Math.round(point.getY()), 1, 1);
+			g.fillRect((int) Math.round(point.getX()) - 1, (int) Math.round(point.getY()) - 1, 2, 2);
 		}
-		
+
 		g.setColor(Color.BLUE);
-		g.drawRect((int)Math.round(roboPos.getX()),(int) Math.round(roboPos.getY()), 1, 1);
+		int size = Math.round(Math.max(img.getWidth(), img.getHeight()) / 100);
+
+		// Draw 4 pixel per point to get better visible points.
+		g.drawRect((int) Math.round(roboPos.getX()) - size / 2, (int) Math.round(roboPos.getY()) - size / 2, size,size);
 
 		return img;
 	}

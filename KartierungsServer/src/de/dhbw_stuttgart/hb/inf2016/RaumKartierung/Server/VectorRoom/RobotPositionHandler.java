@@ -47,7 +47,7 @@ public class RobotPositionHandler {
     public void turningRobot(Turn turn){
         robot.setAngle(turn.getAngle());
         sensor.refresh();
-        sensor.setAngle(sensor.getAngle()+turn.getAngle());
+        sensor.setAngle(turn.getAngle());
     }
     
     /**

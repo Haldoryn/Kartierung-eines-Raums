@@ -1,9 +1,5 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
 
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Forward;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Turn;
-
 import java.util.ArrayList;
 /**
  * This class calculates the position of a scan point and saves all scan points. 
@@ -22,7 +18,6 @@ public class VectorRoom {
      * @param distance is the distance the robot scanned something saved in a double.
      */
     public void setScan(double distance){
-    	    	
         double Adjacent = Math.cos(Math.toRadians(sensor.getAngle())) * distance;
         double Opposite = Math.sin(Math.toRadians(sensor.getAngle())) * distance;
         Points.add(sensor.getVector().add(new Vector(Adjacent, Opposite)));
@@ -41,8 +36,8 @@ public class VectorRoom {
      * @return Arraylist of all scanned points.
      */
     public ArrayList<Vector> getPointsPositivOnly(){
-        double lowestX = 1;
-        double lowestY = 1;
+        double lowestX = 0;
+        double lowestY = 0;
         for(Vector vector : Points){
             if(vector.getX() < lowestX){
                 lowestX = vector.getX();
@@ -53,7 +48,7 @@ public class VectorRoom {
         }
         ArrayList<Vector> PointsPositivOnly = new ArrayList<>();
         for(Vector vector: Points){
-            PointsPositivOnly.add(new Vector(vector.getX() + (lowestX * -1), vector.getY() + (lowestY *-1)));
+            PointsPositivOnly.add(new Vector(vector.getX() + Math.abs(lowestX), vector.getY() + Math.abs(lowestY)));
         }
         return PointsPositivOnly;
     }

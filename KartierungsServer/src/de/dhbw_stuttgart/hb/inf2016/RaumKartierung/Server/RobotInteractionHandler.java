@@ -3,8 +3,6 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import com.sun.xml.internal.ws.api.pipe.Tube;
-
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IProtocolEndpoint;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.IToRobotSender;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands.ReturnMotorCmd;
@@ -232,7 +230,6 @@ public class RobotInteractionHandler {
 		
 		// It gets calculated if the robot would fit.
 		if(ScanValue < hypotenuse) {
-			
 			// If it does not fit, the sensor gets turned back again and the method returns false.
 			robotSender.sendMoveSensorAndWait(sensorSpeed, angle, timeout);
 			return false;
