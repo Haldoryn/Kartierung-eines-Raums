@@ -45,9 +45,9 @@ public class RobotPositionHandler {
      * @param turn is an object of the type Turn. 
      */
     public void turningRobot(Turn turn){
-        robot.setAngle(robot.getAngle() + turn.getAngle());
+        robot.setAngle(turn.getAngle());
         sensor.refresh();
-        sensor.setAngle(sensor.getAngle() + turn.getAngle());
+        sensor.setAngle(turn.getAngle());
     }
     
     /**
