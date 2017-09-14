@@ -74,8 +74,8 @@ public class Main {
 				
 				if (file != null) {
 					try {
-						ImageIO.write(lastImage, "jpg", file);
-						PrintWriter out = new PrintWriter(file);
+						ImageIO.write(lastImage, "jpg", new File(file.getAbsolutePath()+".jpg"));
+						PrintWriter out = new PrintWriter(new File(file.getAbsolutePath()+".txt"));
 						ArrayList<Vector> list = robotInteractionHandler.getVectorRoom().getPoints();
 			
 						for(Vector v : list ) {
