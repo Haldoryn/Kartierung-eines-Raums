@@ -1,15 +1,13 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI;
 
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageConsumer;
 import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -25,8 +23,7 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 
 /**
- * The Window class
- * 
+ * The main window of the application
  * @author dh10hcn
  *
  */
@@ -41,11 +38,7 @@ public class MainWindow
 	private List<IStartEventListener> onStartListeners = new LinkedList<>();
 	private List<IStopEventListener> onStopListeners = new LinkedList<>();
 	private List<ISaveEventListener> onSaveListeners = new LinkedList<>();
-	private List<IScanEventListener> onScanListeners = new LinkedList<>();
-	private List<IForwardEventListener> onForwardListeners = new LinkedList<>();
-	private List<IBackwardEventListener> onBackwardListeners = new LinkedList<>();
-	private List<ILeftEventListener> onLeftListeners = new LinkedList<>();
-	private List<IRightEventListener> onRightListeners = new LinkedList<>();
+	
 	
 	public void setImage(Image newImage)
 	{
@@ -135,97 +128,7 @@ public class MainWindow
 		onSaveListeners.remove(listener);
 	}
 	
-	public void addOnScanEventListener(IScanEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onScanListeners.add(listener);
-	}
-
-	public void removeOnScanEventListener(IScanEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onScanListeners.remove(listener);
-	}
 	
-	public void addOnForwardEventListener(IForwardEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onForwardListeners.add(listener);
-	}
-
-	public void removeOnForwardEventListener(IForwardEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onForwardListeners.remove(listener);
-	}
-	
-	public void addOnBackwardEventListener(IBackwardEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onBackwardListeners.add(listener);
-	}
-
-	public void removeOnBackwardEventListener(IBackwardEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onBackwardListeners.remove(listener);
-	}
-	
-	public void addOnLeftEventListener(ILeftEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onLeftListeners.add(listener);
-	}
-
-	public void removeOnLeftEventListener(ILeftEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onLeftListeners.remove(listener);
-	}
-	
-	public void addOnRightEventListener(IRightEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onRightListeners.add(listener);
-	}
-
-	public void removeOnRightEventListener(IRightEventListener listener) 
-	{
-		if (listener == null) 
-		{
-			throw new IllegalArgumentException("The 'listener' argument must not be null");
-		}
-		onRightListeners.remove(listener);
-	}
-
-
 	public void setPositionText(String text)
 	{
 		if (!SwingUtilities.isEventDispatchThread()) 
@@ -477,140 +380,7 @@ public class MainWindow
 		});
 
 		panel1.add(btnStopp);
-
-		// button abort
-		JButton btnAbort = new JButton("Abbrechen");
-		sl_panel1.putConstraint(SpringLayout.NORTH, btnAbort, 6, SpringLayout.SOUTH, btnStart);
-		sl_panel1.putConstraint(SpringLayout.WEST, btnAbort, 0, SpringLayout.WEST, btnStart);
-		springLayout.putConstraint(SpringLayout.NORTH, btnAbort, 6, SpringLayout.SOUTH, btnStart);
-		springLayout.putConstraint(SpringLayout.WEST, btnAbort, 0, SpringLayout.WEST, btnStart);
-		btnAbort.setActionCommand("Abort");
-		panel1.add(btnAbort);
-
-		// the second tab
-		JComponent panel2 = new JPanel();
-		tabbedPane.addTab("Manuelle Kartierung", null, panel2, "Manuelle Kartierung");
-		panel2.setLayout(new GridLayout(3, 7, 0, 0));		
-		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
-
-		
-		// first three placeholder
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-
-		// the button forward
-		ImageIcon iconForward = new ImageIcon("res/PfeilHoch.png");
-		JButton btnForward = new JButton(iconForward);
-		btnForward.setMnemonic(KeyEvent.VK_UP);
-		btnForward.setActionCommand("Forward");
-		btnForward.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-
-				for (IForwardEventListener listener : onForwardListeners) 
-				{
-					listener.onForward();
-				}
-			}
-		});
-		panel2.add(btnForward);
-
-		// next five placeholder
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-
-		// the button left
-		ImageIcon iconLeft = new ImageIcon("res/PfeilLinks.png");
-		JButton btnLeft = new JButton(iconLeft);
-		btnLeft.setMnemonic(KeyEvent.VK_LEFT);
-		btnLeft.setActionCommand("Left");
-		btnLeft.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-
-				for (ILeftEventListener listener : onLeftListeners) 
-				{
-					listener.onLeft();
-				}
-			}
-		});
-		panel2.add(btnLeft);
-
-		// button to scan
-		ImageIcon iconScan = new ImageIcon("res/Fadenkreuzlaser.png");
-		JButton btnScan = new JButton(iconScan);
-		btnScan.setMnemonic(KeyEvent.VK_END);
-		btnScan.setActionCommand("Scan");
-		btnScan.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				for (IScanEventListener listener : onScanListeners)
-				{
-					listener.onScan();
-				}
-			}
-		});
-		panel2.add(btnScan);
-
-		// button right
-		ImageIcon iconRight = new ImageIcon("res/PfeilRechts.png");
-		JButton btnRight = new JButton(iconRight);
-		btnRight.setMnemonic(KeyEvent.VK_RIGHT);
-		btnRight.setActionCommand("Right");
-		btnRight.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-
-				for (IRightEventListener listener : onRightListeners) 
-				{
-					listener.onRight();
-				}
-			}
-		});
-		panel2.add(btnRight);
-
-		// next five placeholder
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-
-		// the button backwards
-		ImageIcon iconBackwards = new ImageIcon("res/PfeilRunter.png");
-		JButton btnBackward = new JButton(iconBackwards);
-		btnBackward.setMnemonic(KeyEvent.VK_DOWN);
-		btnBackward.setActionCommand("Backwards");
-		btnBackward.addActionListener(new ActionListener() 
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-
-				for (IBackwardEventListener listener : onBackwardListeners) {
-					listener.onBackward();
-				}
-			}
-		});
-		panel2.add(btnBackward);
-
-		// last three placeholder
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-		panel2.add(javax.swing.Box.createGlue());
-
+	
 		// the Label above the place to draw
 		JLabel labeldraw = new JLabel("Zeichnung:");
 		springLayout.putConstraint(SpringLayout.NORTH, labeldraw, 0, SpringLayout.NORTH, tabbedPane);
