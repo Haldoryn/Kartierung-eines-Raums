@@ -56,6 +56,6 @@ public class Sensor {
      * @param angle is the current angle of the sensor in a double.
      */
     public void setAngle(double angle) {
-        Angle = angle;
+        Angle = angle%360;
     }
 }

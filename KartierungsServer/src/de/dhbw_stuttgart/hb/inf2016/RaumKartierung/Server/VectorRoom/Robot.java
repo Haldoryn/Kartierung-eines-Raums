@@ -40,7 +40,7 @@ public class Robot {
      * @param angle id the current angle of the robot.
      */
     public void setAngle(double angle) {
-        Angle = angle;
+        Angle = angle%360;
     }
 
     /**
