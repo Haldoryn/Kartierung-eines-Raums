@@ -1,11 +1,17 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 
-
 /**
- * Created by samue on 20.06.2017.
+ * Is an interface for all moves the robot performs. 
+ * @author Samuel Volz
+ *
  */
 public interface Move {
+	/**
+	 * @return the angle the left motor has to turn in order to achieve the move.
+	 */
     public double getLeftMotor();
+	/**
+	 * @return the angle the right motor has to turn in order to achieve the move.
+	 */
     public double getRightMotor();
-    public void setMotor(double leftMotor, double rightMotor);
 }

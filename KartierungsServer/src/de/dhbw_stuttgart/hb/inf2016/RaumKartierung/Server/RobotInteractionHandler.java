@@ -18,31 +18,74 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Sensor;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.VectorRoom;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 /**
- * 
+ * The robot interaction handler id the class which interacts with the robot. 
+ * It gets the next move and sends it to the robot. 
+ * This class also send all moves to the vectorroom in order to save all moves.
  * @author Samuel Volz
  *
  */
 public class RobotInteractionHandler {
-
-	private int timesScaned; // timesScaned is a counter of every scan the robot makes. It counts only the scans of one sweep.
-	private Config config; //cons is the object, that reads the constants xml file and returns the wanted constant. 
-	private VectorRoom vectorRoom; //vectorRoom is the object, that saves all points. It needs the movement of the robot in order to calculate the scanned points.
-	private Controlling controlling; //Controlling is responsible for the movement of the robot.
-	private IToRobotSender robotSender; //robotSender sends all commands to the robot.
-	private Move nextMove; //nextMove saves the next move of the robot.
-	private int speed; //speed is the speed in which the motors are rotating.
-	private int timeout; //timeout is the time the program waits for a reaction of the robot.
-	private double minScanDist; //minScanDist is the minimum a scan distance can be before the scan gets trashed.
-	private double maxScanDist; //maxScanDist is the maximum a scan distance can be before the scan gets trashed.
-	private int sensorSpeed; //sensorSpeed is the speed in which the sensor turns.
-	private int anglePerScan; //anglePerScan is the angle the sensor turns before it performs another scan.
-	private int maxScans; //maxScans is the amount of scans the robot performs per sweep.
-	private double width; //width is the width of the robot. This class needs it in order to check if the robot can fit thru a checked space.
-	private double distance; //distance is the distance this method has to check.
+	/**
+	 * timesScaned is a counter of every scan the robot makes. It counts only the scans of one sweep.
+	 */
+	private int timesScaned;
+	/**
+	 * cons is the object, that reads the constants xml file and returns the wanted constant.
+	 */
+	private Config config;
+	/**
+	 * vectorRoom is the object, that saves all points. It needs the movement of the robot in order to calculate the scanned points.
+	 */
+	private VectorRoom vectorRoom;
+	/**
+	 * Controlling is responsible for the movement of the robot.
+	 */
+	private Controlling controlling; 
+	/**
+	 * robotSender sends all commands to the robot.
+	 */
+	private IToRobotSender robotSender;
+	private Move nextMove;
+	private int speed; 
+	private int timeout;
+	/**
+	 * minScanDist is the minimum a scan distance can be before the scan gets trashed.
+	 */
+	private double minScanDist; 
+	/**
+	 * maxScanDist is the maximum a scan distance can be before the scan gets trashed.
+	 */
+	private double maxScanDist; 
+	private int sensorSpeed; 
+	private int anglePerScan; 
+	private int maxScans; 
+	/**
+	 * width is the width of the robot. This class needs it in order to check if the robot can fit thru a checked space.
+	 */
+	private double width;
+	private double distance;
+	/** 
+	 * Robot saves the position and the angle of the robot.
+	 */
 	private Robot robot;
+	/**
+	 * Sensor saves the position and the angle of the sensor.
+	 */
 	private Sensor sensor;
+	/**
+	 * The robotPositionHandler calculates the positions of the robot and sensor.
+	 */
 	private RobotPositionHandler robotPositionHandler;
 	
+	/**
+	 * Creates the RobotinteractionHandler object. 
+	 * @param endpoint 
+	 * @param config
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public RobotInteractionHandler(IProtocolEndpoint endpoint,Config config) throws InstantiationException, IllegalAccessException, UnknownHostException, IOException {
 		if(endpoint == null)
 		{
@@ -79,7 +122,8 @@ public class RobotInteractionHandler {
 	}
 	
 	
-	/**Gets the robot data object
+	/**
+	 * Gets the robot data object
 	 * @return The robot data object
 	 */
 	public Robot getRobot()
@@ -87,7 +131,8 @@ public class RobotInteractionHandler {
 		return robot;
 	}
 	
-	/**Get the sensor data object.
+	/**
+	 * Get the sensor data object.
 	 * @return The sensor data object.
 	 */
 	public Sensor getSensor()
@@ -123,7 +168,7 @@ public class RobotInteractionHandler {
 		// the nextMove gets updated with the informations the robot returned and the move gets send to the vectorRoob 
 	 	// in order to save the move and calculate the location of the robot.
 		if(nextMove instanceof Forward)
-			nextMove.setMotor(returnMotor.getReachedLeftDistanceAngle(), returnMotor.getReachedRightDistanceAngle());
+			((Forward)nextMove).setMotor(returnMotor.getReachedLeftDistanceAngle(), returnMotor.getReachedRightDistanceAngle());
 		else if(nextMove instanceof Turn)
 			((Turn) nextMove).setAngle(robotSender.sendGetGyroscopeAndWait(timeout).getValue());
 		robotPositionHandler.movingRobot(nextMove);

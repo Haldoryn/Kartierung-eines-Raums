@@ -15,7 +15,7 @@ public class Controlling {
 
     
     /**
-     * Sets the config object. 
+     * Initializes the Controlling class.
      * @param config in an object, that reds from an xml file and returns configured stuff.
      */
     public Controlling(Config config) {
@@ -24,7 +24,7 @@ public class Controlling {
 	}
 
     /**
-     * This method decides were to go next.
+     * This method decides what move the robot should do next.
      * @param doesItFit A boolean that says if the robot fits or not. 
      * @return The next move
      */

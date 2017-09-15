@@ -1,14 +1,25 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom;
 
 /**
- * 
+ * This class stores the x and y value of a vector.
  * @author Samuel Volz
  *
  */
 public class Vector {
+	/**
+	 * The x value of the vector.
+	 */
     private double x;
+    /**
+     * The y value of the vector.
+     */
     private double y;
 
+    /**
+     * Initializes the vector.
+     * @param x
+     * @param y
+     */
     public Vector(double x,double y){
         this.x = x;
         this.y = y;
@@ -34,9 +45,18 @@ public class Vector {
         this.y = y;
     }
 
+    /**
+     * Adds two vectors together.
+     * @param Vec gets added with this vector.
+     * @return a new vector.
+     */
     public Vector add(Vector Vec){
         return new Vector(this.x += Vec.getX(), this.y += Vec.getY());
     }
+
+    /**
+     * returns a new Vector with the values of this vector.
+     */
     public Vector clone(){
         return new Vector(x,y);
     }

@@ -3,12 +3,18 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config.Config;
 
 /**
- * 
+ * The forward class is a move forward. It stores the distance and the angle in which the motors have to turn in order to achieve this distance. 
  * @author Samuel Volz
  *
  */
 public class Forward implements Move {
+	/**
+	 * The angle the left motor has to turn in order to achieve the given distance.
+	 */
     double LeftMotor;
+	/**
+	 * The angle the right motor has to turn in order to achieve the given distance.
+	 */
     double RightMotor;
     Config cfg;
     
@@ -55,8 +61,10 @@ public class Forward implements Move {
     public double getRightMotor() {
         return RightMotor;
     }
-
-	@Override
+    /**
+     * @param leftMotor is the angle the left motor has to turn in order to achieve the move.
+     * @param rightMotor is the angle the right motor has to turn in order to achieve the move.
+     */
 	public void setMotor(double leftMotor, double rightMotor) {
 		setDistence((leftMotor + rightMotor) / 2 * (2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) / 360);
 	}

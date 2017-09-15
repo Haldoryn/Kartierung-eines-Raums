@@ -22,10 +22,6 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
-<<<<<<< HEAD
-=======
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MapImageBuilder;
->>>>>>> 2487a11baa5d848ac5d7d0665aa0b80600db6a5c
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 
 /**
@@ -34,12 +30,19 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
  *
  */
 public class Main {
-
+	/**
+	 * Gets used to do all the Stuff to interact with the robot. 
+	 */
 	private static RobotInteractionHandler robotInteractionHandler;
+	/**
+	 * The boolean "isRunning" saves if the robot should do stuff or not.
+	 */
 	private static boolean isRunning;
 	private static MainWindow window;
 	private static Thread workThread;
-	//Stores the last rendered image. Used to for the save image functionality
+	/**
+	 * Stores the last rendered image. Used to for the save image functionality
+	 */
 	private static BufferedImage lastImage;
 
 	/**

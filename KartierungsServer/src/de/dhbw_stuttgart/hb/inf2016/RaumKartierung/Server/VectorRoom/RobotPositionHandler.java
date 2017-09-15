@@ -5,7 +5,7 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Move;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Turn;
 
 /**
- * 
+ * This class calculates the position and the angle of the robot and the position of the robot and the sensor.
  * @author Samuel Volz
  *
  */
@@ -13,6 +13,11 @@ public class RobotPositionHandler {
     private Robot robot;
     private Sensor sensor;
     
+    /**
+     * Initializes the RobotPositionHandler.
+     * @param robot 
+     * @param sensor
+     */
     public RobotPositionHandler(Robot robot, Sensor sensor) {
     	this.robot = robot;
     	this.sensor = sensor;
