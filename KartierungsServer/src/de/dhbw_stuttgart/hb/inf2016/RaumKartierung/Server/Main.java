@@ -24,8 +24,6 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.GridMap;
-import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.GridMapToImageConverter;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 
 /**

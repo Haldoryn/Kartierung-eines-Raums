@@ -23,9 +23,11 @@ public class Turn implements Move {
         Angle = angle%360;
         double n = ((double)cons.getConstbyName("wheelDistance") * angle)/(2 * (double)cons.getConstbyName("wheelRadius") * 360);
         if(angle < 0){
+        	//If the angle is positive, the robot should turn left in order to stay true to the unit cycle.
             LeftMotor = 360 * n;
             RightMotor = - 360 * n;
         } else if(angle > 0){
+        	//If the angle is negative, the robot should turn right.
             RightMotor = 360 * n;
             LeftMotor = - 360 * n;
         } else {
