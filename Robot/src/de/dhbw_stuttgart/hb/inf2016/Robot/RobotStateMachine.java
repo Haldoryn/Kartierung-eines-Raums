@@ -217,8 +217,9 @@ public class RobotStateMachine implements ICommandReceiver {
 					"The robot can not rotate the sensor at this speed with the current battery level");
 		}
 
+		//Invert the rotation angle because the KartierungsServer expectes the sensor to rotate the other way arround
 		sensorMotor.setSpeed(cmd.getAnglePerSecond());
-		sensorMotor.rotate(cmd.getTotalAngle());
+		sensorMotor.rotate(cmd.getTotalAngle()*-1);
 
 		// Set state and send answer
 		responseSender.sendReturnSensor();

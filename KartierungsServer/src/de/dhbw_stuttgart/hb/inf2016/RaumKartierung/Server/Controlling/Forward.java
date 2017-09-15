@@ -27,10 +27,18 @@ public class Forward implements Move {
 
     }
 
+    /**
+     * Returns the distance the robot should move forward.
+     * @return the distance
+     */
     public double getDistence() {
         return Distance;
     }
 
+    /**
+     * Takes the distance and calculates it into the movement of the motors.
+     * @param distence the distance the robot should move forward
+     */
     public void setDistence(double distence) {
         Distance = distence;
         LeftMotor = Distance/(2 * Math.PI * (double)cfg.getConstbyName("wheelRadius")) * 360;

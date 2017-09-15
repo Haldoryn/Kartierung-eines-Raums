@@ -1,14 +1,12 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.text.ParseException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.activity.InvalidActivityException;
 import javax.imageio.ImageIO;
@@ -24,20 +22,24 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.ISaveEventListener
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStartEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.IStopEventListener;
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MainWindow;
+<<<<<<< HEAD
+=======
+import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI.MapImageBuilder;
+>>>>>>> 2487a11baa5d848ac5d7d0665aa0b80600db6a5c
 import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom.Vector;
 
 /**
- * 
+ * Main class of the application.
  * @author Samuel Volz
  *
  */
-
 public class Main {
 
 	private static RobotInteractionHandler robotInteractionHandler;
 	private static boolean isRunning;
 	private static MainWindow window;
 	private static Thread workThread;
+	//Stores the last rendered image. Used to for the save image functionality
 	private static BufferedImage lastImage;
 
 	/**
@@ -51,6 +53,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws InvalidActivityException, ParseException {
 
+		//Initialize the config.
 		Config config = new Config();
 
 		/*
@@ -71,11 +74,20 @@ public class Main {
 				chooser.setDialogTitle("Wählen Sie den Ordner zum Speichern der Kartierung");
 				chooser.showSaveDialog(null);
 				File file = chooser.getSelectedFile();
+				
 				if (file != null) {
 					try {
-						ImageIO.write(lastImage, "jpg", file);
+						ImageIO.write(lastImage, "jpg", new File(file.getAbsolutePath()+".jpg"));
+						PrintWriter out = new PrintWriter(new File(file.getAbsolutePath()+".txt"));
+						ArrayList<Vector> list = robotInteractionHandler.getVectorRoom().getPoints();
+			
+						for(Vector v : list ) {
+							out.println("Point: "+"("+String.valueOf(v.getX()) +","+String.valueOf(v.getY())+")");
+						}
+						out.close();
+		
 					} catch (IOException e) {
-						JOptionPane.showMessageDialog(null, "Could not save image", "File save error",
+						JOptionPane.showMessageDialog(null, "Could not save files", "File save error",
 								JOptionPane.INFORMATION_MESSAGE);
 						e.printStackTrace();
 					}
@@ -83,6 +95,7 @@ public class Main {
 			}
 		});
 
+		//Add the start event handler
 		window.addOnStartEventListener(new IStartEventListener() {
 
 			@Override
@@ -91,6 +104,8 @@ public class Main {
 
 			}
 		});
+		
+		//Add the stop event handler
 		window.addOnStopEventListener(new IStopEventListener() {
 
 			@Override
@@ -99,6 +114,8 @@ public class Main {
 
 			}
 		});
+		
+		//Handler for conneting to the robot.
 		window.addOnConnectEventListener(new IConnectEventListener() {
 
 			@Override
@@ -184,12 +201,14 @@ public class Main {
 		while (isRunning) {
 			try {
 				robotInteractionHandler.doMove();
-				lastImage = createGridMap(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),robotInteractionHandler.getRobot().getVector());
+				lastImage = MapImageBuilder.createMapImage(robotInteractionHandler.getVectorRoom().getPointsPositivOnly(),
+						robotInteractionHandler.getRobot().getVector());
 				if (lastImage != null) {
 					window.setImage(lastImage);
 					window.repaintImage();
 				}
-				window.setPositionText("Pos: "+robotInteractionHandler.getRobot().toString());
+				window.setPositionText(
+						robotInteractionHandler.getRobot().toString() + "\n" + robotInteractionHandler.getSensor());
 
 			} catch (InterruptedException e) {
 				JOptionPane.showMessageDialog(null, "System was interupted", "System interrupt",
@@ -198,38 +217,5 @@ public class Main {
 		}
 	}
 
-	private static BufferedImage createGridMap(List<Vector> points,Vector roboPos) {
-		if (points.size() == 0)
-			return null;
 
-		float minX = 0;
-		float maxX = 0;
-		float minY = 0;
-		float maxY = 0;
-
-		for (Vector point : points) {
-			if (point.getX() < minX)
-				minX = (float) point.getX();
-			if (point.getY() < minY)
-				minY = (float) point.getY();
-			if (point.getX() > maxX)
-				maxX = (float) point.getX();
-			if (point.getY() > maxY)
-				maxY = (float) point.getY();
-		}
-		
-		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxX),BufferedImage.TYPE_INT_RGB);
-		Graphics2D g =(Graphics2D) img.getGraphics();
-		g.setBackground(Color.WHITE);
-		g.setColor(Color.RED);
-		
-		for (Vector point : points) {
-			g.fillRect(Math.round((int)point.getX()),(int) Math.round(point.getY()), 1, 1);
-		}
-		
-		g.setColor(Color.BLUE);
-		g.drawRect((int)Math.round(roboPos.getX()),(int) Math.round(roboPos.getY()), 1, 1);
-
-		return img;
-	}
 }

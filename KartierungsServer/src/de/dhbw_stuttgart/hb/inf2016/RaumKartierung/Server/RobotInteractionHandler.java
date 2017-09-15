@@ -87,6 +87,14 @@ public class RobotInteractionHandler {
 		return robot;
 	}
 	
+	/**Get the sensor data object.
+	 * @return The sensor data object.
+	 */
+	public Sensor getSensor()
+	{
+		return sensor;
+	}
+	
 	/**
 	 * This class goes thru the procedure of controlling and communicating with the robot.
 	 * @throws InterruptedException

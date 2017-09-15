@@ -1,0 +1,9 @@
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol.Commands
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.ProtocolConsole
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Config
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI
+de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.VectorRoom
+de.dhbw_stuttgart.hb.inf2016.Robot

@@ -57,4 +57,9 @@ public class Sensor {
     public void setAngle(double angle) {
         Angle = angle%360;
     }
+
+	@Override
+	public String toString() {
+		return "Sensor [vector=" + vector + ", Angle=" + Math.round(Angle) + "]";
+	}
 }

@@ -10,7 +10,6 @@ import de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.Controlling.Turn;
  *
  */
 public class RobotPositionHandler {
-    private VectorOperations vectorOperations = new VectorOperations();
     private Robot robot;
     private Sensor sensor;
     

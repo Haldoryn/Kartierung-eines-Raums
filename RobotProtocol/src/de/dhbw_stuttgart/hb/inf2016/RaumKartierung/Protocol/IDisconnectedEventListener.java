@@ -1,5 +1,16 @@
 package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Protocol;
 
+/**
+ * Event listener interface for events that inform about the end of a
+ * connection.
+ * 
+ * @author JVogel
+ *
+ */
 public interface IDisconnectedEventListener {
-public void OnDisconnect();
+	/**
+	 * Called when a connection was disconnected.
+	 * 
+	 */
+	public void OnDisconnect();
 }
