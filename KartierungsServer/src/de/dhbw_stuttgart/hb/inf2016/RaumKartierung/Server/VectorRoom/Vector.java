@@ -51,7 +51,11 @@ public class Vector {
      * @return a new vector.
      */
     public Vector add(Vector Vec){
-        return new Vector(this.x += Vec.getX(), this.y += Vec.getY());
+    	double thisX = this.x;
+    	double vecX = Vec.getX();
+    	double thisY = this.y;
+    	double vecY = Vec.y;
+        return new Vector(thisX + vecX, thisY + vecY);
     }
 
     /**

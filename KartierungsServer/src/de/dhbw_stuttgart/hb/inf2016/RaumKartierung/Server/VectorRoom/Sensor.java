@@ -23,6 +23,7 @@ public class Sensor {
         this.robot = robot;
         Spacing = (double)config.getConstbyName("Spacing");
         Angle = 0;
+        refresh();
     }
 
     /**
