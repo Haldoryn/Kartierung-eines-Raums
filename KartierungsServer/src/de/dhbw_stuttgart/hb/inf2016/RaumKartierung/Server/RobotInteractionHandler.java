@@ -232,23 +232,24 @@ public class RobotInteractionHandler {
 	 * @throws InterruptedException
 	 */
 	public boolean checkScan() throws InterruptedException {
+		double checkdistance = distance +16;
 		// hypotenuse is the hypotenuse of the triangle distance and width/2. 
 		// The hypotenuse is needed in order to check if the scan length is long enough for the robot to fit.
 		// This constant is calculated by the formula root((width/2)^2 + distance^2.
-		double hypotenuse = Math.sqrt(Math.pow(width/2, 2) + Math.pow(distance,2));
+		double hypotenuse = Math.sqrt(Math.pow(width/2, 2) + Math.pow(checkdistance,2));
 		
 		// angle is the angle between hypotenuse and distance in the triangle distance width and hypotenuse.
 		// This angle is needed in order to turn the sensor to this angle in order to scan and measure the hypotenuse.
 		// This constant is calculated by the formula tan((width/2)/distance)
 		// The double calculated by this formula gets rounded up in order to get a Integer because the robot needs its turning angle in an Integer. 
-		int angle = (int)Math.ceil(Math.tan((width/2)/distance));
+		int angle = (int)Math.ceil(Math.tan((width/2)/checkdistance));
 		
 		// The Robot scans in front of him.
 		ReturnUltrasonicCmd returnUltrasonic= robotSender.sendGetUltrasonicAndWait(timeout);
 		Double ScanValue = returnUltrasonic.getValue();
 		
 		// It gets checked, if there is space for the robot to move. If not it returns false. 
-		if(ScanValue < distance)
+		if(ScanValue < checkdistance)
 			return false;
 		
 		// The Robot turns its head in the angle tan((width/2)/distancePerMove) in order to scan if the right side would fit.

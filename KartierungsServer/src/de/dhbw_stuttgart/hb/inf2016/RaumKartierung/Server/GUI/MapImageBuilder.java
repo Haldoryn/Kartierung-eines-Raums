@@ -2,6 +2,8 @@ package de.dhbw_stuttgart.hb.inf2016.RaumKartierung.Server.GUI;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class MapImageBuilder {
 
 		// Create the image and clear the background with wite.
 		BufferedImage img = new BufferedImage(Math.round(maxX), Math.round(maxY), BufferedImage.TYPE_INT_RGB);
+
 		Graphics2D g = (Graphics2D) img.getGraphics();
 		g.setBackground(Color.WHITE);
 		g.clearRect(0, 0, Math.round(maxX), Math.round(maxY));
@@ -56,11 +59,17 @@ public class MapImageBuilder {
 		}
 
 		// Draw the robot. Always draw it at 1/100 of the bigger axis.
-		g.setColor(Color.BLUE);
-		int size = Math.round(Math.max(img.getWidth(), img.getHeight()) / 100);
-		g.drawRect((int) Math.round(roboPos.getX()) - size / 2, (int) Math.round(roboPos.getY()) - size / 2, size,
-				size);
+		// g.setColor(Color.BLUE);
+		// int size = Math.round(Math.max(img.getWidth(), img.getHeight()) / 100);
+		// g.drawRect((int) Math.round(roboPos.getX()) - size / 2, (int)
+		// Math.round(roboPos.getY()) - size / 2, size,
+		// size);
 
-		return img;
+		//Flip x-axis
+		AffineTransform transform =AffineTransform.getScaleInstance(-1, 1);
+		transform.translate(-img.getWidth(), 0);;
+		AffineTransformOp transformOp = new AffineTransformOp(transform,  AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		img= transformOp.filter(img, null);
+		return (img);
 	}
 }
